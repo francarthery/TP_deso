@@ -1,12 +1,16 @@
 package service;
 import repository.UsuarioDAO;
 
+import domain.UsuarioDTO;
+
+import exceptions.UsuarioNoValidoException;
+
 public class GestorUsuario {
 
     private static GestorUsuario instancia;
     private UsuarioDAO usuarioDAO = UsuarioDAO.getInstancia();
             
-    private GestorUsuario() {
+    private GestorUsuario() { //Constructor privado para singleton
     }
     
     public static GestorUsuario getInstancia() {
@@ -15,6 +19,18 @@ public class GestorUsuario {
         }
         return instancia;
     }
+
+    public boolean validarLogin(String nombreUsuario, String contrasena) throws UsuarioNoValidoException {
+        
+        UsuarioDTO usuario = usuarioDAO.encontrarPorUsername(nombreUsuario);
+
+        if (usuario == null || !usuario.getPassword().equals(contrasena)) {
+            throw new UsuarioNoValidoException("Usuario o contraseña incorrectos.");
+        }
+
+        return true;
+    }
+    
 
 
 
