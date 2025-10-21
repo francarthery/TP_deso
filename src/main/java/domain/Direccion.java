@@ -1,4 +1,4 @@
-package TP.domain;
+package domain;
 
 public class Direccion {
     private String calle;
@@ -9,5 +9,4 @@ public class Direccion {
     private String localidad;
     private String provincia;
     private String pais;
-    
 }

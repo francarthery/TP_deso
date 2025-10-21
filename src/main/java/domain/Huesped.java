@@ -1,4 +1,4 @@
-package TP.domain;
+package domain;
 
 import java.util.Date;
 import java.util.stream.DoubleStream.Builder;
