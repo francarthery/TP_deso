@@ -1,4 +1,4 @@
-package TpDeso.exceptions;
+package tpdeso.exceptions;
 
 public class UsuarioNoValidoException extends Exception {
 

@@ -1,4 +1,4 @@
-package TpDeso.domain;
+package tpdeso.domain;
 
 import java.util.Date;
 import java.util.stream.DoubleStream.Builder;

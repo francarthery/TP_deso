@@ -1,11 +1,11 @@
-package TpDeso.repository;
+package tpdeso.repository;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import TpDeso.domain.Rol;
-import TpDeso.domain.UsuarioDTO;
+import tpdeso.domain.Rol;
+import tpdeso.domain.UsuarioDTO;
 
 public class UsuarioDAO {
     

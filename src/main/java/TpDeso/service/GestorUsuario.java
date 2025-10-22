@@ -1,7 +1,7 @@
-package TpDeso.service;
-import TpDeso.domain.UsuarioDTO;
-import TpDeso.exceptions.UsuarioNoValidoException;
-import TpDeso.repository.UsuarioDAO;
+package tpdeso.service;
+import tpdeso.domain.UsuarioDTO;
+import tpdeso.exceptions.UsuarioNoValidoException;
+import tpdeso.repository.UsuarioDAO;
 
 public class GestorUsuario {
 

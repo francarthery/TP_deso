@@ -1,4 +1,4 @@
-package TpDeso.domain;
+package tpdeso.domain;
 
 public class Usuario {
     private int id;

@@ -1,8 +1,6 @@
-package TpDeso.presentation;
-import java.util.Scanner;
-
-import TpDeso.presentation.Login;
-import TpDeso.service.GestorUsuario;
+package tpdeso.presentation;
+import tpdeso.presentation.Login;
+import tpdeso.service.GestorUsuario;
 
 
 public class Main {
