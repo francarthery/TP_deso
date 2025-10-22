@@ -1,8 +1,8 @@
-package TpDeso.presentation;
+package tpdeso.presentation;
 import java.util.Scanner;
 
-import TpDeso.exceptions.UsuarioNoValidoException;
-import TpDeso.service.GestorUsuario;
+import tpdeso.exceptions.UsuarioNoValidoException;
+import tpdeso.service.GestorUsuario;
 
 public class Login {
     
@@ -17,6 +17,7 @@ public class Login {
         String username = scanner.nextLine();
         System.out.print("Ingrese su contraseña: ");
         String password = scanner.nextLine();
+        scanner.close();
         
         try {
             return gestorUsuario.validarLogin(username, password);
