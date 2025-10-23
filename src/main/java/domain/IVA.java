@@ -1,5 +1,8 @@
 package domain;
 
 public enum IVA {
-    A, B, C;
+    CONSUMIDOR_FINAL, 
+    RESPONSABLE_INSCRIPTO, 
+    MONOTRIBUTO, 
+    EXENTO;
 }

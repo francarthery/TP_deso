@@ -3,8 +3,9 @@ package domain;
 import java.util.Date;
 
 public class Huesped {
+    private int id;
     private String apellido;
-    private String nombre;
+    private String nombres;
     private TipoDocumento documento;
     private String numeroDocumento;
     private String cuit;
@@ -16,8 +17,9 @@ public class Huesped {
     private String nacionalidad;
 
     private Huesped(Builder builder){
+        this.id = builder.id;
         this.apellido = builder.apellido;
-        this.nombre = builder.nombre;
+        this.nombres = builder.nombres;
         this.documento = builder.documento;
         this.numeroDocumento = builder.numeroDocumento;
         this.cuit = builder.cuit;
@@ -30,8 +32,9 @@ public class Huesped {
     }
 
     public static class Builder{
+        private int id;
         private String apellido;
-        private String nombre;
+        private String nombres;
         private TipoDocumento documento;
         private String numeroDocumento;
         private String cuit;
@@ -41,61 +44,20 @@ public class Huesped {
         private String email;
         private String ocupacion;
         private String nacionalidad;
-
-
-        //Getters
-        public String getApellido(){
-            return this.apellido;
-        }
-
-        public String getNombre(){
-            return this.nombre;
-        }
-
-        public TipoDocumento getTipoDocumento(){
-            return this.documento;
-        }
-
-        public String getNumeroDocumento(){
-            return this.numeroDocumento;
-        }
-
-        public String getCuit(){
-            return this.cuit;
-        }
-
-        public Date getFechaDeNacimiento(){
-            return this.fechaDeNacimiento;
-        }
-
-        public String getTelefono(){
-            return this.telefono;
-        }
-
-        public String getEmail(){
-            return this.email;
-        }
-
-        public String getOcupacion(){
-            return this.ocupacion;
-        }
-
-        public String getNacionalidad(){
-            return this.nacionalidad;
-        }
-
-        public IVA getPosicionFrenteAlIVA(){
-            return this.posicionFrenteAlIVA;
-        }
         
         //Builder 
+        public Builder id(int id){
+            this.id = id;
+            return this;
+        }
+
         public Builder apellido(String apellido){
             this.apellido = apellido;
             return this;
         }
 
-        public Builder nombre(String nombre){
-            this.nombre = nombre;
+        public Builder nombres(String nombres){
+            this.nombres = nombres;
             return this;
         }
 
@@ -147,7 +109,54 @@ public class Huesped {
         public Huesped build(){
             return new Huesped(this);   
         }
+    }
 
+    //Getters
+    public int getId(){
+        return this.id;
+    }
 
+    public String getApellido(){
+        return this.apellido;
+    }
+
+    public String getNombres(){
+        return this.nombres;
+    }
+
+    public TipoDocumento getTipoDocumento(){
+        return this.documento;
+    }
+
+    public String getNumeroDocumento(){
+        return this.numeroDocumento;
+    }
+
+    public String getCuit(){
+        return this.cuit;
+    }
+
+    public Date getFechaDeNacimiento(){
+        return this.fechaDeNacimiento;
+    }
+
+    public String getTelefono(){
+        return this.telefono;
+    }
+
+    public String getEmail(){
+        return this.email;
+    }
+
+    public String getOcupacion(){
+        return this.ocupacion;
+    }
+
+    public String getNacionalidad(){
+        return this.nacionalidad;
+    }
+
+    public IVA getPosicionFrenteAlIVA(){
+        return this.posicionFrenteAlIVA;
     }
 }

@@ -1,6 +1,5 @@
 package presentation;
 import java.util.Scanner;
-
 import exceptions.UsuarioNoValidoException;
 import service.GestorUsuario;
 
@@ -11,13 +10,11 @@ public class Login {
         this.gestorUsuario = gestorUsuario;
     }
     
-    public boolean autenticar() {
-        Scanner scanner = new Scanner(System.in);
+    public boolean autenticar(Scanner scanner) {
         System.out.print("Ingrese su nombre de usuario: ");
         String username = scanner.nextLine();
         System.out.print("Ingrese su contraseña: ");
         String password = scanner.nextLine();
-        scanner.close();
         
         try {
             return gestorUsuario.validarLogin(username, password);
@@ -28,20 +25,17 @@ public class Login {
         }
     }
 
-    public void presentacionLogin() {
+    public void presentacionLogin(Scanner scanner) {
 
-        if (autenticar()) {
-            System.out.println("Login exitoso. Bienvenido al sistema de gestión hotelera.");
-        } else {
-            System.out.println("Login fallido. Por favor, intente de nuevo.");
+        boolean loginIncorrecto = true;
+        while(loginIncorrecto){
+            if (autenticar(scanner)) {
+                System.out.println("Login exitoso. Bienvenido al sistema de gestión hotelera.");
+                loginIncorrecto = false;
+            } else {
+                System.out.println("Login fallido. Por favor, intente de nuevo.");
+            }
         }
-
     }
-    
-    
-
-    
-
-
 
 }

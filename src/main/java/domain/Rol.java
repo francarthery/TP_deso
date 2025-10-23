@@ -1,5 +1,6 @@
 package domain;
 
 public enum Rol {
-    CONSERJE, ADMINISTRADOR
+    CONSERJE, 
+    ADMINISTRADOR
 }
