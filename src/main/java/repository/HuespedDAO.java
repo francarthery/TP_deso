@@ -30,7 +30,7 @@ public class HuespedDAO {
 
     public List<HuespedDTO> obtenerTodos() throws HuespedNoEncontradoException {
         
-        List<HuespedDTO> huespedes = null;
+        List<HuespedDTO> huespedes = new ArrayList<>();
 
         String rutaRecurso = "data/huespedes.csv";
         

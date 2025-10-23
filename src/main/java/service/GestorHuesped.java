@@ -23,14 +23,14 @@ public class GestorHuesped {
     }
 
     public List<HuespedDTO> buscarHuesped(String apellido, String nombres, TipoDocumento tipoDocumento, String numeroDocumento) {
-        List<HuespedDTO> huespedes = null;
+        List<HuespedDTO> huespedes;
 
         try {
             huespedes = huespedDAO.obtenerTodos();
-            System.out.println(huespedes.size());
-        } catch (HuespedNoEncontradoException e) { //no se si es correcta esta excepción
+        } catch (HuespedNoEncontradoException e) {
             System.out.println("Error al buscar huesped: " + e.getMessage());
             e.printStackTrace();
+            return List.of(); 
         }
 
         Stream<HuespedDTO> stream = huespedes.stream();
