@@ -1,23 +1,28 @@
 package repository;
 
-import domain.HuespedDTO;
-import domain.TipoDocumento;
-import java.util.List;
-import exceptions.HuespedNoEncontradoException;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import domain.IVA;
-import java.util.Date;
-import java.text.SimpleDateFormat;
+import java.io.PrintWriter;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import domain.Huesped;
+import domain.IVA;
+import domain.TipoDocumento;
+import exceptions.HuespedNoEncontradoException;
 
 
 public class HuespedDAO {
     
     private static HuespedDAO instancia;
+    private static  final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     private HuespedDAO() {}
 
@@ -28,13 +33,12 @@ public class HuespedDAO {
         return instancia;
     }
 
-    public List<HuespedDTO> obtenerTodos() throws HuespedNoEncontradoException {
+    public List<Huesped> obtenerTodos() throws HuespedNoEncontradoException {
         
-        List<HuespedDTO> huespedes = new ArrayList<>();
+        List<Huesped> huespedes = new ArrayList<>();
 
         String rutaRecurso = "data/huespedes.csv";
         
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         ClassLoader classLoader = getClass().getClassLoader();
         InputStream inputStream = classLoader.getResourceAsStream(rutaRecurso);
@@ -65,7 +69,20 @@ public class HuespedDAO {
                     String ocupacionBD = datos[10];
                     String nacionalidadBD = datos[11];
                     
-                    huespedes.add(new HuespedDTO(id, nombresBD, apellidoBD, tipoDocumentoBD, numeroDocumentoBD, cuitBD, posicionFrenteAlIVA, fechaDeNacimiento, telefono, emailBD, ocupacionBD, nacionalidadBD));
+                    Huesped huesped = new Huesped.Builder()
+                        .nombres(nombresBD)
+                        .apellido(apellidoBD)
+                        .tipoDocumento(tipoDocumentoBD)
+                        .numeroDocumento(numeroDocumentoBD)
+                        .cuit(cuitBD)
+                        .posicionFrenteAlIVA(posicionFrenteAlIVA)
+                        .fechaDeNacimiento(fechaDeNacimiento)
+                        .telefono(telefono)
+                        .email(emailBD)
+                        .ocupacion(ocupacionBD)
+                        .nacionalidad(nacionalidadBD)
+                        .build();
+                    huespedes.add(huesped);
                 
                 } catch (IllegalArgumentException e) {
                     System.err.println("Error de parseo en CSV: " + linea + " | Error: " + e.getMessage());
@@ -75,12 +92,45 @@ public class HuespedDAO {
             }
         } catch (IOException e) {
             System.out.println("Error al leer el archivo DAO: " + e.getMessage());
-            e.printStackTrace();
         }
-
 
         return huespedes;
     }
 
-    
+    public boolean agregarHuesped(Huesped huesped) {
+
+        String fechaFormateada = dateFormat.format(huesped.getFechaDeNacimiento());
+            
+        String rutaRecurso= "data/huespedes.csv";
+
+        String nuevaLinea = String.join(",",
+            String.valueOf(huesped.getId()), // Asumimos que el ID ya viene en el DTO
+            huesped.getNombres(),
+            huesped.getApellido(),
+            huesped.getTipoDocumento().name(), // .name() convierte el Enum a String
+            huesped.getNumeroDocumento(),
+            huesped.getCuit(),
+            huesped.getPosicionFrenteAlIVA().name(),
+            fechaFormateada,
+            huesped.getTelefono(),
+            huesped.getEmail(),
+            huesped.getOcupacion(),
+            huesped.getNacionalidad()
+        );
+
+        
+        //    Usamos try-with-resources para que todo se cierre solo.
+        //    El 'true' en FileWriter significa MODO APPEND (agregar al final)
+        try (FileWriter fw = new FileWriter(rutaRecurso, true);
+             BufferedWriter bw = new BufferedWriter(fw);
+             PrintWriter out = new PrintWriter(bw)) 
+        {
+            out.println(nuevaLinea); // Escribimos la línea y un salto de línea
+            return true; // Éxito
+            
+        } catch (IOException e) {
+            System.err.println("Error al escribir en el archivo DAO: " + e.getMessage());
+            return false; // Fracaso
+        }
+    }
 }

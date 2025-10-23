@@ -15,6 +15,7 @@ public class Huesped {
     private String email;
     private String ocupacion;
     private String nacionalidad;
+    private Direccion direccion;
 
     private Huesped(Builder builder){
         this.id = builder.id;
@@ -29,6 +30,7 @@ public class Huesped {
         this.ocupacion = builder.ocupacion;
         this.nacionalidad = builder.nacionalidad;
         this.posicionFrenteAlIVA = builder.posicionFrenteAlIVA;
+        this.direccion = builder.direccion;
     }
 
     public static class Builder{
@@ -163,5 +165,9 @@ public class Huesped {
 
     public IVA getPosicionFrenteAlIVA(){
         return this.posicionFrenteAlIVA;
+    }
+
+    public Direccion getDireccion(){
+        return this.direccion;
     }
 }
