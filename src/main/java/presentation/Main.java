@@ -1,7 +1,7 @@
 package presentation;
-import presentation.Login;
-import service.GestorUsuario;
 import java.util.Scanner;
+
+import service.GestorUsuario;
 
 public class Main {
     public static void main(String[] args) {
