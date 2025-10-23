@@ -44,7 +44,7 @@ public class Huesped {
         private String email;
         private String ocupacion;
         private String nacionalidad;
-        
+        private Direccion direccion;
         //Builder 
         public Builder id(int id){
             this.id = id;
@@ -61,7 +61,7 @@ public class Huesped {
             return this;
         }
 
-        public Builder documento(TipoDocumento tipo){
+        public Builder tipoDocumento(TipoDocumento tipo){
             this.documento = tipo;
             return this;
         }
@@ -103,6 +103,11 @@ public class Huesped {
 
         public Builder posicionFrenteAlIVA(IVA posicion){
             this.posicionFrenteAlIVA = posicion;
+            return this;
+        }
+
+        public Builder direccion(Direccion direccion){
+            this.direccion = direccion;
             return this;
         }
         

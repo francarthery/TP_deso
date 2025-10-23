@@ -2,11 +2,17 @@ package service;
 
 import repository.HuespedDAO;
 import domain.HuespedDTO;
+import domain.IVA;
+import domain.Huesped;
+import domain.Direccion;
+import java.util.Date;
 import java.util.List;
 import domain.TipoDocumento;
 import exceptions.HuespedNoEncontradoException;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
+
+
 
 public class GestorHuesped {
     
@@ -51,5 +57,38 @@ public class GestorHuesped {
         }
 
         return stream.collect(Collectors.toList());
+    }
+
+    public void darAltaHuesped(String apellido, String nombres, TipoDocumento documento, String numeroDocumento,
+                                String cuit, IVA posicionFrenteAlIVA, Date fechaDeNacimiento, String telefono, 
+                                String email, String ocupacion, String nacionalidad, String pais, String provincia,
+                                String ciudad, String calle, String numero, String piso, String departamento){
+        
+        Direccion direccion = new Direccion.Builder()
+                .pais(pais)
+                .provincia(provincia)
+                .localidad(ciudad)
+                .calle(calle)
+                .numero(numero)
+                .piso(piso)
+                .departamento(departamento)
+                .build();         
+        
+        Huesped huesped = new Huesped.Builder()
+                .apellido(apellido)
+                .nombres(nombres)
+                .tipoDocumento(documento)
+                .numeroDocumento(numeroDocumento)
+                .cuit(cuit)
+                .posicionFrenteAlIVA(posicionFrenteAlIVA)
+                .fechaDeNacimiento(fechaDeNacimiento)
+                .telefono(telefono)
+                .email(email)
+                .ocupacion(ocupacion)
+                .nacionalidad(nacionalidad)
+                .direccion(direccion)
+                .build();
+        
+        huespedDAO.agregarHuesped(huesped);
     }
 }

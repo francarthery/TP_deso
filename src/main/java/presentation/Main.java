@@ -1,6 +1,5 @@
 package presentation;
 import java.util.Scanner;
-
 import service.GestorUsuario;
 
 public class Main {
