@@ -11,7 +11,7 @@ import java.util.List;
 public class MenuPrincipal {
     
     public void menuPrincipal(Scanner scanner) {
-        System.out.println("=== Menú Principal ===");
+        System.out.println("======= Menú Principal =======");
         System.out.println("1. Opción: Buscar Huésped");
         System.out.println("2. Opción: Dar de alta Huésped");
         System.out.println("3. Opción: Modificar Huésped");
@@ -21,16 +21,17 @@ public class MenuPrincipal {
         System.out.print("Seleccione una opción: ");
         int opcion = scanner.nextInt();
         scanner.nextLine();
-        //Preguntarle a Tomi por la creacion de los gestores aca adentro
+        
         GestorHuesped gestorHuesped = GestorHuesped.getInstancia(); 
 
         switch (opcion) {
             case 1:
                 BuscarHuesped buscarHuesped = new BuscarHuesped();
-                List<HuespedDTO> huespedesEncontrados = buscarHuesped.buscar(gestorHuesped, scanner);
+                List<Huesped> huespedesEncontrados = buscarHuesped.buscar(gestorHuesped, scanner);
                 break;
             case 2:
-                // Lógica para la opción 2
+                DarAltaHuesped darAltaHuesped = new DarAltaHuesped();
+                
                 break;
             case 3:
                 // Lógica para la opción 3

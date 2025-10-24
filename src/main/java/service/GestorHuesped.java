@@ -1,7 +1,7 @@
 package service;
 
 import repository.HuespedDAO;
-import domain.HuespedDTO;
+import domain.Huesped;
 import domain.IVA;
 import domain.Huesped;
 import domain.Direccion;
@@ -11,7 +11,6 @@ import domain.TipoDocumento;
 import exceptions.HuespedNoEncontradoException;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
-
 
 
 public class GestorHuesped {
@@ -28,8 +27,8 @@ public class GestorHuesped {
         return instancia;
     }
 
-    public List<HuespedDTO> buscarHuesped(String apellido, String nombres, TipoDocumento tipoDocumento, String numeroDocumento) {
-        List<HuespedDTO> huespedes;
+    public List<Huesped> buscarHuesped(String apellido, String nombres, TipoDocumento tipoDocumento, String numeroDocumento) {
+        List<Huesped> huespedes;
 
         try {
             huespedes = huespedDAO.obtenerTodos();
@@ -39,7 +38,7 @@ public class GestorHuesped {
             return List.of(); 
         }
 
-        Stream<HuespedDTO> stream = huespedes.stream();
+        Stream<Huesped> stream = huespedes.stream();
         if (apellido != null && !apellido.isEmpty()) {
             stream = stream.filter(h -> h.getApellido().equalsIgnoreCase(apellido));
         }
@@ -59,10 +58,15 @@ public class GestorHuesped {
         return stream.collect(Collectors.toList());
     }
 
+    public boolean documentoExistente(String numeroDocumento){
+        return huespedDAO.documentoExistente(numeroDocumento);
+    }
+
     public void darAltaHuesped(String apellido, String nombres, TipoDocumento documento, String numeroDocumento,
                                 String cuit, IVA posicionFrenteAlIVA, Date fechaDeNacimiento, String telefono, 
                                 String email, String ocupacion, String nacionalidad, String pais, String provincia,
-                                String ciudad, String calle, String numero, String piso, String departamento){
+                                String ciudad, String calle, String numero, String piso, String departamento, 
+                                String codigoPostal) {
         
         Direccion direccion = new Direccion.Builder()
                 .pais(pais)
@@ -72,6 +76,7 @@ public class GestorHuesped {
                 .numero(numero)
                 .piso(piso)
                 .departamento(departamento)
+                .codigoPostal(codigoPostal)
                 .build();         
         
         Huesped huesped = new Huesped.Builder()

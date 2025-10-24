@@ -1,6 +1,6 @@
 package presentation;
 
-import domain.HuespedDTO;
+import domain.Huesped;
 import domain.TipoDocumento;
 
 import java.util.List;
@@ -9,14 +9,14 @@ import service.GestorHuesped;
 
 class BuscarHuesped {
     
-    public List<HuespedDTO> buscar(GestorHuesped gestorHuesped, Scanner scanner) {
+    public List<Huesped> buscar(GestorHuesped gestorHuesped, Scanner scanner) {
         System.out.println("----- Búsqueda de Huésped -----");
         
 
-        System.out.print("Ingrese el apellido (o deje vacío para omitir): ");
-        String apellido = scanner.nextLine();
         System.out.print("Ingrese los nombres (o deje vacío para omitir): ");
         String nombres = scanner.nextLine();
+        System.out.print("Ingrese el apellido (o deje vacío para omitir): ");
+        String apellido = scanner.nextLine();
         System.out.print("Ingrese el tipo de documento (DNI, PASAPORTE, LE, LC, OTRO) o deje vacío para omitir: ");
         String tipoDocumentoInput = scanner.nextLine();
         TipoDocumento tipoDocumento = tipoDocumentoInput.isEmpty() ? null : TipoDocumento.valueOf(tipoDocumentoInput.toUpperCase());
@@ -24,7 +24,7 @@ class BuscarHuesped {
         String numeroDocumento = scanner.nextLine();
 
         try {
-            List<HuespedDTO> huespedes = gestorHuesped.buscarHuesped(apellido, nombres, tipoDocumento, numeroDocumento);
+            List<Huesped> huespedes = gestorHuesped.buscarHuesped(apellido, nombres, tipoDocumento, numeroDocumento);
             if (huespedes.isEmpty()) {
                 System.out.println("No se encontraron huéspedes en el sistema.");
                 //pasa a ejecutar CU11
@@ -34,7 +34,6 @@ class BuscarHuesped {
                     System.out.println(i + ". " + huespedes.get(i - 1).getNombres() + ' ' + huespedes.get(i - 1).getApellido() + " - " 
                                         + huespedes.get(i - 1).getTipoDocumento() + ": " + huespedes.get(i - 1).getNumeroDocumento());
                 }
-
                 
                 boolean sinSeleccion = true;
                 while(sinSeleccion){

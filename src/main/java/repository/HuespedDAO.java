@@ -23,7 +23,9 @@ public class HuespedDAO {
     
     private static HuespedDAO instancia;
     private static  final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
+    private static String rutaRecurso = "data/huespedes.csv";
+    private static ClassLoader classLoader = HuespedDAO.class.getClassLoader(); //Preguntar si es correcto
+    
     private HuespedDAO() {}
 
     public static HuespedDAO getInstancia() {
@@ -36,11 +38,6 @@ public class HuespedDAO {
     public List<Huesped> obtenerTodos() throws HuespedNoEncontradoException {
         
         List<Huesped> huespedes = new ArrayList<>();
-
-        String rutaRecurso = "data/huespedes.csv";
-        
-
-        ClassLoader classLoader = getClass().getClassLoader();
         InputStream inputStream = classLoader.getResourceAsStream(rutaRecurso);
 
         if (inputStream == null) {
@@ -100,14 +97,12 @@ public class HuespedDAO {
     public boolean agregarHuesped(Huesped huesped) {
 
         String fechaFormateada = dateFormat.format(huesped.getFechaDeNacimiento());
-            
-        String rutaRecurso= "data/huespedes.csv";
 
         String nuevaLinea = String.join(",",
-            String.valueOf(huesped.getId()), // Asumimos que el ID ya viene en el DTO
+            String.valueOf(huesped.getId()),
             huesped.getNombres(),
             huesped.getApellido(),
-            huesped.getTipoDocumento().name(), // .name() convierte el Enum a String
+            huesped.getTipoDocumento().name(),
             huesped.getNumeroDocumento(),
             huesped.getCuit(),
             huesped.getPosicionFrenteAlIVA().name(),
@@ -118,19 +113,35 @@ public class HuespedDAO {
             huesped.getNacionalidad()
         );
 
-        
-        //    Usamos try-with-resources para que todo se cierre solo.
-        //    El 'true' en FileWriter significa MODO APPEND (agregar al final)
-        try (FileWriter fw = new FileWriter(rutaRecurso, true);
-             BufferedWriter bw = new BufferedWriter(fw);
-             PrintWriter out = new PrintWriter(bw)) 
-        {
-            out.println(nuevaLinea); // Escribimos la línea y un salto de línea
-            return true; // Éxito
-            
+        try (PrintWriter out = new PrintWriter( new BufferedWriter( new FileWriter(rutaRecurso, true)))) {
+            out.println(nuevaLinea); 
+            return true; 
         } catch (IOException e) {
             System.err.println("Error al escribir en el archivo DAO: " + e.getMessage());
-            return false; // Fracaso
+            return false;
         }
+    }
+
+    public boolean documentoExistente(String documento){
+        InputStream inputStream = classLoader.getResourceAsStream(rutaRecurso);
+        
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                String[] datos = linea.split(",");
+                
+                if (datos.length < 12) continue; 
+
+                try {
+                    String documentoBD = datos[4];
+                    if(documentoBD.equalsIgnoreCase(documento)) return true;
+                } catch (IllegalArgumentException e) {
+                    System.err.println("Error de parseo en CSV: " + linea + " | Error: " + e.getMessage());
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error al leer el archivo DAO: " + e.getMessage());
+        }
+        return false;
     }
 }
