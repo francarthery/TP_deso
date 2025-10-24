@@ -1,6 +1,6 @@
 package domain;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Huesped {
     private int id;
@@ -10,7 +10,7 @@ public class Huesped {
     private String numeroDocumento;
     private String cuit;
     private IVA posicionFrenteAlIVA;
-    private Date fechaDeNacimiento;
+    private LocalDate fechaDeNacimiento;
     private String telefono;
     private String email;
     private String ocupacion;
@@ -41,7 +41,7 @@ public class Huesped {
         private String numeroDocumento;
         private String cuit;
         private IVA posicionFrenteAlIVA;
-        private Date fechaDeNacimiento;
+        private LocalDate fechaDeNacimiento;
         private String telefono;
         private String email;
         private String ocupacion;
@@ -78,7 +78,7 @@ public class Huesped {
             return this;
         }
 
-        public Builder fechaDeNacimiento(Date fecha){
+        public Builder fechaDeNacimiento(LocalDate fecha){
             this.fechaDeNacimiento = fecha;
             return this;
         }
@@ -143,7 +143,7 @@ public class Huesped {
         return this.cuit;
     }
 
-    public Date getFechaDeNacimiento(){
+    public LocalDate getFechaDeNacimiento(){
         return this.fechaDeNacimiento;
     }
 

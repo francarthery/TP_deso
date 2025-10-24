@@ -1,7 +1,13 @@
 package presentation;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
+import domain.Direccion;
+import java.time.format.DateTimeParseException;
+import domain.IVA;
+import domain.TipoDocumento;
+
 class FormularioHuesped {
 
     private Scanner scanner;
@@ -13,10 +19,10 @@ class FormularioHuesped {
         while(true){
             System.out.println("Ingrese el nombre del huésped:");
             String nombre = scanner.nextLine();
-            if(!nombre.matches("[a-zA-Z]+")){
-                System.out.println("Nombre inválido. Por favor, ingrese solo letras.");
-            } else {
+            if(nombre.matches("\\p{L}+") && nombre.length() <= 50){
                 return nombre;
+            } else {
+                System.out.println("El nombre solo debe contener letras. Por favor, ingrese solo letras.");
             }
         }
     }
@@ -25,104 +31,253 @@ class FormularioHuesped {
         while(true){
             System.out.println("Ingrese el apellido del huésped:");
             String apellido = scanner.nextLine();
-            if(apellido.matches("[a-zA-Z]+")){
+            if(apellido.matches("\\p{L}+") && apellido.length() <= 50){
                 return apellido;
             } else {
-                System.out.println("Apellido inválido. Por favor, ingrese solo letras.");
+                System.out.println("El apellido solo debe contener letras. Por favor, ingrese solo letras.");
             }
         }
     }
 
-    public String verificarFechaDeNacimiento(){
+    public LocalDate verificarFechaNacimiento(){
         
         while(true){
             System.out.println("Ingrese la fecha de nacimiento del huésped (dd/mm/yyyy):");
-            
+
+            String FORMATO_FECHA = "dd/MM/yyyy";
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(FORMATO_FECHA);
+            String fecha = scanner.nextLine();
+            try {
+                LocalDate fechaNacimiento = LocalDate.parse(fecha, formatter);
+                if(fechaNacimiento.isBefore(LocalDate.now())) {
+                    return fechaNacimiento;
+                } else {
+                    System.out.println("La fecha de nacimiento debe ser anterior a la fecha actual. Por favor, ingrese una fecha válida.");
+                }
+            } catch (DateTimeParseException e) {
+                System.out.println("Fecha inválida. Por favor, ingrese la fecha en el formato dd/mm/yyyy.");
+            }
         }
     }
 
     public String verificarNumeroDocumento(){
-        System.out.println("Ingrese el número de documento del huésped: ");
+        while(true){
+            System.out.println("Ingrese el número de documento del huésped: ");
+            String numeroDocumento = scanner.nextLine();
+            if(numeroDocumento.matches("\\d+") && numeroDocumento.length() <= 10){
+                return numeroDocumento;
+            } else {
+                System.out.println("El número de documento debe contener solo dígitos. Por favor, ingrese solo números.");
+            }
+        }
     }
 
     public String verificarEmail(){
-        System.out.println("Ingrese el email del huésped: ");
-
-
+        while(true){
+            System.out.println("Ingrese el email del huésped: ");
+            String email = scanner.nextLine();
+            if(email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")){
+                return email;
+            } else {
+                System.out.println("Email inválido. Por favor, ingrese un email válido.");
+            }
+        }
     }
 
     public String verificarNacionalidad(){
-        System.out.println("Ingrese la nacionalidad del huésped: ");
+        while(true){
+            System.out.println("Ingrese la nacionalidad del huésped:");
+            String nacionalidad = scanner.nextLine();
+            if(nacionalidad.matches("[a-zA-Z ]+") && nacionalidad.length() <= 30){
+                return nacionalidad;
+            } else {
+                System.out.println("La nacionalidad solo debe contener letras. Por favor, ingrese solo letras.");
+            }
+        }
     }
 
     public String verificarTelefono(){
-        
-        System.out.println("Ingrese el teléfono del huésped: ");
+        while(true){
+            System.out.println("Ingrese el teléfono del huésped: ");
+            String telefono = scanner.nextLine();
+            if(telefono.matches("\\+?\\d{7,15}")){
+                return telefono;
+            } else {
+                System.out.println("El teléfono debe contener solo números. Por favor, ingrese un número de teléfono válido (7-15 dígitos, puede incluir '+').");
+            }
+        }
         
     }
 
     public String verificarCuit(){
-
-        System.out.println("Ingrese el CUIT del huésped: ");
-
+        while(true){
+            System.out.println("Ingrese el CUIT del huésped: ");
+            String cuit = scanner.nextLine();
+            if(cuit.matches("\\d+") && cuit.length() <= 11){
+                return cuit;
+            } else {
+                System.out.println("El CUIT debe contener solo dígitos. Por favor, ingrese solo números.");
+            }
+        }
     }
 
     public String verificarOcupacion(){
-
-        System.out.println("Ingrese la ocupación del huésped: ");
-
+        while(true){
+            System.out.println("Ingrese la ocupación del huésped: ");
+            String ocupacion = scanner.nextLine();
+            if(ocupacion.matches("[a-zA-Z ]+") && ocupacion.length() <= 50){
+                return ocupacion;
+            } else {
+                System.out.println("La ocupación solo debe contener letras. Por favor, ingrese solo letras.");
+            }
+        }
     }
 
     public IVA verificarPosicionFrenteAlIVA(){
-
-        System.out.println("Ingrese la posición frente al IVA del huésped: ");
-
+        while(true){
+            System.out.println("Ingrese la posición frente al IVA del huésped: ");
+            String iva = scanner.nextLine();
+            try {
+                IVA ivaPosicion = IVA.valueOf(iva.toUpperCase());
+                return ivaPosicion;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Posición frente al IVA inválida. Por favor, ingrese una posición válida. (RESPONSABLE_INSCRIPTO, MONOTRIBUTISTA, EXENTO, CONSUMIDOR_FINAL, NO_RESPONSABLE)");
+            }
+        }
     }
 
-    public TipoDocumento verificarTipoDocumento(){
-
-        System.out.println("Ingrese el tipo de documento del huésped: ");
-
+    public TipoDocumento verificarTipoDocumento(){    
+        while(true){
+            System.out.println("Ingrese el tipo de documento del huésped: ");
+            String tipoDocumento = scanner.nextLine();
+            try {
+                TipoDocumento tipoDoc = TipoDocumento.valueOf(tipoDocumento.toUpperCase());
+                return tipoDoc;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Tipo de documento inválido. Por favor, ingrese un tipo de documento válido. (DNI, PASAPORTE, LE, LC, OTRO)");
+            }
+        }
     }
 
     public String verfificarNumeroDocumento(){
-
-        System.out.println("Ingrese el número de documento del huésped: ");
-
+        
+        while(true){
+            System.out.println("Ingrese el número de documento del huésped: ");
+            String numeroDocumento = scanner.nextLine();
+            if(numeroDocumento.matches("\\d+") && numeroDocumento.length() <= 10){
+                return numeroDocumento;
+            } else {
+                System.out.println("El número de documento debe contener solo dígitos. Por favor, ingrese solo números.");
+            }
+        }
     }
 
-    public Direccion verificarDireccion(String pais, String provincia, String ciudad, String calle, String numero, String piso, String departamento, String codigoPostal){
+    public String verificarPais(){
+        while(true) {
+            System.out.println("País: ");
+            String pais = scanner.nextLine();  
 
-        System.out.println("Ingrese la dirección del huésped: ");
-        
-        System.out.println("País: " );
-        pais = scanner.nextLine();  
-        
-        System.out.println("Provincia: " );
-        provincia = scanner.nextLine();
-        
-        System.out.println("Ciudad: " );
-        ciudad = scanner.nextLine();
-        
-        System.out.println("Calle: " );
-        calle = scanner.nextLine();
-        
-        System.out.println("Número: " );
-        numero = scanner.nextLine();
-        
-        System.out.println("Piso: " );
-        piso = scanner.nextLine();
-        
-        System.out.println("Departamento: " );
-        departamento = scanner.nextLine();
-        
-        System.out.println("Código Postal: " );
-        codigoPostal = scanner.nextLine(); 
-        
+            if(!pais.matches("[a-zA-Z ]+") || pais.length() > 85){
+                System.out.println("País inválido. Por favor, ingrese de nuevo.");
+            } else {  
+                return pais;
+            }
+        }
+    }
 
+    public String verificarProvincia(){
+        while(true) {
+            System.out.println("Provincia: ");
+            String provincia = scanner.nextLine();  
+
+            if(!provincia.matches("[a-zA-Z ]+") || provincia.length() > 85){
+                System.out.println("provincia inválida. Por favor, ingrese de nuevo.");
+            } else {    
+                return provincia;
+            }
+        }
+    }
+
+    public String verificarLocalidad(){
+        while(true) {
+            System.out.println("Localidad: ");
+            String localidad = scanner.nextLine();  
+
+            if(!localidad.matches("[a-zA-Z ]+") || localidad.length() > 85){
+                System.out.println("Localidad inválida. Por favor, ingrese de nuevo.");
+            } else {    
+                return localidad;
+            }
+        }
+    }
+
+    public String verificarCalle(){
+        while(true) {
+            System.out.println("Calle: ");
+            String calle = scanner.nextLine();  
+
+            if(!calle.matches("[a-zA-Z0-9 ]+") || calle.length() > 56){
+                System.out.println("Calle inválida. Por favor, ingrese de nuevo.");
+            } else {    
+                return calle;
+            }
+        }
+    }
+
+    public String verificarNumero(){
+        while(true) {
+            System.out.println("Número: ");
+            String numero = scanner.nextLine();  
+
+            if(!numero.matches("\\d+") || numero.length() > 10){
+                System.out.println("Número inválido. Por favor, ingrese de nuevo.");
+            } else {    
+                return numero;
+            }
+        }
     }
     
-    
+    public String verificarPiso() {
+        while(true) {
+            System.out.println("Piso: ");
+            String piso = scanner.nextLine();  
 
+            if(piso.isEmpty() || (piso.matches("\\d+") && piso.length() <= 5)) {
+        
+                if (piso.isEmpty()) 
+                    piso = null;
+                
+                return piso; 
+            }   
+            System.err.println("Piso inválido. Por favor, ingrese de nuevo.");
+        }        
+    }
+    
+    public String verificarDepartamento(){
+        while (true) {
+            System.out.print("Departamento: ");
+            String departamento = scanner.nextLine();
+
+            if (departamento.isEmpty() || (departamento.matches("[a-zA-Z0-9 ]+") && departamento.length() <= 5)) {
+                if (departamento.isEmpty()) 
+                    departamento = null;
+                return departamento; 
+            }
+            System.err.println("Departamento inválido. Por favor, ingrese de nuevo.");
+        }
+    }
+
+    public String verificarCodigoPostal(){
+        while(true) {
+            System.out.println("Código Postal: " );
+            String codigoPostal = scanner.nextLine();  
+
+            if(!codigoPostal.matches("\\d+") || codigoPostal.length() > 10){
+                System.out.println("Código Postal inválido. Por favor, ingrese de nuevo.");
+            } else {    
+                return codigoPostal;
+            }
+        }
+    }
     
 }

@@ -5,7 +5,7 @@ import domain.Huesped;
 import domain.IVA;
 import domain.Huesped;
 import domain.Direccion;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import domain.TipoDocumento;
 import exceptions.HuespedNoEncontradoException;
@@ -63,7 +63,7 @@ public class GestorHuesped {
     }
 
     public void darAltaHuesped(String apellido, String nombres, TipoDocumento documento, String numeroDocumento,
-                                String cuit, IVA posicionFrenteAlIVA, Date fechaDeNacimiento, String telefono, 
+                                String cuit, IVA posicionFrenteAlIVA, LocalDate fechaDeNacimiento, String telefono, 
                                 String email, String ocupacion, String nacionalidad, String pais, String provincia,
                                 String ciudad, String calle, String numero, String piso, String departamento, 
                                 String codigoPostal) {

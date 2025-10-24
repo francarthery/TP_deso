@@ -8,10 +8,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 import domain.Huesped;
 import domain.IVA;
@@ -22,7 +23,7 @@ import exceptions.HuespedNoEncontradoException;
 public class HuespedDAO {
     
     private static HuespedDAO instancia;
-    private static  final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private static final DateTimeFormatter LocalDateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private static String rutaRecurso = "data/huespedes.csv";
     private static ClassLoader classLoader = HuespedDAO.class.getClassLoader(); //Preguntar si es correcto
     
@@ -60,7 +61,7 @@ public class HuespedDAO {
                     String numeroDocumentoBD = datos[4];
                     String cuitBD = datos[5];
                     IVA posicionFrenteAlIVA = IVA.valueOf(datos[6]);
-                    Date fechaDeNacimiento = dateFormat.parse(datos[7]);
+                    LocalDate fechaDeNacimiento = LocalDate.parse(datos[7]);
                     String telefono = datos[8];
                     String emailBD = datos[9];
                     String ocupacionBD = datos[10];
@@ -83,7 +84,7 @@ public class HuespedDAO {
                 
                 } catch (IllegalArgumentException e) {
                     System.err.println("Error de parseo en CSV: " + linea + " | Error: " + e.getMessage());
-                } catch (ParseException e) {
+                } catch (DateTimeParseException e) {
                     System.err.println("Error de parseo de fecha en CSV: " + linea + " | Error: " + e.getMessage());
                 }
             }
@@ -96,7 +97,7 @@ public class HuespedDAO {
 
     public boolean agregarHuesped(Huesped huesped) {
 
-        String fechaFormateada = dateFormat.format(huesped.getFechaDeNacimiento());
+        String fechaFormateada = LocalDateFormat.format(huesped.getFechaDeNacimiento());
 
         String nuevaLinea = String.join(",",
             String.valueOf(huesped.getId()),
