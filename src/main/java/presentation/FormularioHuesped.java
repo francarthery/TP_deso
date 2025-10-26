@@ -18,7 +18,7 @@ class FormularioHuesped {
     public String verificarNombre(){
         while(true){
             System.out.println("Ingrese el nombre del huésped:");
-            String nombre = scanner.nextLine();
+            String nombre = scanner.nextLine().trim();
             if(nombre.matches("\\p{L}+") && nombre.length() <= 50){
                 return nombre;
             } else {
@@ -30,7 +30,7 @@ class FormularioHuesped {
     public String verificarApellido(){
         while(true){
             System.out.println("Ingrese el apellido del huésped:");
-            String apellido = scanner.nextLine();
+            String apellido = scanner.nextLine().trim();
             if(apellido.matches("\\p{L}+") && apellido.length() <= 50){
                 return apellido;
             } else {
@@ -46,7 +46,7 @@ class FormularioHuesped {
 
             String FORMATO_FECHA = "dd/MM/yyyy";
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern(FORMATO_FECHA);
-            String fecha = scanner.nextLine();
+            String fecha = scanner.nextLine().trim();
             try {
                 LocalDate fechaNacimiento = LocalDate.parse(fecha, formatter);
                 if(fechaNacimiento.isBefore(LocalDate.now())) {
@@ -63,7 +63,7 @@ class FormularioHuesped {
     public String verificarNumeroDocumento(){
         while(true){
             System.out.println("Ingrese el número de documento del huésped: ");
-            String numeroDocumento = scanner.nextLine();
+            String numeroDocumento = scanner.nextLine().trim();
             if(numeroDocumento.matches("\\d+") && numeroDocumento.length() <= 10){
                 return numeroDocumento;
             } else {
@@ -75,7 +75,7 @@ class FormularioHuesped {
     public String verificarEmail(){
         while(true){
             System.out.println("Ingrese el email del huésped: ");
-            String email = scanner.nextLine();
+            String email = scanner.nextLine().trim();
             if(email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")){
                 return email;
             } else {
@@ -87,7 +87,7 @@ class FormularioHuesped {
     public String verificarNacionalidad(){
         while(true){
             System.out.println("Ingrese la nacionalidad del huésped:");
-            String nacionalidad = scanner.nextLine();
+            String nacionalidad = scanner.nextLine().trim();
             if(nacionalidad.matches("[a-zA-Z ]+") && nacionalidad.length() <= 30){
                 return nacionalidad;
             } else {
@@ -99,7 +99,7 @@ class FormularioHuesped {
     public String verificarTelefono(){
         while(true){
             System.out.println("Ingrese el teléfono del huésped: ");
-            String telefono = scanner.nextLine();
+            String telefono = scanner.nextLine().trim();
             if(telefono.matches("\\+?\\d{7,15}")){
                 return telefono;
             } else {
@@ -112,7 +112,7 @@ class FormularioHuesped {
     public String verificarCuit(){
         while(true){
             System.out.println("Ingrese el CUIT del huésped: ");
-            String cuit = scanner.nextLine();
+            String cuit = scanner.nextLine().trim();
             if(cuit.matches("\\d+") && cuit.length() <= 11){
                 return cuit;
             } else {
@@ -124,7 +124,7 @@ class FormularioHuesped {
     public String verificarOcupacion(){
         while(true){
             System.out.println("Ingrese la ocupación del huésped: ");
-            String ocupacion = scanner.nextLine();
+            String ocupacion = scanner.nextLine().trim();
             if(ocupacion.matches("[a-zA-Z ]+") && ocupacion.length() <= 50){
                 return ocupacion;
             } else {
@@ -136,7 +136,7 @@ class FormularioHuesped {
     public IVA verificarPosicionFrenteAlIVA(){
         while(true){
             System.out.println("Ingrese la posición frente al IVA del huésped: ");
-            String iva = scanner.nextLine();
+            String iva = scanner.nextLine().trim();
             try {
                 IVA ivaPosicion = IVA.valueOf(iva.toUpperCase());
                 return ivaPosicion;
@@ -149,7 +149,7 @@ class FormularioHuesped {
     public TipoDocumento verificarTipoDocumento(){    
         while(true){
             System.out.println("Ingrese el tipo de documento del huésped: ");
-            String tipoDocumento = scanner.nextLine();
+            String tipoDocumento = scanner.nextLine().trim();
             try {
                 TipoDocumento tipoDoc = TipoDocumento.valueOf(tipoDocumento.toUpperCase());
                 return tipoDoc;
@@ -163,7 +163,7 @@ class FormularioHuesped {
         
         while(true){
             System.out.println("Ingrese el número de documento del huésped: ");
-            String numeroDocumento = scanner.nextLine();
+            String numeroDocumento = scanner.nextLine().trim();
             if(numeroDocumento.matches("\\d+") && numeroDocumento.length() <= 10){
                 return numeroDocumento;
             } else {
@@ -175,7 +175,7 @@ class FormularioHuesped {
     public String verificarPais(){
         while(true) {
             System.out.println("País: ");
-            String pais = scanner.nextLine();  
+            String pais = scanner.nextLine().trim();  
 
             if(!pais.matches("[a-zA-Z ]+") || pais.length() > 85){
                 System.out.println("País inválido. Por favor, ingrese de nuevo.");
@@ -188,7 +188,7 @@ class FormularioHuesped {
     public String verificarProvincia(){
         while(true) {
             System.out.println("Provincia: ");
-            String provincia = scanner.nextLine();  
+            String provincia = scanner.nextLine().trim();  
 
             if(!provincia.matches("[a-zA-Z ]+") || provincia.length() > 85){
                 System.out.println("provincia inválida. Por favor, ingrese de nuevo.");
@@ -201,7 +201,7 @@ class FormularioHuesped {
     public String verificarLocalidad(){
         while(true) {
             System.out.println("Localidad: ");
-            String localidad = scanner.nextLine();  
+            String localidad = scanner.nextLine().trim();  
 
             if(!localidad.matches("[a-zA-Z ]+") || localidad.length() > 85){
                 System.out.println("Localidad inválida. Por favor, ingrese de nuevo.");
@@ -214,7 +214,7 @@ class FormularioHuesped {
     public String verificarCalle(){
         while(true) {
             System.out.println("Calle: ");
-            String calle = scanner.nextLine();  
+            String calle = scanner.nextLine().trim();  
 
             if(!calle.matches("[a-zA-Z0-9 ]+") || calle.length() > 56){
                 System.out.println("Calle inválida. Por favor, ingrese de nuevo.");
@@ -227,7 +227,7 @@ class FormularioHuesped {
     public String verificarNumero(){
         while(true) {
             System.out.println("Número: ");
-            String numero = scanner.nextLine();  
+            String numero = scanner.nextLine().trim();  
 
             if(!numero.matches("\\d+") || numero.length() > 10){
                 System.out.println("Número inválido. Por favor, ingrese de nuevo.");
@@ -240,7 +240,7 @@ class FormularioHuesped {
     public String verificarPiso() {
         while(true) {
             System.out.println("Piso: ");
-            String piso = scanner.nextLine();  
+            String piso = scanner.nextLine().trim();  
 
             if(piso.isEmpty() || (piso.matches("\\d+") && piso.length() <= 5)) {
         
@@ -256,7 +256,7 @@ class FormularioHuesped {
     public String verificarDepartamento(){
         while (true) {
             System.out.print("Departamento: ");
-            String departamento = scanner.nextLine();
+            String departamento = scanner.nextLine().trim();
 
             if (departamento.isEmpty() || (departamento.matches("[a-zA-Z0-9 ]+") && departamento.length() <= 5)) {
                 if (departamento.isEmpty()) 
@@ -270,7 +270,7 @@ class FormularioHuesped {
     public String verificarCodigoPostal(){
         while(true) {
             System.out.println("Código Postal: " );
-            String codigoPostal = scanner.nextLine();  
+            String codigoPostal = scanner.nextLine().trim();  
 
             if(!codigoPostal.matches("\\d+") || codigoPostal.length() > 10){
                 System.out.println("Código Postal inválido. Por favor, ingrese de nuevo.");

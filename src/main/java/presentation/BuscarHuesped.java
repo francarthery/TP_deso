@@ -14,14 +14,14 @@ class BuscarHuesped {
         
 
         System.out.print("Ingrese los nombres (o deje vacío para omitir): ");
-        String nombres = scanner.nextLine();
+        String nombres = scanner.nextLine().trim();
         System.out.print("Ingrese el apellido (o deje vacío para omitir): ");
-        String apellido = scanner.nextLine();
+        String apellido = scanner.nextLine().trim();
         System.out.print("Ingrese el tipo de documento (DNI, PASAPORTE, LE, LC, OTRO) o deje vacío para omitir: ");
-        String tipoDocumentoInput = scanner.nextLine();
+        String tipoDocumentoInput = scanner.nextLine().trim();
         TipoDocumento tipoDocumento = tipoDocumentoInput.isEmpty() ? null : TipoDocumento.valueOf(tipoDocumentoInput.toUpperCase());
         System.out.print("Ingrese el número de documento (o deje vacío para omitir): ");
-        String numeroDocumento = scanner.nextLine();
+        String numeroDocumento = scanner.nextLine().trim();
 
         try {
             List<Huesped> huespedes = gestorHuesped.buscarHuesped(apellido, nombres, tipoDocumento, numeroDocumento);
@@ -38,7 +38,7 @@ class BuscarHuesped {
                 boolean sinSeleccion = true;
                 while(sinSeleccion){
                     System.out.println("Seleccione el huésped deseado por número (o vacío):");
-                    String seleccion = scanner.nextLine();
+                    String seleccion = scanner.nextLine().trim();
                     if(seleccion == null || seleccion.isEmpty()){
                         System.out.println("CU11");
                         sinSeleccion = false;

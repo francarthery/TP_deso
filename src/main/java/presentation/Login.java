@@ -12,9 +12,9 @@ public class Login {
     
     public boolean autenticar(Scanner scanner) {
         System.out.print("Ingrese su nombre de usuario: ");
-        String username = scanner.nextLine();
+        String username = scanner.nextLine().trim();
         System.out.print("Ingrese su contraseña: ");
-        String password = scanner.nextLine();
+        String password = scanner.nextLine().trim();
         
         try {
             return gestorUsuario.validarLogin(username, password);

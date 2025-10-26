@@ -36,7 +36,7 @@ public class DarAltaHuesped {
         while(gestorHuesped.documentoExistente(numeroDocumento)){
             System.out.println("¡CUIDADO! El tipo y número de documento ya existen en el sistema.");
             System.err.println("¿Desea aceptar igualmente o corregir? (Presione A si desea aceptar, C si desea corregir)");
-            String eleccion = scanner.nextLine();
+            String eleccion = scanner.nextLine().trim();
             if(eleccion.trim().equalsIgnoreCase("C")){ //Falta manejar el caso en que no te introduzcan lo que esperas
                 numeroDocumento = formularioHuesped.verificarNumeroDocumento();
                 tipoDocumento = formularioHuesped.verificarTipoDocumento();
