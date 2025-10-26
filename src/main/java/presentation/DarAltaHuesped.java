@@ -5,18 +5,19 @@ import service.GestorHuesped;
 import domain.IVA;
 import domain.TipoDocumento;
 import java.time.LocalDate;
+import domain.Huesped;
 
 public class DarAltaHuesped {
     
-    public void darAltaHuesped(GestorHuesped gestorHuesped, Scanner scanner){
+    public Huesped darAltaHuesped(GestorHuesped gestorHuesped, Scanner scanner){
         System.out.println("----- Cargar Huésped -----");   
         
         FormularioHuesped formularioHuesped = new FormularioHuesped(scanner);
-        String nombre = formularioHuesped.verificarNombre();
-        String apellido = formularioHuesped.verificarApellido();
+        String nombre = formularioHuesped.verificarNombre(false);
+        String apellido = formularioHuesped.verificarApellido(false);
         LocalDate fechaNacimiento = formularioHuesped.verificarFechaNacimiento();
-        TipoDocumento tipoDocumento = formularioHuesped.verificarTipoDocumento();
-        String numeroDocumento = formularioHuesped.verificarNumeroDocumento();
+        TipoDocumento tipoDocumento = formularioHuesped.verificarTipoDocumento(false);
+        String numeroDocumento = formularioHuesped.verificarNumeroDocumento(false);
         String cuit = formularioHuesped.verificarCuit();
         IVA posicionFrenteAlIVA = formularioHuesped.verificarPosicionFrenteAlIVA();
         String telefono = formularioHuesped.verificarTelefono(); 
@@ -39,8 +40,8 @@ public class DarAltaHuesped {
                 System.err.println("¿Desea aceptar igualmente o corregir? (Presione A si desea aceptar, C si desea corregir)");
                 String eleccion = scanner.nextLine().trim();
                 if(eleccion.equalsIgnoreCase("C")){
-                    tipoDocumento = formularioHuesped.verificarTipoDocumento();
-                    numeroDocumento = formularioHuesped.verificarNumeroDocumento();
+                    tipoDocumento = formularioHuesped.verificarTipoDocumento(false);
+                    numeroDocumento = formularioHuesped.verificarNumeroDocumento(false);
                     break;
                 }else if(eleccion.equalsIgnoreCase("A")){
                     break outer;
@@ -50,15 +51,16 @@ public class DarAltaHuesped {
             }while(true);
         }
 
-        gestorHuesped.darAltaHuesped(apellido, nombre, tipoDocumento, numeroDocumento, cuit, 
+        Huesped huesped;
+        huesped = gestorHuesped.darAltaHuesped(apellido, nombre, tipoDocumento, numeroDocumento, cuit, 
             posicionFrenteAlIVA, fechaNacimiento, telefono, email, ocupacion, nacionalidad, 
             pais, provincia, localidad, calle, numero, piso, departamento, codigoPostal);
         
         System.out.println("El huésped " + nombre + " " + apellido + " ha sido satisfactoriamente cargado al sistema.");
-
+        return huesped;
     }
 
-    public void ejecutar(GestorHuesped gestorHuesped, Scanner scanner) {
+    public Huesped ejecutar(GestorHuesped gestorHuesped, Scanner scanner) {
         String opcion;
         do {
             darAltaHuesped(gestorHuesped, scanner);
@@ -67,8 +69,4 @@ public class DarAltaHuesped {
         } while (opcion.equals("S"));
     }
 
-
-    
-   
-    
 }

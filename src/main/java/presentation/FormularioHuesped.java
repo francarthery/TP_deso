@@ -14,11 +14,12 @@ class FormularioHuesped {
         this.scanner = scanner;
     }
 
-    public String verificarNombre(){
+    public String verificarNombre(boolean vacio){
         while(true){
             System.out.println("Ingrese el nombre del huésped:");
             String nombre = scanner.nextLine().trim();
-            if(nombre.matches("\\p{L}+") && nombre.length() <= 50){
+            if((vacio && nombre.isEmpty()) || nombre.matches("\\p{L}+") && nombre.length() <= 50){
+                if(vacio && nombre.isEmpty()) nombre = null;
                 return nombre;
             } else if(nombre.length() > 50){
                 System.out.println("El nombre es muy largo. Por favor, ingrese un nombre de hasta 50 caracteres.");
@@ -29,11 +30,12 @@ class FormularioHuesped {
         }
     }
 
-    public String verificarApellido(){
+    public String verificarApellido(boolean vacio){
         while(true){
             System.out.println("Ingrese el apellido del huésped:");
             String apellido = scanner.nextLine().trim();
-            if(apellido.matches("\\p{L}+") && apellido.length() <= 50){
+            if((vacio && apellido.isEmpty()) || apellido.matches("\\p{L}+") && apellido.length() <= 50){
+                if(vacio && apellido.isEmpty()) apellido = null;
                 return apellido;
             } else if(apellido.length() > 50){
                 System.out.println("El apellido es muy largo. Por favor, ingrese un apellido de hasta 50 caracteres.");
@@ -64,11 +66,26 @@ class FormularioHuesped {
         }
     }
 
-    public String verificarNumeroDocumento(){
+    public TipoDocumento verificarTipoDocumento(boolean vacio){    
+        while(true){
+            System.out.println("Ingrese el tipo de documento del huésped: ");
+            String tipoDocumento = scanner.nextLine().trim();
+            try {
+                if(vacio && tipoDocumento.isEmpty()) return null;
+                TipoDocumento tipoDoc = TipoDocumento.valueOf(tipoDocumento.toUpperCase());
+                return tipoDoc;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Tipo de documento inválido. Por favor, ingrese un tipo de documento válido. (DNI, PASAPORTE, LE, LC, OTRO).");
+            }
+        }
+    }
+
+    public String verificarNumeroDocumento(boolean vacio){
         while(true){
             System.out.println("Ingrese el número de documento del huésped: ");
             String numeroDocumento = scanner.nextLine().trim();
-            if(numeroDocumento.matches("\\d+") && numeroDocumento.length() <= 10){
+            if((vacio && numeroDocumento.isEmpty()) || numeroDocumento.matches("\\d+") && numeroDocumento.length() <= 10){
+                if(vacio && numeroDocumento.isEmpty()) numeroDocumento = null;
                 return numeroDocumento;
             } else if(numeroDocumento.length() > 10){
                 System.out.println("El número de documento es muy largo. Ingrese un número de documento de hasta 10 dígitos.");
@@ -158,19 +175,6 @@ class FormularioHuesped {
                 return ivaPosicion;
             } catch (IllegalArgumentException e) {
                 System.out.println("Posición frente al IVA inválida. Por favor, ingrese una posición válida. (RESPONSABLE_INSCRIPTO, MONOTRIBUTISTA, EXENTO, CONSUMIDOR_FINAL, NO_RESPONSABLE).");
-            }
-        }
-    }
-
-    public TipoDocumento verificarTipoDocumento(){    
-        while(true){
-            System.out.println("Ingrese el tipo de documento del huésped: ");
-            String tipoDocumento = scanner.nextLine().trim();
-            try {
-                TipoDocumento tipoDoc = TipoDocumento.valueOf(tipoDocumento.toUpperCase());
-                return tipoDoc;
-            } catch (IllegalArgumentException e) {
-                System.out.println("Tipo de documento inválido. Por favor, ingrese un tipo de documento válido. (DNI, PASAPORTE, LE, LC, OTRO).");
             }
         }
     }
