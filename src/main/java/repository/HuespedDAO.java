@@ -4,16 +4,15 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.FileReader;
 import java.io.PrintWriter;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.time.LocalDate;
 import java.util.List;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+import domain.Direccion;
 import domain.Huesped;
 import domain.IVA;
 import domain.TipoDocumento;
@@ -24,8 +23,7 @@ public class HuespedDAO {
     
     private static HuespedDAO instancia;
     private static final DateTimeFormatter LocalDateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    private static String rutaRecurso = "data/huespedes.csv";
-    private static ClassLoader classLoader = HuespedDAO.class.getClassLoader(); //Preguntar si es correcto
+    private static final String RUTA_ARCHIVO = "src/main/resources/data/huespedes.csv";
     
     private HuespedDAO() {}
 
@@ -37,21 +35,14 @@ public class HuespedDAO {
     }
 
     public List<Huesped> obtenerTodos() throws HuespedNoEncontradoException {
-        
         List<Huesped> huespedes = new ArrayList<>();
-        InputStream inputStream = classLoader.getResourceAsStream(rutaRecurso);
-
-        if (inputStream == null) {
-            System.err.println("Error: No se pudo encontrar el archivo " + rutaRecurso);
-            return huespedes;
-        }
-
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
+        
+        try (BufferedReader br = new BufferedReader(new FileReader(RUTA_ARCHIVO))) {
             String linea;
             while ((linea = br.readLine()) != null) {
                 String[] datos = linea.split(",");
                 
-                if (datos.length < 12) continue; 
+                if (datos.length < 20) continue; 
 
                 try {
                     int id = Integer.parseInt(datos[0]);
@@ -65,8 +56,27 @@ public class HuespedDAO {
                     String telefono = datos[8];
                     String emailBD = datos[9];
                     String ocupacionBD = datos[10];
-    
-                  
+                    String nacionalidadBD = datos[11];
+                    String paisBD = datos[12];
+                    String provinciaBD = datos[13];
+                    String ciudadBD = datos[14];
+                    String calleBD = datos[15];
+                    String numeroBD = datos[16];
+                    String pisoBD = datos[17];
+                    String departamentoBD = datos[18];
+                    String codigoPostalBD = datos[19];
+
+                    Direccion direccion = new Direccion.Builder()
+                        .pais(paisBD)
+                        .provincia(provinciaBD)
+                        .localidad(ciudadBD)
+                        .calle(calleBD)
+                        .numero(numeroBD)
+                        .piso(pisoBD)
+                        .departamento(departamentoBD)
+                        .codigoPostal(codigoPostalBD)
+                        .build(); 
+                    
                     Huesped huesped = new Huesped.Builder()
                         .nombres(nombresBD)
                         .apellido(apellidoBD)
@@ -79,6 +89,7 @@ public class HuespedDAO {
                         .email(emailBD)
                         .ocupacion(ocupacionBD)
                         .nacionalidad(nacionalidadBD)
+                        .direccion(direccion)
                         .build();
                     huespedes.add(huesped);
                 
@@ -98,7 +109,7 @@ public class HuespedDAO {
     public boolean agregarHuesped(Huesped huesped) {
 
         String fechaFormateada = LocalDateFormat.format(huesped.getFechaDeNacimiento());
-
+        
         String nuevaLinea = String.join(",",
             String.valueOf(huesped.getId()),
             huesped.getNombres(),
@@ -122,19 +133,18 @@ public class HuespedDAO {
             huesped.getDireccion().getCodigoPostal()  
         );
 
-        try (PrintWriter out = new PrintWriter( new BufferedWriter( new FileWriter(rutaRecurso, true)))) {
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(RUTA_ARCHIVO, true)))) {
             out.println(nuevaLinea); 
             return true; 
         } catch (IOException e) {
             System.err.println("Error al escribir en el archivo DAO: " + e.getMessage());
+            e.printStackTrace();
             return false;
         }
     }
 
-    public boolean documentoExistente(String documento){
-        InputStream inputStream = classLoader.getResourceAsStream(rutaRecurso);
-        
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
+    public boolean documentoExistente(String tipoDocumento, String documento){
+        try (BufferedReader br = new BufferedReader(new FileReader(RUTA_ARCHIVO))) {
             String linea;
             while ((linea = br.readLine()) != null) {
                 String[] datos = linea.split(",");
@@ -142,8 +152,9 @@ public class HuespedDAO {
                 if (datos.length < 20) continue; 
 
                 try {
+                    String tipoDocumentoBD = datos[3];
                     String documentoBD = datos[4];
-                    if(documentoBD.equalsIgnoreCase(documento)) return true;
+                    if(tipoDocumentoBD.equalsIgnoreCase(tipoDocumento) && documentoBD.equalsIgnoreCase(documento)) return true;
                 } catch (IllegalArgumentException e) {
                     System.err.println("Error de parseo en CSV: " + linea + " | Error: " + e.getMessage());
                 }

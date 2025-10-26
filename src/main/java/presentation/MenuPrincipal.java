@@ -1,10 +1,6 @@
 package presentation;
-
-import presentation.BuscarHuesped;
 import domain.Huesped;
-import domain.HuespedDTO;
 import service.GestorHuesped;
-
 import java.util.Scanner;
 import java.util.List;
 
@@ -31,7 +27,7 @@ public class MenuPrincipal {
                 break;
             case 2:
                 DarAltaHuesped darAltaHuesped = new DarAltaHuesped();
-                
+                darAltaHuesped.ejecutar(gestorHuesped, scanner);
                 break;
             case 3:
                 // Lógica para la opción 3

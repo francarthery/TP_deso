@@ -3,7 +3,6 @@ package presentation;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
-import domain.Direccion;
 import java.time.format.DateTimeParseException;
 import domain.IVA;
 import domain.TipoDocumento;
@@ -21,7 +20,10 @@ class FormularioHuesped {
             String nombre = scanner.nextLine().trim();
             if(nombre.matches("\\p{L}+") && nombre.length() <= 50){
                 return nombre;
-            } else {
+            } else if(nombre.length() > 50){
+                System.out.println("El nombre es muy largo. Por favor, ingrese un nombre de hasta 50 caracteres.");
+            }
+            else {
                 System.out.println("El nombre solo debe contener letras. Por favor, ingrese solo letras.");
             }
         }
@@ -33,6 +35,8 @@ class FormularioHuesped {
             String apellido = scanner.nextLine().trim();
             if(apellido.matches("\\p{L}+") && apellido.length() <= 50){
                 return apellido;
+            } else if(apellido.length() > 50){
+                System.out.println("El apellido es muy largo. Por favor, ingrese un apellido de hasta 50 caracteres.");
             } else {
                 System.out.println("El apellido solo debe contener letras. Por favor, ingrese solo letras.");
             }
@@ -66,6 +70,8 @@ class FormularioHuesped {
             String numeroDocumento = scanner.nextLine().trim();
             if(numeroDocumento.matches("\\d+") && numeroDocumento.length() <= 10){
                 return numeroDocumento;
+            } else if(numeroDocumento.length() > 10){
+                System.out.println("El número de documento es muy largo. Ingrese un número de documento de hasta 10 dígitos.");
             } else {
                 System.out.println("El número de documento debe contener solo dígitos. Por favor, ingrese solo números.");
             }
@@ -76,8 +82,11 @@ class FormularioHuesped {
         while(true){
             System.out.println("Ingrese el email del huésped: ");
             String email = scanner.nextLine().trim();
-            if(email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")){
+            if(email.isEmpty() || email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$") && email.length() <= 100){
+                if(email.isEmpty()) email = null;
                 return email;
+            } else if(email.length() > 100){
+                System.out.println("El email es muy largo. Ingrese un email de hasta 100 caracteres.");
             } else {
                 System.out.println("Email inválido. Por favor, ingrese un email válido.");
             }
@@ -90,6 +99,8 @@ class FormularioHuesped {
             String nacionalidad = scanner.nextLine().trim();
             if(nacionalidad.matches("[a-zA-Z ]+") && nacionalidad.length() <= 30){
                 return nacionalidad;
+            } else if(nacionalidad.length() > 30){
+                System.out.println("La nacionalidad es muy larga. Ingrese una nacionalidad de hasta 30 caracteres.");
             } else {
                 System.out.println("La nacionalidad solo debe contener letras. Por favor, ingrese solo letras.");
             }
@@ -115,7 +126,10 @@ class FormularioHuesped {
             String cuit = scanner.nextLine().trim();
             if(cuit.matches("\\d+") && cuit.length() <= 11){
                 return cuit;
-            } else {
+            } else if(cuit.length() > 11){
+                System.out.println("El CUIT es muy largo. Ingrese un CUIT de hasta 11 caracteres.");
+            }
+            else {
                 System.out.println("El CUIT debe contener solo dígitos. Por favor, ingrese solo números.");
             }
         }
@@ -127,7 +141,9 @@ class FormularioHuesped {
             String ocupacion = scanner.nextLine().trim();
             if(ocupacion.matches("[a-zA-Z ]+") && ocupacion.length() <= 50){
                 return ocupacion;
-            } else {
+            } else if(ocupacion.length() > 50){
+                System.out.println("La ocupacion es muy larga. Ingrese una ocupacion de hasta 50 caracteres.");
+            }else{
                 System.out.println("La ocupación solo debe contener letras. Por favor, ingrese solo letras.");
             }
         }
@@ -141,7 +157,7 @@ class FormularioHuesped {
                 IVA ivaPosicion = IVA.valueOf(iva.toUpperCase());
                 return ivaPosicion;
             } catch (IllegalArgumentException e) {
-                System.out.println("Posición frente al IVA inválida. Por favor, ingrese una posición válida. (RESPONSABLE_INSCRIPTO, MONOTRIBUTISTA, EXENTO, CONSUMIDOR_FINAL, NO_RESPONSABLE)");
+                System.out.println("Posición frente al IVA inválida. Por favor, ingrese una posición válida. (RESPONSABLE_INSCRIPTO, MONOTRIBUTISTA, EXENTO, CONSUMIDOR_FINAL, NO_RESPONSABLE).");
             }
         }
     }
@@ -154,7 +170,7 @@ class FormularioHuesped {
                 TipoDocumento tipoDoc = TipoDocumento.valueOf(tipoDocumento.toUpperCase());
                 return tipoDoc;
             } catch (IllegalArgumentException e) {
-                System.out.println("Tipo de documento inválido. Por favor, ingrese un tipo de documento válido. (DNI, PASAPORTE, LE, LC, OTRO)");
+                System.out.println("Tipo de documento inválido. Por favor, ingrese un tipo de documento válido. (DNI, PASAPORTE, LE, LC, OTRO).");
             }
         }
     }
@@ -166,7 +182,10 @@ class FormularioHuesped {
             String numeroDocumento = scanner.nextLine().trim();
             if(numeroDocumento.matches("\\d+") && numeroDocumento.length() <= 10){
                 return numeroDocumento;
-            } else {
+            } else if(numeroDocumento.length() > 10){
+                System.out.println("El número de documento es muy largo. Ingrese un número de documento de hasta 10 caracteres.");
+            }
+            else {
                 System.out.println("El número de documento debe contener solo dígitos. Por favor, ingrese solo números.");
             }
         }
@@ -177,10 +196,12 @@ class FormularioHuesped {
             System.out.println("País: ");
             String pais = scanner.nextLine().trim();  
 
-            if(!pais.matches("[a-zA-Z ]+") || pais.length() > 85){
-                System.out.println("País inválido. Por favor, ingrese de nuevo.");
-            } else {  
+            if(pais.matches("[a-zA-Z ]+") && pais.length() <= 85){
                 return pais;
+            } else if(pais.length() > 85){
+                System.out.println("El país es muy largo. Ingrese un país de hasta 85 caracteres.");
+            }else {  
+                System.out.println("El país debe contener solo letras. Por favor, ingrese de nuevo.");
             }
         }
     }
@@ -216,10 +237,12 @@ class FormularioHuesped {
             System.out.println("Calle: ");
             String calle = scanner.nextLine().trim();  
 
-            if(!calle.matches("[a-zA-Z0-9 ]+") || calle.length() > 56){
-                System.out.println("Calle inválida. Por favor, ingrese de nuevo.");
-            } else {    
+            if(calle.matches("[a-zA-Z0-9 ]+") && calle.length() <= 50){
                 return calle;
+            } else if(calle.length() > 50){
+                System.out.println("La calle es muy larga. Ingrese una calle de hasta 50 caracteres.");
+            } else {    
+                System.out.println("Calle inválida. Por favor, ingrese de nuevo.");
             }
         }
     }
@@ -229,10 +252,12 @@ class FormularioHuesped {
             System.out.println("Número: ");
             String numero = scanner.nextLine().trim();  
 
-            if(!numero.matches("\\d+") || numero.length() > 10){
-                System.out.println("Número inválido. Por favor, ingrese de nuevo.");
-            } else {    
+            if(numero.matches("\\d+") && numero.length() <= 10){
                 return numero;
+            } else if(numero.length() > 10){    
+                System.out.println("El número es muy largo. Ingrese un número de hasta 10 caracteres.");
+            } else {    
+                System.out.println("Número inválido. Por favor, ingrese de nuevo.");
             }
         }
     }
@@ -243,13 +268,16 @@ class FormularioHuesped {
             String piso = scanner.nextLine().trim();  
 
             if(piso.isEmpty() || (piso.matches("\\d+") && piso.length() <= 5)) {
-        
                 if (piso.isEmpty()) 
                     piso = null;
                 
                 return piso; 
             }   
-            System.err.println("Piso inválido. Por favor, ingrese de nuevo.");
+            else if(piso.length() > 5){    
+                System.out.println("El piso es muy largo. Ingrese un piso de hasta 5 caracteres.");
+            } else {    
+                System.out.println("Piso inválido. Por favor, ingrese de nuevo.");
+            }
         }        
     }
     
@@ -262,8 +290,9 @@ class FormularioHuesped {
                 if (departamento.isEmpty()) 
                     departamento = null;
                 return departamento; 
-            }
-            System.err.println("Departamento inválido. Por favor, ingrese de nuevo.");
+            }else if(departamento.length() > 5){
+                System.out.println("El departamento ingresado es demasiado largo. Ingrese un departamento de hasta 5 caracteres.");
+            } else System.out.println("El departamento debe contener solo letras y números. Por favor, ingrese de nuevo.");
         }
     }
 
@@ -272,10 +301,12 @@ class FormularioHuesped {
             System.out.println("Código Postal: " );
             String codigoPostal = scanner.nextLine().trim();  
 
-            if(!codigoPostal.matches("\\d+") || codigoPostal.length() > 10){
-                System.out.println("Código Postal inválido. Por favor, ingrese de nuevo.");
-            } else {    
+            if(codigoPostal.matches("\\d+") && codigoPostal.length() <= 10){
                 return codigoPostal;
+            } else if(codigoPostal.length() > 10){
+                System.out.println("El código postal es muy largo. Ingrese un código postal de hasta 10 caracteres.");
+            } else {    
+                System.out.println("Código postal inválido. Por favor, ingrese de nuevo.");
             }
         }
     }

@@ -5,7 +5,6 @@ import service.GestorHuesped;
 import domain.IVA;
 import domain.TipoDocumento;
 import java.time.LocalDate;
-import domain.Direccion;
 
 public class DarAltaHuesped {
     
@@ -33,17 +32,18 @@ public class DarAltaHuesped {
         String departamento = formularioHuesped.verificarDepartamento();
         String codigoPostal = formularioHuesped.verificarCodigoPostal();
 
-        while(gestorHuesped.documentoExistente(numeroDocumento)){
+        outer:
+        while(gestorHuesped.documentoExistente(tipoDocumento.name(), numeroDocumento)){
             System.out.println("¡CUIDADO! El tipo y número de documento ya existen en el sistema.");
             do{
                 System.err.println("¿Desea aceptar igualmente o corregir? (Presione A si desea aceptar, C si desea corregir)");
                 String eleccion = scanner.nextLine().trim();
                 if(eleccion.equalsIgnoreCase("C")){
-                    numeroDocumento = formularioHuesped.verificarNumeroDocumento();
                     tipoDocumento = formularioHuesped.verificarTipoDocumento();
+                    numeroDocumento = formularioHuesped.verificarNumeroDocumento();
                     break;
                 }else if(eleccion.equalsIgnoreCase("A")){
-                    break;
+                    break outer;
                 }else{
                     System.out.println("Eleccion incorrecta");
                 }
@@ -54,7 +54,7 @@ public class DarAltaHuesped {
             posicionFrenteAlIVA, fechaNacimiento, telefono, email, ocupacion, nacionalidad, 
             pais, provincia, localidad, calle, numero, piso, departamento, codigoPostal);
         
-        System.out.println("El huéped" + nombre + " " + apellido + "ha sido satisfactoriamente cargado al sistema.");
+        System.out.println("El huésped " + nombre + " " + apellido + " ha sido satisfactoriamente cargado al sistema.");
 
     }
 

@@ -3,7 +3,6 @@ package service;
 import repository.HuespedDAO;
 import domain.Huesped;
 import domain.IVA;
-import domain.Huesped;
 import domain.Direccion;
 import java.time.LocalDate;
 import java.util.List;
@@ -58,8 +57,8 @@ public class GestorHuesped {
         return stream.collect(Collectors.toList());
     }
 
-    public boolean documentoExistente(String numeroDocumento){
-        return huespedDAO.documentoExistente(numeroDocumento);
+    public boolean documentoExistente(String tipoDocumento, String numeroDocumento){
+        return huespedDAO.documentoExistente(tipoDocumento, numeroDocumento);
     }
 
     public void darAltaHuesped(String apellido, String nombres, TipoDocumento documento, String numeroDocumento,
@@ -80,6 +79,7 @@ public class GestorHuesped {
                 .build();         
         
         Huesped huesped = new Huesped.Builder()
+                .id(0)
                 .apellido(apellido)
                 .nombres(nombres)
                 .tipoDocumento(documento)
