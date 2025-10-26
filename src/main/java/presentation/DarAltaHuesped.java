@@ -60,7 +60,7 @@ public class DarAltaHuesped {
         return huesped;
     }
 
-    public Huesped ejecutar(GestorHuesped gestorHuesped, Scanner scanner) {
+    public void ejecutar(GestorHuesped gestorHuesped, Scanner scanner) {
         String opcion;
         do {
             darAltaHuesped(gestorHuesped, scanner);

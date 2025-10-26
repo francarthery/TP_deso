@@ -7,7 +7,7 @@ import java.time.format.DateTimeParseException;
 import domain.IVA;
 import domain.TipoDocumento;
 
-class FormularioHuesped {
+public class FormularioHuesped {
 
     private Scanner scanner;
     FormularioHuesped(Scanner scanner){
@@ -45,27 +45,6 @@ class FormularioHuesped {
         }
     }
 
-    public LocalDate verificarFechaNacimiento(){
-        
-        while(true){
-            System.out.println("Ingrese la fecha de nacimiento del huésped (dd/mm/yyyy):");
-
-            String FORMATO_FECHA = "dd/MM/yyyy";
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(FORMATO_FECHA);
-            String fecha = scanner.nextLine().trim();
-            try {
-                LocalDate fechaNacimiento = LocalDate.parse(fecha, formatter);
-                if(fechaNacimiento.isBefore(LocalDate.now())) {
-                    return fechaNacimiento;
-                } else {
-                    System.out.println("La fecha de nacimiento debe ser anterior a la fecha actual. Por favor, ingrese una fecha válida.");
-                }
-            } catch (DateTimeParseException e) {
-                System.out.println("Fecha inválida. Por favor, ingrese la fecha en el formato dd/mm/yyyy.");
-            }
-        }
-    }
-
     public TipoDocumento verificarTipoDocumento(boolean vacio){    
         while(true){
             System.out.println("Ingrese el tipo de documento del huésped: ");
@@ -95,35 +74,55 @@ class FormularioHuesped {
         }
     }
 
-    public String verificarEmail(){
+    public String verificarCuit(){
         while(true){
-            System.out.println("Ingrese el email del huésped: ");
-            String email = scanner.nextLine().trim();
-            if(email.isEmpty() || email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$") && email.length() <= 100){
-                if(email.isEmpty()) email = null;
-                return email;
-            } else if(email.length() > 100){
-                System.out.println("El email es muy largo. Ingrese un email de hasta 100 caracteres.");
-            } else {
-                System.out.println("Email inválido. Por favor, ingrese un email válido.");
+            System.out.println("Ingrese el CUIT del huésped: ");
+            String cuit = scanner.nextLine().trim();
+            if(cuit.matches("\\d+") && cuit.length() <= 11){
+                return cuit;
+            } else if(cuit.length() > 11){
+                System.out.println("El CUIT es muy largo. Ingrese un CUIT de hasta 11 caracteres.");
+            }
+            else {
+                System.out.println("El CUIT debe contener solo dígitos. Por favor, ingrese solo números.");
             }
         }
     }
 
-    public String verificarNacionalidad(){
+    public IVA verificarPosicionFrenteAlIVA(){
         while(true){
-            System.out.println("Ingrese la nacionalidad del huésped:");
-            String nacionalidad = scanner.nextLine().trim();
-            if(nacionalidad.matches("[a-zA-Z ]+") && nacionalidad.length() <= 30){
-                return nacionalidad;
-            } else if(nacionalidad.length() > 30){
-                System.out.println("La nacionalidad es muy larga. Ingrese una nacionalidad de hasta 30 caracteres.");
-            } else {
-                System.out.println("La nacionalidad solo debe contener letras. Por favor, ingrese solo letras.");
+            System.out.println("Ingrese la posición frente al IVA del huésped: ");
+            String iva = scanner.nextLine().trim();
+            try {
+                IVA ivaPosicion = IVA.valueOf(iva.toUpperCase());
+                return ivaPosicion;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Posición frente al IVA inválida. Por favor, ingrese una posición válida. (RESPONSABLE_INSCRIPTO, MONOTRIBUTISTA, EXENTO, CONSUMIDOR_FINAL, NO_RESPONSABLE).");
             }
         }
     }
 
+    public LocalDate verificarFechaNacimiento(){
+        
+        while(true){
+            System.out.println("Ingrese la fecha de nacimiento del huésped (dd/mm/yyyy):");
+
+            String FORMATO_FECHA = "dd/MM/yyyy";
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(FORMATO_FECHA);
+            String fecha = scanner.nextLine().trim();
+            try {
+                LocalDate fechaNacimiento = LocalDate.parse(fecha, formatter);
+                if(fechaNacimiento.isBefore(LocalDate.now())) {
+                    return fechaNacimiento;
+                } else {
+                    System.out.println("La fecha de nacimiento debe ser anterior a la fecha actual. Por favor, ingrese una fecha válida.");
+                }
+            } catch (DateTimeParseException e) {
+                System.out.println("Fecha inválida. Por favor, ingrese la fecha en el formato dd/mm/yyyy.");
+            }
+        }
+    }
+    
     public String verificarTelefono(){
         while(true){
             System.out.println("Ingrese el teléfono del huésped: ");
@@ -137,17 +136,17 @@ class FormularioHuesped {
         
     }
 
-    public String verificarCuit(){
+    public String verificarEmail(){
         while(true){
-            System.out.println("Ingrese el CUIT del huésped: ");
-            String cuit = scanner.nextLine().trim();
-            if(cuit.matches("\\d+") && cuit.length() <= 11){
-                return cuit;
-            } else if(cuit.length() > 11){
-                System.out.println("El CUIT es muy largo. Ingrese un CUIT de hasta 11 caracteres.");
-            }
-            else {
-                System.out.println("El CUIT debe contener solo dígitos. Por favor, ingrese solo números.");
+            System.out.println("Ingrese el email del huésped: ");
+            String email = scanner.nextLine().trim();
+            if(email.isEmpty() || email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$") && email.length() <= 100){
+                if(email.isEmpty()) email = null;
+                return email;
+            } else if(email.length() > 100){
+                System.out.println("El email es muy largo. Ingrese un email de hasta 100 caracteres.");
+            } else {
+                System.out.println("Email inválido. Por favor, ingrese un email válido.");
             }
         }
     }
@@ -166,31 +165,16 @@ class FormularioHuesped {
         }
     }
 
-    public IVA verificarPosicionFrenteAlIVA(){
+    public String verificarNacionalidad(){
         while(true){
-            System.out.println("Ingrese la posición frente al IVA del huésped: ");
-            String iva = scanner.nextLine().trim();
-            try {
-                IVA ivaPosicion = IVA.valueOf(iva.toUpperCase());
-                return ivaPosicion;
-            } catch (IllegalArgumentException e) {
-                System.out.println("Posición frente al IVA inválida. Por favor, ingrese una posición válida. (RESPONSABLE_INSCRIPTO, MONOTRIBUTISTA, EXENTO, CONSUMIDOR_FINAL, NO_RESPONSABLE).");
-            }
-        }
-    }
-
-    public String verfificarNumeroDocumento(){
-        
-        while(true){
-            System.out.println("Ingrese el número de documento del huésped: ");
-            String numeroDocumento = scanner.nextLine().trim();
-            if(numeroDocumento.matches("\\d+") && numeroDocumento.length() <= 10){
-                return numeroDocumento;
-            } else if(numeroDocumento.length() > 10){
-                System.out.println("El número de documento es muy largo. Ingrese un número de documento de hasta 10 caracteres.");
-            }
-            else {
-                System.out.println("El número de documento debe contener solo dígitos. Por favor, ingrese solo números.");
+            System.out.println("Ingrese la nacionalidad del huésped:");
+            String nacionalidad = scanner.nextLine().trim();
+            if(nacionalidad.matches("[a-zA-Z ]+") && nacionalidad.length() <= 30){
+                return nacionalidad;
+            } else if(nacionalidad.length() > 30){
+                System.out.println("La nacionalidad es muy larga. Ingrese una nacionalidad de hasta 30 caracteres.");
+            } else {
+                System.out.println("La nacionalidad solo debe contener letras. Por favor, ingrese solo letras.");
             }
         }
     }

@@ -61,7 +61,7 @@ public class GestorHuesped {
         return huespedDAO.documentoExistente(tipoDocumento, numeroDocumento);
     }
 
-    public void darAltaHuesped(String apellido, String nombres, TipoDocumento documento, String numeroDocumento,
+    public Huesped darAltaHuesped(String apellido, String nombres, TipoDocumento documento, String numeroDocumento,
                                 String cuit, IVA posicionFrenteAlIVA, LocalDate fechaDeNacimiento, String telefono, 
                                 String email, String ocupacion, String nacionalidad, String pais, String provincia,
                                 String ciudad, String calle, String numero, String piso, String departamento, 
@@ -94,6 +94,11 @@ public class GestorHuesped {
                 .direccion(direccion)
                 .build();
         
-        huespedDAO.agregarHuesped(huesped);
+        if(huespedDAO.agregarHuesped(huesped)) return huesped;
+        else return null;
+    }
+
+    public boolean modificarHuesped(Huesped huesped) {
+        return huespedDAO.modificarHuesped(huesped);
     }
 }

@@ -23,7 +23,7 @@ public class MenuPrincipal {
         switch (opcion) {
             case 1:
                 BuscarHuesped buscarHuesped = new BuscarHuesped();
-                List<Huesped> huespedesEncontrados = buscarHuesped.buscar(gestorHuesped, scanner);
+                Huesped huespedEncontrado = buscarHuesped.buscar(gestorHuesped, scanner);
                 break;
             case 2:
                 DarAltaHuesped darAltaHuesped = new DarAltaHuesped();
