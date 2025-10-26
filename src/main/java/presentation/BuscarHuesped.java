@@ -13,13 +13,9 @@ public class BuscarHuesped {
         System.out.println("----- Búsqueda de Huésped -----");
         FormularioHuesped formularioHuesped = new FormularioHuesped(scanner);
 
-        System.out.print("Ingrese los nombres (o deje vacío para omitir): ");
         String nombres = formularioHuesped.verificarNombre(true);
-        System.out.print("Ingrese el apellido (o deje vacío para omitir): ");
         String apellido = formularioHuesped.verificarApellido(true);
-        System.out.print("Ingrese el tipo de documento (DNI, PASAPORTE, LE, LC, OTRO) o deje vacío para omitir: ");
         TipoDocumento tipoDocumento = formularioHuesped.verificarTipoDocumento(true);
-        System.out.print("Ingrese el número de documento (o deje vacío para omitir): ");
         String numeroDocumento = formularioHuesped.verificarNumeroDocumento(true);
 
         try {
@@ -27,7 +23,7 @@ public class BuscarHuesped {
             int valorNumericoDeSeleccion = 1;
             
             if (huespedes.isEmpty()) {
-                return ejecutarDarAltaHuesped();
+                return ejecutarDarAltaHuesped(gestorHuesped, scanner);
             } 
             
             System.out.println("Huéspedes encontrados:");
@@ -39,20 +35,20 @@ public class BuscarHuesped {
             do{
                 System.out.println("Seleccione el huésped deseado por número (o vacío):");
                 String seleccion = scanner.nextLine().trim();
-                if(seleccion == null || seleccion.isEmpty()) return ejecutarDarAltaHuesped();
+                if(seleccion == null || seleccion.isEmpty()) return ejecutarDarAltaHuesped(gestorHuesped, scanner);
                 
                 try{
                     valorNumericoDeSeleccion = Integer.parseInt(seleccion);
                     if(valorNumericoDeSeleccion < 1 || valorNumericoDeSeleccion > huespedes.size()){
                         System.out.println("Selección inválida.");
                     }else{
-                        return ejecutarModificarHuesped(huespedes.get(valorNumericoDeSeleccion - 1));
+                        return ejecutarModificarHuesped(gestorHuesped, scanner, huespedes.get(valorNumericoDeSeleccion - 1));
                     } 
                 }catch(NumberFormatException e){
                     System.out.println("Selección inválida.");
                 }
             }while(true);
-            
+        
         } catch (Exception e) {
             System.err.println("Error al buscar huéspedes: " + e.getMessage());
             return null; 
@@ -60,14 +56,12 @@ public class BuscarHuesped {
         
     }
 
-    //Dar alta huesped retorna una lista de huespedes. Modificar huesped uno solo
-    //Se puede asi y todo tener un solo buscarHuesped? O tendremos que trabajar con 2 y listo?
-    private Huesped ejecutarDarAltaHuesped(){
+    private Huesped ejecutarDarAltaHuesped(GestorHuesped gestorHuesped, Scanner scanner){
         DarAltaHuesped darAltaHuesped = new DarAltaHuesped();
-        return darAltaHuesped.ejecutar(gestorHuesped, scanner); // ARREGLAR ESTO
+        return darAltaHuesped.darAltaHuesped(gestorHuesped, scanner);
     }
 
-    private Huesped ejecutarModificarHuesped(Huesped huesped){
+    private Huesped ejecutarModificarHuesped(GestorHuesped gestorHuesped, Scanner scanner, Huesped huesped){
         ModificarHuesped modificarHuesped = new ModificarHuesped();
         return modificarHuesped.ejecutar(gestorHuesped, scanner, huesped);
     }

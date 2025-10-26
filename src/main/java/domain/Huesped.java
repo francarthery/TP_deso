@@ -47,7 +47,7 @@ public class Huesped {
         private String ocupacion;
         private String nacionalidad;
         private Direccion direccion;
-        //Builder 
+      
         public Builder id(int id){
             this.id = id;
             return this;
@@ -118,7 +118,6 @@ public class Huesped {
         }
     }
 
-    //Getters
     public int getId(){
         return this.id;
     }
@@ -170,4 +169,46 @@ public class Huesped {
     public Direccion getDireccion(){
         return this.direccion;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+    public void setNombres(String nombres) {
+        this.nombres = nombres;
+    }
+    public void setDireccion(Direccion direccion) {
+        this.direccion = direccion;
+    }
+    public void setTipoDocumento(TipoDocumento documento) {
+        this.documento = documento;
+    }
+    public void setNumeroDocumento(String numeroDocumento) {
+        this.numeroDocumento = numeroDocumento;
+    }
+    public void setCuit(String cuit) {
+        this.cuit = cuit;
+    }
+    public void setPosicionFrenteAlIVA(IVA posicionFrenteAlIVA) {
+        this.posicionFrenteAlIVA = posicionFrenteAlIVA;
+    }
+    public void setFechaDeNacimiento(LocalDate fechaDeNacimiento) {
+        this.fechaDeNacimiento = fechaDeNacimiento;
+    }
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    public void setOcupacion(String ocupacion) {
+        this.ocupacion = ocupacion;
+    }
+    public void setNacionalidad(String nacionalidad) {
+        this.nacionalidad = nacionalidad;
+    }
+    
 }

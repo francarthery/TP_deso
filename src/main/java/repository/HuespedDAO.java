@@ -11,12 +11,15 @@ import java.time.LocalDate;
 import java.util.List;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.io.File;
 
 import domain.Direccion;
 import domain.Huesped;
 import domain.IVA;
 import domain.TipoDocumento;
 import exceptions.HuespedNoEncontradoException;
+import java.io.FileNotFoundException;
+
 
 
 public class HuespedDAO {
@@ -24,14 +27,49 @@ public class HuespedDAO {
     private static HuespedDAO instancia;
     private static final DateTimeFormatter LocalDateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private static final String RUTA_ARCHIVO = "src/main/resources/data/huespedes.csv";
-    
-    private HuespedDAO() {}
+    private int ultimoId; //Cuando se inicia la clase se carga el último ID usado
+    private HuespedDAO() {
+        ultimoId = obtenerUltimoId() + 1;
+    }
 
     public static HuespedDAO getInstancia() {
         if (instancia == null) {
             instancia = new HuespedDAO();
         }
         return instancia;
+    }
+
+    public int obtenerUltimoId() {
+        int maxId = 0; 
+
+        try (BufferedReader br = new BufferedReader(new FileReader(RUTA_ARCHIVO))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                if (linea.trim().isEmpty()) {
+                    continue; 
+                }
+
+                try {
+                    String[] datos = linea.split(",");
+                    int idActual = Integer.parseInt(datos[0]);
+                    
+                    if (idActual > maxId) {
+                        maxId = idActual; 
+                    }
+                } catch (NumberFormatException e) {
+                    System.err.println("Ignorando línea mal formada: " + linea);
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    System.err.println("Ignorando línea vacía o corrupta.");
+                }
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("INFO: 'huespedes.csv' no encontrado. Se asumirá ID 0.");
+        } catch (IOException e) {
+            System.err.println("Error crítico al leer el archivo de IDs: " + e.getMessage());
+            e.printStackTrace();
+        }
+        
+        return maxId;
     }
 
     public List<Huesped> obtenerTodos() throws HuespedNoEncontradoException {
@@ -52,7 +90,7 @@ public class HuespedDAO {
                     String numeroDocumentoBD = datos[4];
                     String cuitBD = datos[5];
                     IVA posicionFrenteAlIVA = IVA.valueOf(datos[6]);
-                    LocalDate fechaDeNacimiento = LocalDate.parse(datos[7]);
+                    LocalDate fechaDeNacimiento = LocalDate.parse(datos[7], LocalDateFormat);
                     String telefono = datos[8];
                     String emailBD = datos[9];
                     String ocupacionBD = datos[10];
@@ -78,6 +116,7 @@ public class HuespedDAO {
                         .build(); 
                     
                     Huesped huesped = new Huesped.Builder()
+                        .id(id)
                         .nombres(nombresBD)
                         .apellido(apellidoBD)
                         .tipoDocumento(tipoDocumentoBD)
@@ -106,11 +145,9 @@ public class HuespedDAO {
         return huespedes;
     }
 
-    public boolean agregarHuesped(Huesped huesped) {
-
-        String fechaFormateada = LocalDateFormat.format(huesped.getFechaDeNacimiento());
-        
-        String nuevaLinea = String.join(",",
+    public String convertirHuespedAString(Huesped huesped, String fechaFormateada) {
+        Direccion direccion = huesped.getDireccion();
+        return String.join(",",
             String.valueOf(huesped.getId()),
             huesped.getNombres(),
             huesped.getApellido(),
@@ -123,16 +160,22 @@ public class HuespedDAO {
             huesped.getEmail(),
             huesped.getOcupacion(),
             huesped.getNacionalidad(),
-            huesped.getDireccion().getPais(),
-            huesped.getDireccion().getProvincia(),
-            huesped.getDireccion().getLocalidad(),
-            huesped.getDireccion().getCalle(),
-            huesped.getDireccion().getNumero(),
-            huesped.getDireccion().getPiso(),
-            huesped.getDireccion().getDepartamento(),
-            huesped.getDireccion().getCodigoPostal()  
+            direccion.getPais(),
+            direccion.getProvincia(),
+            direccion.getLocalidad(),
+            direccion.getCalle(),
+            direccion.getNumero(),
+            direccion.getPiso(),
+            direccion.getDepartamento(),
+            direccion.getCodigoPostal()
         );
+    }
 
+    public boolean agregarHuesped(Huesped huesped) {
+        String fechaFormateada = LocalDateFormat.format(huesped.getFechaDeNacimiento());
+        huesped.setId(ultimoId++);
+        String nuevaLinea = convertirHuespedAString(huesped, fechaFormateada);
+        
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(RUTA_ARCHIVO, true)))) {
             out.println(nuevaLinea); 
             return true; 
@@ -163,5 +206,58 @@ public class HuespedDAO {
             System.out.println("Error al leer el archivo DAO: " + e.getMessage());
         }
         return false;
+    }
+    
+    public boolean modificarHuesped(Huesped huespedModificado) {
+        File archivoOriginal = new File(RUTA_ARCHIVO);
+        File archivoTemporal = new File(RUTA_ARCHIVO + ".tmp");
+
+        boolean modificado = false;
+
+        try (BufferedReader br = new BufferedReader(new FileReader(archivoOriginal));
+             PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(archivoTemporal)))) {
+            
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                try {
+                    String[] datos = linea.split(",");
+                    int idActual = Integer.parseInt(datos[0]);
+                    
+                    if (idActual == huespedModificado.getId()) {
+                        String fechaFormateada = LocalDateFormat.format(huespedModificado.getFechaDeNacimiento());
+                        String lineaModificada = convertirHuespedAString(huespedModificado, fechaFormateada);
+                        pw.println(lineaModificada);
+                        modificado = true;
+                    } else {
+                        pw.println(linea);
+                    }
+                } catch (Exception e) {
+                    pw.println(linea);
+                }
+            }
+
+        } catch (IOException e) {
+            System.err.println("Error al modificar huésped: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+
+        if (!modificado) {
+            archivoTemporal.delete();
+            System.err.println("No se encontró un huésped con ID " + huespedModificado.getId() + " para modificar.");
+            return false;
+        }
+
+        if (!archivoOriginal.delete()) {
+            System.err.println("Error: No se pudo borrar el archivo original.");
+            return false;
+        }
+
+        if (!archivoTemporal.renameTo(archivoOriginal)) {
+            System.err.println("Error: No se pudo renombrar el archivo temporal.");
+            return false;
+        }
+
+        return true;
     }
 }

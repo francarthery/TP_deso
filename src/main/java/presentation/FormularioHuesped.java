@@ -16,7 +16,7 @@ public class FormularioHuesped {
 
     public String verificarNombre(boolean vacio){
         while(true){
-            System.out.println("Ingrese el nombre del huésped:");
+            System.out.println("Ingrese el nombre del huésped " + (vacio ? "(o deje vacío para omitir): " : ": "));
             String nombre = scanner.nextLine().trim();
             if((vacio && nombre.isEmpty()) || nombre.matches("\\p{L}+") && nombre.length() <= 50){
                 if(vacio && nombre.isEmpty()) nombre = null;
@@ -32,7 +32,7 @@ public class FormularioHuesped {
 
     public String verificarApellido(boolean vacio){
         while(true){
-            System.out.println("Ingrese el apellido del huésped:");
+            System.out.println("Ingrese el apellido del huésped" + (vacio ? " (o deje vacío para omitir): " : ": "));
             String apellido = scanner.nextLine().trim();
             if((vacio && apellido.isEmpty()) || apellido.matches("\\p{L}+") && apellido.length() <= 50){
                 if(vacio && apellido.isEmpty()) apellido = null;
@@ -47,7 +47,7 @@ public class FormularioHuesped {
 
     public TipoDocumento verificarTipoDocumento(boolean vacio){    
         while(true){
-            System.out.println("Ingrese el tipo de documento del huésped: ");
+            System.out.println("Ingrese el tipo de documento del huésped (DNI, PASAPORTE, LE, LC, OTRO)" + (vacio ? " (o deje vacío para omitir): " : ": "));
             String tipoDocumento = scanner.nextLine().trim();
             try {
                 if(vacio && tipoDocumento.isEmpty()) return null;
@@ -58,10 +58,10 @@ public class FormularioHuesped {
             }
         }
     }
-
+    
     public String verificarNumeroDocumento(boolean vacio){
         while(true){
-            System.out.println("Ingrese el número de documento del huésped: ");
+            System.out.println("Ingrese el número de documento del huésped " + (vacio ? "(o deje vacío para omitir): " : ": "));
             String numeroDocumento = scanner.nextLine().trim();
             if((vacio && numeroDocumento.isEmpty()) || numeroDocumento.matches("\\d+") && numeroDocumento.length() <= 10){
                 if(vacio && numeroDocumento.isEmpty()) numeroDocumento = null;

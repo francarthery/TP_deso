@@ -10,8 +10,13 @@ import domain.Huesped;
 public class DarAltaHuesped {
     
     public Huesped darAltaHuesped(GestorHuesped gestorHuesped, Scanner scanner){
-        System.out.println("----- Cargar Huésped -----");   
-        
+        System.out.println("----- Dar Alta Huésped -----");   
+        System.out.println("¿Desea cargar un nuevo huésped al sistema? (S/N): ");
+        String aceptacion = aceptacion(scanner);
+        if(aceptacion.equals("N")){
+            System.out.println("Operación cancelada. No se cargará ningún nuevo huésped.");
+            return null;
+        }
         FormularioHuesped formularioHuesped = new FormularioHuesped(scanner);
         String nombre = formularioHuesped.verificarNombre(false);
         String apellido = formularioHuesped.verificarApellido(false);
@@ -65,8 +70,18 @@ public class DarAltaHuesped {
         do {
             darAltaHuesped(gestorHuesped, scanner);
             System.out.print("¿Desea cargar otro huésped? (S/N): ");
-            opcion = scanner.nextLine().trim().toUpperCase();
+            opcion = aceptacion(scanner);
         } while (opcion.equals("S"));
     }
 
+    public String aceptacion(Scanner scanner){
+        String eleccion = scanner.nextLine().trim().toUpperCase();
+        while(true){
+            if(eleccion.equals("S") || eleccion.equals("N")){
+                return eleccion;
+            }else{
+                System.out.println("Elección incorrecta. Ingrese S para si desea cargar otro huésped o N para no.");
+            }
+        }
+    }
 }
