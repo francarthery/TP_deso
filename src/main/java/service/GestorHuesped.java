@@ -101,4 +101,8 @@ public class GestorHuesped {
     public boolean modificarHuesped(Huesped huesped) {
         return huespedDAO.modificarHuesped(huesped);
     }
+
+    public boolean darBajaHuesped(Huesped huesped) {
+        return huespedDAO.darBajaHuesped(huesped);
+    }
 }

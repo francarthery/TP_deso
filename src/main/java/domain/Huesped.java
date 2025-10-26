@@ -1,6 +1,8 @@
 package domain;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Huesped {
     private int id;
@@ -16,6 +18,7 @@ public class Huesped {
     private String ocupacion;
     private String nacionalidad;
     private Direccion direccion;
+    private List<Integer> estadias;
 
     private Huesped(Builder builder){
         this.id = builder.id;
@@ -31,6 +34,7 @@ public class Huesped {
         this.nacionalidad = builder.nacionalidad;
         this.posicionFrenteAlIVA = builder.posicionFrenteAlIVA;
         this.direccion = builder.direccion;
+        this.estadias = new ArrayList<>();
     }
 
     public static class Builder{
@@ -170,6 +174,10 @@ public class Huesped {
         return this.direccion;
     }
 
+    public int getCantidadEstadias(){
+        return this.estadias.size();
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -177,38 +185,53 @@ public class Huesped {
     public void setApellido(String apellido) {
         this.apellido = apellido;
     }
+    
     public void setNombres(String nombres) {
         this.nombres = nombres;
     }
+    
     public void setDireccion(Direccion direccion) {
         this.direccion = direccion;
     }
+    
     public void setTipoDocumento(TipoDocumento documento) {
         this.documento = documento;
     }
+    
     public void setNumeroDocumento(String numeroDocumento) {
         this.numeroDocumento = numeroDocumento;
     }
+    
     public void setCuit(String cuit) {
         this.cuit = cuit;
     }
+    
     public void setPosicionFrenteAlIVA(IVA posicionFrenteAlIVA) {
         this.posicionFrenteAlIVA = posicionFrenteAlIVA;
     }
+    
     public void setFechaDeNacimiento(LocalDate fechaDeNacimiento) {
         this.fechaDeNacimiento = fechaDeNacimiento;
     }
+    
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
+    
     public void setEmail(String email) {
         this.email = email;
     }
+    
     public void setOcupacion(String ocupacion) {
         this.ocupacion = ocupacion;
     }
+    
     public void setNacionalidad(String nacionalidad) {
         this.nacionalidad = nacionalidad;
     }
     
+    public void agregarEstadia(int id){
+        this.estadias.add(id);
+    }
+
 }

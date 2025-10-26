@@ -260,4 +260,55 @@ public class HuespedDAO {
 
         return true;
     }
+
+    public boolean darBajaHuesped(Huesped huesped) {
+        File archivoOriginal = new File(RUTA_ARCHIVO);
+        File archivoTemporal = new File(RUTA_ARCHIVO + ".tmp");
+
+        boolean modificado = false;
+
+        try (BufferedReader br = new BufferedReader(new FileReader(archivoOriginal));
+             PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(archivoTemporal)))) {
+            
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                try {
+                    String[] datos = linea.split(",");
+                    int idActual = Integer.parseInt(datos[0]);
+                    
+                    if (idActual == huesped.getId()) {
+                        continue; //Se omite la eliminar el huésped
+                    } else {
+                        pw.println(linea);
+                    }
+                } catch (Exception e) {
+                    pw.println(linea);
+                }
+            }
+
+        } catch (IOException e) {
+            System.err.println("Error al modificar huésped: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+
+        if (!modificado) {
+            archivoTemporal.delete();
+            System.err.println("No se encontró un huésped con ID " + huesped.getId() + " para modificar.");
+            return false;
+        }
+
+        if (!archivoOriginal.delete()) {
+            System.err.println("Error: No se pudo borrar el archivo original.");
+            return false;
+        }
+
+        if (!archivoTemporal.renameTo(archivoOriginal)) {
+            System.err.println("Error: No se pudo renombrar el archivo temporal.");
+            return false;
+        }
+
+        return true;
+
+    }
 }

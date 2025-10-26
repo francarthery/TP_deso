@@ -2,6 +2,7 @@ package presentation;
 
 import domain.Huesped;
 import domain.TipoDocumento;
+import service.GestorEstadia;
 
 import java.util.List;
 import java.util.Scanner;
@@ -9,7 +10,7 @@ import service.GestorHuesped;
 
 public class BuscarHuesped {
     
-    public Huesped buscar(GestorHuesped gestorHuesped, Scanner scanner) {
+    public Huesped buscar(GestorHuesped gestorHuesped, GestorEstadia gestorEstadia, Scanner scanner) {
         System.out.println("----- Búsqueda de Huésped -----");
         FormularioHuesped formularioHuesped = new FormularioHuesped(scanner);
 
@@ -42,7 +43,7 @@ public class BuscarHuesped {
                     if(valorNumericoDeSeleccion < 1 || valorNumericoDeSeleccion > huespedes.size()){
                         System.out.println("Selección inválida.");
                     }else{
-                        return ejecutarModificarHuesped(gestorHuesped, scanner, huespedes.get(valorNumericoDeSeleccion - 1));
+                        return ejecutarModificarHuesped(gestorHuesped, gestorEstadia, scanner, huespedes.get(valorNumericoDeSeleccion - 1));
                     } 
                 }catch(NumberFormatException e){
                     System.out.println("Selección inválida.");
@@ -61,8 +62,8 @@ public class BuscarHuesped {
         return darAltaHuesped.darAltaHuesped(gestorHuesped, scanner);
     }
 
-    private Huesped ejecutarModificarHuesped(GestorHuesped gestorHuesped, Scanner scanner, Huesped huesped){
+    private Huesped ejecutarModificarHuesped(GestorHuesped gestorHuesped, GestorEstadia gestorEstadia, Scanner scanner, Huesped huesped){
         ModificarHuesped modificarHuesped = new ModificarHuesped();
-        return modificarHuesped.ejecutar(gestorHuesped, scanner, huesped);
+        return modificarHuesped.ejecutar(gestorHuesped, gestorEstadia, scanner, huesped);
     }
 }

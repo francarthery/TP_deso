@@ -1,4 +1,5 @@
 package presentation;
+import service.GestorEstadia;
 import service.GestorHuesped;
 import domain.Huesped;
 
@@ -12,7 +13,7 @@ import domain.IVA;
 
 public class ModificarHuesped {
     
-    public Huesped ejecutar(GestorHuesped gestorHuesped, Scanner scanner, Huesped huesped){
+    public Huesped ejecutar(GestorHuesped gestorHuesped, GestorEstadia gestorEstadia, Scanner scanner, Huesped huesped){
         System.out.println("----- Modificación de Huésped -----");
         System.out.println("Desea modificar los datos del huésped: " + huesped.getNombres() + " " + huesped.getApellido() + " ? SIGUIENTE / CANCELAR / BORRAR");
         do{
@@ -22,13 +23,14 @@ public class ModificarHuesped {
                 System.out.println("Modificación cancelada.");
                 return huesped;
             }else if(eleccion.equals("BORRAR")){
-                System.out.println("Funcionalidad de borrado no implementada aún.");
+                DarBajaHuesped darBajaHuesped = new DarBajaHuesped();
+                darBajaHuesped.darBajaHuesped(gestorHuesped, gestorEstadia, huesped, scanner);
                 return null;
             }else{
                 System.out.println("Entrada inválida. Por favor ingrese SIGUIENTE si desea modificar, CANCELAR si no desea modificar o BORRAR si desea eliminar el huésped.");
             }
         }while(true);
-        
+
         FormularioHuesped formularioHuesped = new FormularioHuesped(scanner);
         modificacionNombres(huesped, scanner, formularioHuesped);
         modificarApellido(huesped, scanner, formularioHuesped);
