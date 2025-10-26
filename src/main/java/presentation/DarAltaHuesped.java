@@ -35,15 +35,21 @@ public class DarAltaHuesped {
 
         while(gestorHuesped.documentoExistente(numeroDocumento)){
             System.out.println("¡CUIDADO! El tipo y número de documento ya existen en el sistema.");
-            System.err.println("¿Desea aceptar igualmente o corregir? (Presione A si desea aceptar, C si desea corregir)");
-            String eleccion = scanner.nextLine().trim();
-            if(eleccion.trim().equalsIgnoreCase("C")){ //Falta manejar el caso en que no te introduzcan lo que esperas
-                numeroDocumento = formularioHuesped.verificarNumeroDocumento();
-                tipoDocumento = formularioHuesped.verificarTipoDocumento();
-            }else{
-                break;
-            }
+            do{
+                System.err.println("¿Desea aceptar igualmente o corregir? (Presione A si desea aceptar, C si desea corregir)");
+                String eleccion = scanner.nextLine().trim();
+                if(eleccion.equalsIgnoreCase("C")){
+                    numeroDocumento = formularioHuesped.verificarNumeroDocumento();
+                    tipoDocumento = formularioHuesped.verificarTipoDocumento();
+                    break;
+                }else if(eleccion.equalsIgnoreCase("A")){
+                    break;
+                }else{
+                    System.out.println("Eleccion incorrecta");
+                }
+            }while(true);
         }
+
         gestorHuesped.darAltaHuesped(apellido, nombre, tipoDocumento, numeroDocumento, cuit, 
             posicionFrenteAlIVA, fechaNacimiento, telefono, email, ocupacion, nacionalidad, 
             pais, provincia, localidad, calle, numero, piso, departamento, codigoPostal);

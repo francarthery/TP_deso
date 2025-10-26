@@ -65,8 +65,8 @@ public class HuespedDAO {
                     String telefono = datos[8];
                     String emailBD = datos[9];
                     String ocupacionBD = datos[10];
-                    String nacionalidadBD = datos[11];
-                    
+    
+                  
                     Huesped huesped = new Huesped.Builder()
                         .nombres(nombresBD)
                         .apellido(apellidoBD)
@@ -111,7 +111,15 @@ public class HuespedDAO {
             huesped.getTelefono(),
             huesped.getEmail(),
             huesped.getOcupacion(),
-            huesped.getNacionalidad()
+            huesped.getNacionalidad(),
+            huesped.getDireccion().getPais(),
+            huesped.getDireccion().getProvincia(),
+            huesped.getDireccion().getLocalidad(),
+            huesped.getDireccion().getCalle(),
+            huesped.getDireccion().getNumero(),
+            huesped.getDireccion().getPiso(),
+            huesped.getDireccion().getDepartamento(),
+            huesped.getDireccion().getCodigoPostal()  
         );
 
         try (PrintWriter out = new PrintWriter( new BufferedWriter( new FileWriter(rutaRecurso, true)))) {
@@ -131,7 +139,7 @@ public class HuespedDAO {
             while ((linea = br.readLine()) != null) {
                 String[] datos = linea.split(",");
                 
-                if (datos.length < 12) continue; 
+                if (datos.length < 20) continue; 
 
                 try {
                     String documentoBD = datos[4];
