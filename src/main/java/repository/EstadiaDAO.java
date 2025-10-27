@@ -56,7 +56,7 @@ public class EstadiaDAO {
                 }
             }
         } catch (FileNotFoundException e) {
-            System.out.println("INFO: 'huespedes.csv' no encontrado. Se asumirá ID 0.");
+            System.out.println("INFO: 'estadia.csv' no encontrado. Se asumirá ID 0.");
         } catch (IOException e) {
             System.err.println("Error crítico al leer el archivo de IDs: " + e.getMessage());
             e.printStackTrace();
@@ -124,7 +124,7 @@ public class EstadiaDAO {
                 }
             }
         } catch (FileNotFoundException e) {
-            System.out.println("INFO: 'huespedes.csv' no encontrado. Se asumirá ID 0.");
+            System.out.println("INFO: 'estadiaHuespedes.csv' no encontrado. Se asumirá ID 0.");
         } catch (IOException e) {
             System.err.println("Error crítico al leer el archivo de IDs: " + e.getMessage());
             e.printStackTrace();

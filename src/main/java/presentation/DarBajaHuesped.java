@@ -14,10 +14,10 @@ public class DarBajaHuesped {
             String tecla = scanner.nextLine();
         }else{
             System.out.println("Los datos del huésped " + huesped.getNombres() + " " + huesped.getApellido() + ", " 
-                + huesped.getTipoDocumento() + " " + huesped.getNumeroDocumento() + " serán sido eliminados del sistema.");
+                + huesped.getTipoDocumento() + " " + huesped.getNumeroDocumento() + " serán eliminados del sistema.");
             
             String eleccion = aceptacion(scanner);
-
+            
             if(eleccion.equals("ELIMINAR")){
                 if(gestorHuesped.darBajaHuesped(huesped)){
                     System.out.println("Los datos del huésped " + huesped.getNombres() + " " + huesped.getApellido() + ", " 
@@ -36,6 +36,7 @@ public class DarBajaHuesped {
         do{
             System.out.println("Presione ELIMINAR si desea borrar al huésped o CANCELAR si no lo desea.");
             eleccion = scanner.nextLine();
+            eleccion = eleccion.toUpperCase();
             if(eleccion.equals("ELIMINAR") || eleccion.equals("CANCELAR")){
                 return eleccion;
             }else{

@@ -11,13 +11,13 @@ import service.GestorHuesped;
 public class BuscarHuesped {
     
     public Huesped buscar(GestorHuesped gestorHuesped, GestorEstadia gestorEstadia, Scanner scanner) {
-        System.out.println("----- Búsqueda de Huésped -----");
+        System.out.println("===== Búsqueda de Huésped =====");
         FormularioHuesped formularioHuesped = new FormularioHuesped(scanner);
 
         String nombres = formularioHuesped.verificarNombre(true);
         String apellido = formularioHuesped.verificarApellido(true);
         TipoDocumento tipoDocumento = formularioHuesped.verificarTipoDocumento(true);
-        String numeroDocumento = formularioHuesped.verificarNumeroDocumento(true);
+        String numeroDocumento = formularioHuesped.verificarNumeroDocumento(true, tipoDocumento);
 
         try {
             List<Huesped> huespedes = gestorHuesped.buscarHuesped(apellido, nombres, tipoDocumento, numeroDocumento);
@@ -34,8 +34,9 @@ public class BuscarHuesped {
             }
             
             do{
-                System.out.println("Seleccione el huésped deseado por número (o vacío):");
+                System.out.print("Seleccione el huésped deseado por número (o vacío): ");
                 String seleccion = scanner.nextLine().trim();
+                System.out.println();
                 if(seleccion == null || seleccion.isEmpty()) return ejecutarDarAltaHuesped(gestorHuesped, scanner);
                 
                 try{

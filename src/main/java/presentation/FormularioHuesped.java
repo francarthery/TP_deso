@@ -16,8 +16,9 @@ public class FormularioHuesped {
 
     public String verificarNombre(boolean vacio){
         while(true){
-            System.out.println("Ingrese el nombre del huésped " + (vacio ? "(o deje vacío para omitir): " : ": "));
+            System.out.print("Ingrese el nombre del huésped" + (vacio ? " (o deje vacío para omitir): " : ": "));
             String nombre = scanner.nextLine().trim();
+            System.out.println();
             if((vacio && nombre.isEmpty()) || nombre.matches("\\p{L}+") && nombre.length() <= 50){
                 if(vacio && nombre.isEmpty()) nombre = null;
                 return nombre;
@@ -32,8 +33,9 @@ public class FormularioHuesped {
 
     public String verificarApellido(boolean vacio){
         while(true){
-            System.out.println("Ingrese el apellido del huésped" + (vacio ? " (o deje vacío para omitir): " : ": "));
+            System.out.print("Ingrese el apellido del huésped" + (vacio ? " (o deje vacío para omitir): " : ": "));
             String apellido = scanner.nextLine().trim();
+            System.out.println();
             if((vacio && apellido.isEmpty()) || apellido.matches("\\p{L}+") && apellido.length() <= 50){
                 if(vacio && apellido.isEmpty()) apellido = null;
                 return apellido;
@@ -47,8 +49,9 @@ public class FormularioHuesped {
 
     public TipoDocumento verificarTipoDocumento(boolean vacio){    
         while(true){
-            System.out.println("Ingrese el tipo de documento del huésped (DNI, PASAPORTE, LE, LC, OTRO)" + (vacio ? " (o deje vacío para omitir): " : ": "));
+            System.out.print("Ingrese el tipo de documento del huésped (DNI, PASAPORTE, LE, LC, OTRO)" + (vacio ? " (o deje vacío para omitir): " : ": "));
             String tipoDocumento = scanner.nextLine().trim();
+            System.out.println();
             try {
                 if(vacio && tipoDocumento.isEmpty()) return null;
                 TipoDocumento tipoDoc = TipoDocumento.valueOf(tipoDocumento.toUpperCase());
@@ -59,29 +62,42 @@ public class FormularioHuesped {
         }
     }
     
-    public String verificarNumeroDocumento(boolean vacio){
+    public String verificarNumeroDocumento(boolean vacio, TipoDocumento tipoDocumento){
         while(true){
-            System.out.println("Ingrese el número de documento del huésped " + (vacio ? "(o deje vacío para omitir): " : ": "));
+            System.out.print("Ingrese el número de documento del huésped" + (vacio ? " (o deje vacío para omitir): " : ": "));
             String numeroDocumento = scanner.nextLine().trim();
-            if((vacio && numeroDocumento.isEmpty()) || numeroDocumento.matches("\\d+") && numeroDocumento.length() <= 10){
+            System.out.println();
+            if (tipoDocumento == TipoDocumento.PASAPORTE) {
+                if ((vacio && numeroDocumento.isEmpty()) || numeroDocumento.matches("[a-zA-Z0-9]+") && numeroDocumento.length() <= 20) {
+                    return numeroDocumento;
+                } else if (numeroDocumento.length() > 20) {
+                    System.out.println("El número de pasaporte es muy largo. Ingrese un número de pasaporte de hasta 20 caracteres.");
+                } else {
+                    System.out.println("El número de pasaporte debe contener solo letras y números. Por favor, ingrese un pasaporte válido.");
+                }
+                continue;
+            }
+            else if((vacio && numeroDocumento.isEmpty()) || numeroDocumento.matches("\\d+") && numeroDocumento.length() <= 10){
                 if(vacio && numeroDocumento.isEmpty()) numeroDocumento = null;
                 return numeroDocumento;
             } else if(numeroDocumento.length() > 10){
                 System.out.println("El número de documento es muy largo. Ingrese un número de documento de hasta 10 dígitos.");
             } else {
-                System.out.println("El número de documento debe contener solo dígitos. Por favor, ingrese solo números.");
+                System.out.println("El número de documento debe contener solo dígitos. Por favor, ingrese un documento válido.");
             }
         }
     }
 
     public String verificarCuit(){
         while(true){
-            System.out.println("Ingrese el CUIT del huésped: ");
+            System.out.print("Ingrese el CUIT del huésped: ");
             String cuit = scanner.nextLine().trim();
-            if(cuit.matches("\\d+") && cuit.length() <= 11){
+            System.out.println();
+            if(cuit.matches("\\d+") && cuit.length() <= 11 && cuit.length() > 3){
+                cuit = cuit.substring(0,2) + "-" + cuit.substring(2, cuit.length() -1) + "-" + cuit.substring(cuit.length()-1);
                 return cuit;
-            } else if(cuit.length() > 11){
-                System.out.println("El CUIT es muy largo. Ingrese un CUIT de hasta 11 caracteres.");
+            } else if(cuit.length() > 11 || cuit.length() < 3){
+                System.out.println("El largo del CUIT no es válido. Ingrese un CUIT de entre 4 a 11 caracteres.");
             }
             else {
                 System.out.println("El CUIT debe contener solo dígitos. Por favor, ingrese solo números.");
@@ -91,8 +107,9 @@ public class FormularioHuesped {
 
     public IVA verificarPosicionFrenteAlIVA(){
         while(true){
-            System.out.println("Ingrese la posición frente al IVA del huésped: ");
+            System.out.print("Ingrese la posición frente al IVA del huésped: ");
             String iva = scanner.nextLine().trim();
+            System.out.println();
             try {
                 IVA ivaPosicion = IVA.valueOf(iva.toUpperCase());
                 return ivaPosicion;
@@ -105,11 +122,11 @@ public class FormularioHuesped {
     public LocalDate verificarFechaNacimiento(){
         
         while(true){
-            System.out.println("Ingrese la fecha de nacimiento del huésped (dd/mm/yyyy):");
-
+            System.out.print("Ingrese la fecha de nacimiento del huésped (dd/mm/yyyy): ");
             String FORMATO_FECHA = "dd/MM/yyyy";
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern(FORMATO_FECHA);
             String fecha = scanner.nextLine().trim();
+            System.out.println();
             try {
                 LocalDate fechaNacimiento = LocalDate.parse(fecha, formatter);
                 if(fechaNacimiento.isBefore(LocalDate.now())) {
@@ -125,12 +142,16 @@ public class FormularioHuesped {
     
     public String verificarTelefono(){
         while(true){
-            System.out.println("Ingrese el teléfono del huésped: ");
+            System.out.print("Ingrese el teléfono del huésped: ");
             String telefono = scanner.nextLine().trim();
+            System.out.println();
             if(telefono.matches("\\+?\\d{7,15}")){
                 return telefono;
-            } else {
-                System.out.println("El teléfono debe contener solo números. Por favor, ingrese un número de teléfono válido (7-15 dígitos, puede incluir '+').");
+            } else if (telefono.length() > 15 || telefono.length() < 7) {
+                System.out.println("El teléfono debe contener entre 7 y 15 digitos.");
+            }
+            else {
+                System.out.println("Telefono inválido. Por favor, ingrese un Telefono válido.");
             }
         }
         
@@ -138,8 +159,9 @@ public class FormularioHuesped {
 
     public String verificarEmail(){
         while(true){
-            System.out.println("Ingrese el email del huésped: ");
+            System.out.print("Ingrese el email del huésped: ");
             String email = scanner.nextLine().trim();
+            System.out.println();
             if(email.isEmpty() || email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$") && email.length() <= 100){
                 if(email.isEmpty()) email = null;
                 return email;
@@ -153,8 +175,9 @@ public class FormularioHuesped {
 
     public String verificarOcupacion(){
         while(true){
-            System.out.println("Ingrese la ocupación del huésped: ");
+            System.out.print("Ingrese la ocupación del huésped: ");
             String ocupacion = scanner.nextLine().trim();
+            System.out.println();
             if(ocupacion.matches("[a-zA-Z ]+") && ocupacion.length() <= 50){
                 return ocupacion;
             } else if(ocupacion.length() > 50){
@@ -167,8 +190,9 @@ public class FormularioHuesped {
 
     public String verificarNacionalidad(){
         while(true){
-            System.out.println("Ingrese la nacionalidad del huésped:");
+            System.out.print("Ingrese la nacionalidad del huésped: ");
             String nacionalidad = scanner.nextLine().trim();
+            System.out.println();
             if(nacionalidad.matches("[a-zA-Z ]+") && nacionalidad.length() <= 30){
                 return nacionalidad;
             } else if(nacionalidad.length() > 30){
@@ -181,9 +205,9 @@ public class FormularioHuesped {
 
     public String verificarPais(){
         while(true) {
-            System.out.println("País: ");
+            System.out.print("Ingrese el país del huésped: ");
             String pais = scanner.nextLine().trim();  
-
+            System.out.println();
             if(pais.matches("[a-zA-Z ]+") && pais.length() <= 85){
                 return pais;
             } else if(pais.length() > 85){
@@ -196,9 +220,9 @@ public class FormularioHuesped {
 
     public String verificarProvincia(){
         while(true) {
-            System.out.println("Provincia: ");
+            System.out.print("Ingrese la provincia del huesped: ");
             String provincia = scanner.nextLine().trim();  
-
+            System.out.println();
             if(!provincia.matches("[a-zA-Z ]+") || provincia.length() > 85){
                 System.out.println("provincia inválida. Por favor, ingrese de nuevo.");
             } else {    
@@ -209,9 +233,9 @@ public class FormularioHuesped {
 
     public String verificarLocalidad(){
         while(true) {
-            System.out.println("Localidad: ");
+            System.out.print("Ingrese la localidad del huesped: ");
             String localidad = scanner.nextLine().trim();  
-
+            System.out.println();
             if(!localidad.matches("[a-zA-Z ]+") || localidad.length() > 85){
                 System.out.println("Localidad inválida. Por favor, ingrese de nuevo.");
             } else {    
@@ -222,9 +246,9 @@ public class FormularioHuesped {
 
     public String verificarCalle(){
         while(true) {
-            System.out.println("Calle: ");
+            System.out.print("Ingrese la calle del huesped: ");
             String calle = scanner.nextLine().trim();  
-
+            System.out.println();
             if(calle.matches("[a-zA-Z0-9 ]+") && calle.length() <= 50){
                 return calle;
             } else if(calle.length() > 50){
@@ -237,9 +261,9 @@ public class FormularioHuesped {
 
     public String verificarNumero(){
         while(true) {
-            System.out.println("Número: ");
+            System.out.print("Ingrese el número del huésped: ");
             String numero = scanner.nextLine().trim();  
-
+            System.out.println();
             if(numero.matches("\\d+") && numero.length() <= 10){
                 return numero;
             } else if(numero.length() > 10){    
@@ -252,9 +276,9 @@ public class FormularioHuesped {
     
     public String verificarPiso() {
         while(true) {
-            System.out.println("Piso: ");
+            System.out.print("Ingrese el piso del huésped: ");
             String piso = scanner.nextLine().trim();  
-
+            System.out.println();
             if(piso.isEmpty() || (piso.matches("\\d+") && piso.length() <= 5)) {
                 if (piso.isEmpty()) 
                     piso = null;
@@ -271,9 +295,9 @@ public class FormularioHuesped {
     
     public String verificarDepartamento(){
         while (true) {
-            System.out.print("Departamento: ");
+            System.out.print("Ingrese el departamento del huésped: ");
             String departamento = scanner.nextLine().trim();
-
+            System.out.println();
             if (departamento.isEmpty() || (departamento.matches("[a-zA-Z0-9 ]+") && departamento.length() <= 5)) {
                 if (departamento.isEmpty()) 
                     departamento = null;
@@ -286,9 +310,9 @@ public class FormularioHuesped {
 
     public String verificarCodigoPostal(){
         while(true) {
-            System.out.println("Código Postal: " );
+            System.out.print("Ingrese el Código Postal del huesped: " );
             String codigoPostal = scanner.nextLine().trim();  
-
+            System.out.println();
             if(codigoPostal.matches("\\d+") && codigoPostal.length() <= 10){
                 return codigoPostal;
             } else if(codigoPostal.length() > 10){

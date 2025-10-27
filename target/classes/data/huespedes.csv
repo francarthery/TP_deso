@@ -9,7 +9,7 @@
 9,Diego,Fernández,LC,17654321,20-17654321-9,RESPONSABLE_INSCRIPTO,05/09/1979,3426112233,,Empleado,Argentina,Argentina,Córdoba,Córdoba,25 de Mayo,606,5,A,X5001
 10,Lucía,Díaz,DNI,34567890,27-34567890-0,CONSUMIDOR_FINAL,14/04/1990,3415123456,lucia.diaz@example.com,Diseñador,Argentina,Argentina,Santa Fe,Santa Fe,9 de Julio,707,,,S3000
 11,Pedro,Romero,DNI,28123123,20-28123123-1,MONOTRIBUTISTA,10/06/1980,3425334455,pedro.romero@example.com,Ingeniero,Argentina,Argentina,Mendoza,Mendoza,Colón,808,6,B,M5501
-12,Laura,Álvarez,PASAPORTE,B12345678,,RESPONSABLE_INSCRIPTO,15/10/1983,3414667788,,Medico,Uruguaya,Uruguay,Extranjero,Extranjero,18 de Julio,909,,,M11200
+12,Laura,�?lvarez,PASAPORTE,B12345678,,RESPONSABLE_INSCRIPTO,15/10/1983,3414667788,,Medico,Uruguaya,Uruguay,Extranjero,Extranjero,18 de Julio,909,,,M11200
 13,Miguel,Torres,DNI,26789789,20-26789789-3,CONSUMIDOR_FINAL,22/01/1978,3426334455,miguel.torres@example.com,Abogado,Argentina,Argentina,Entre Ríos,Paraná,San Martín,1010,7,C,E3100
 14,Carmen,Ruiz,DNI,32123123,27-32123123-4,MONOTRIBUTISTA,28/07/1986,3415445566,carmen.ruiz@example.com,Estudiante,Argentina,Argentina,Santa Fe,Rosario,Rivadavia,1111,,,S2000
 15,Javier,Vázquez,LE,18987876,20-18987876-5,EXENTO,30/11/1982,3424223344,,Comerciante,Argentina,Argentina,Buenos Aires,CABA,Corrientes,1212,8,D,C1043
@@ -98,6 +98,5 @@
 98,Eliana,Aguirre,PASAPORTE,QWE678901,,CONSUMIDOR_FINAL,04/05/1980,3414998877,eliana.aguirre@example.com,Arquitecto,Colombiana,Colombia,Extranjero,Extranjero,Calle 100,9595,,,B11011
 99,Mauro,Bermúdez,DNI,35345345,20-35345345-9,RESPONSABLE_INSCRIPTO,10/05/1991,3426112233,mauro.bermudez@example.com,Empleado,Argentina,Argentina,Buenos Aires,CABA,Sarmiento,9696,2,B,C1041
 100,Valeria,Oliva,DNI,28901901,27-28901901-0,MONOTRIBUTISTA,21/03/1981,3415123456,,Diseñador,Argentina,Argentina,Córdoba,Córdoba,9 de Julio,9797,,,X5001
-101,Lionel,Messias,DNI,451,20342342345,MONOTRIBUTISTA,24/06/1987,342124586,messifortnite@gmail.com,Futbolista,Argentino,Argentina,Santa Fe,Rosario,La Bajada,525,null,null,2000
 102,Fausto,Garcia,DNI,452,204664985,EXENTO,20/12/2004,342589452,null,Estudiante,Argentino,Argentina,Santa Fe,Santa Fe,San Pedrito,324,null,null,3000
-103,Lionel,Messi,DNI,33016244,23330162449,RESPONSABLE_INSCRIPTO,24/06/1987,123456789,mecii@gmail.com,TENISTA,ARGENTINO,Argentina,Santa Fe,Colastine Norte,Los Mocoretaes,2112,null,null,3000
+103,Lionel,Messi,DNI,33016244,23330162449,RESPONSABLE_INSCRIPTO,24/06/1987,123456789,mecii@gmail.com,Futbolista,Argentino,Argentina,Santa Fe,Colastine Norte,Los Mocoretaes,1234,null,null,3000

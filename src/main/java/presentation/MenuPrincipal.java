@@ -15,9 +15,12 @@ public class MenuPrincipal {
             System.out.println("1. Opción: Buscar Huésped");
             System.out.println("2. Opción: Dar de alta Huésped");
             System.out.println("3. Salir");
-            
+            System.out.println("==============================");
+            System.out.print("Ingrese una opción: ");
             opcion = scanner.nextInt();
+            System.out.println();
             scanner.nextLine();
+            
             GestorHuesped gestorHuesped = GestorHuesped.getInstancia(); 
             GestorEstadia gestorEstadia = GestorEstadia.getInstancia();
 

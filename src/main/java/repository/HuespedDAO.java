@@ -268,7 +268,7 @@ public class HuespedDAO {
         boolean modificado = false;
 
         try (BufferedReader br = new BufferedReader(new FileReader(archivoOriginal));
-             PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(archivoTemporal)))) {
+            PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(archivoTemporal)))) {
             
             String linea;
             while ((linea = br.readLine()) != null) {
@@ -277,7 +277,7 @@ public class HuespedDAO {
                     int idActual = Integer.parseInt(datos[0]);
                     
                     if (idActual == huesped.getId()) {
-                        continue; //Se omite la eliminar el huésped
+                        modificado = true; //Se omite la eliminar el huésped
                     } else {
                         pw.println(linea);
                     }

@@ -14,10 +14,12 @@ import domain.IVA;
 public class ModificarHuesped {
     
     public Huesped ejecutar(GestorHuesped gestorHuesped, GestorEstadia gestorEstadia, Scanner scanner, Huesped huesped){
-        System.out.println("----- Modificación de Huésped -----");
+        System.out.println("===== Modificación de Huésped =====");
         System.out.println("Desea modificar los datos del huésped: " + huesped.getNombres() + " " + huesped.getApellido() + " ? SIGUIENTE / CANCELAR / BORRAR");
-        do{
+        do{ 
+            System.out.print("Ingrese su elección: ");
             String eleccion = scanner.nextLine().trim().toUpperCase();
+            System.out.println();
             if(eleccion.equals("SIGUIENTE")) break;
             else if(eleccion.equals("CANCELAR")){
                 System.out.println("Modificación cancelada.");
@@ -62,16 +64,18 @@ public class ModificarHuesped {
     }
 
     public void modificacionNombres(Huesped huesped, Scanner scanner, FormularioHuesped formularioHuesped){
-        System.out.println("Nombres: " + huesped.getNombres() + " ¿Desea modificarlo? (S/N)");
+        System.out.print("Nombres: " + huesped.getNombres() + " ¿Desea modificarlo? (S/N): ");
         String eleccion = aceptacion(scanner);
+        System.out.println();
         if(eleccion.equals("S")){
             huesped.setNombres(formularioHuesped.verificarNombre(false));
         }
     }
     
     public void modificarApellido(Huesped huesped, Scanner scanner, FormularioHuesped formularioHuesped){
-        System.out.println("Apellido: " + huesped.getApellido() + " ¿Desea modificarlo? (S/N)");
+        System.out.print("Apellido: " + huesped.getApellido() + " ¿Desea modificarlo? (S/N): ");
         String eleccion = aceptacion(scanner);
+        System.out.println();
         if(eleccion.equals("S")){
             huesped.setApellido(formularioHuesped.verificarApellido(false));
         }
@@ -79,72 +83,81 @@ public class ModificarHuesped {
     }
 
     public void modificarTipoDocumento(Huesped huesped, Scanner scanner, FormularioHuesped formularioHuesped){
-        System.out.println("Tipo de Documento: " + huesped.getTipoDocumento() + " ¿Desea modificarlo? (S/N)");
+        System.out.print("Tipo de Documento: " + huesped.getTipoDocumento() + " ¿Desea modificarlo? (S/N): ");
         String eleccion = aceptacion(scanner);
+        System.out.println();        
         if(eleccion.equals("S")){
             huesped.setTipoDocumento(formularioHuesped.verificarTipoDocumento(false));
         }
     }
 
     public void modificarNumeroDocumento(Huesped huesped, Scanner scanner, FormularioHuesped formularioHuesped){
-        System.out.println("Número de Documento: " + huesped.getNumeroDocumento() + " ¿Desea modificarlo? (S/N)");
+        System.out.print("Número de Documento: " + huesped.getNumeroDocumento() + " ¿Desea modificarlo? (S/N): ");
         String eleccion = aceptacion(scanner);
+        System.out.println();
         if(eleccion.equals("S")){
-            huesped.setNumeroDocumento(formularioHuesped.verificarNumeroDocumento(false));
+            huesped.setNumeroDocumento(formularioHuesped.verificarNumeroDocumento(false, huesped.getTipoDocumento()));
         }
     }
 
     public void modificarCuit(Huesped huesped, Scanner scanner, FormularioHuesped formularioHuesped){
-        System.out.println("CUIT: " + huesped.getCuit() + " ¿Desea modificarlo? (S/N)");
+        System.out.print("CUIT: " + huesped.getCuit() + " ¿Desea modificarlo? (S/N): ");
         String eleccion = aceptacion(scanner);
+        System.out.println();
         if(eleccion.equals("S")){
             huesped.setCuit(formularioHuesped.verificarCuit());
         }
     }
 
     public void modificarPoscicionFrenteAlIVA(Huesped huesped, Scanner scanner, FormularioHuesped formularioHuesped){
-        System.out.println("Posición frente al IVA: " + huesped.getPosicionFrenteAlIVA() + " ¿Desea modificarlo? (S/N)");
+        System.out.print("Posición frente al IVA: " + huesped.getPosicionFrenteAlIVA() + " ¿Desea modificarlo? (S/N): ");
         String eleccion = aceptacion(scanner);
+        System.out.println();
         if(eleccion.equals("S")){
             huesped.setPosicionFrenteAlIVA(formularioHuesped.verificarPosicionFrenteAlIVA());
         }
     }
 
     public void modificarFechaNacimiento(Huesped huesped, Scanner scanner, FormularioHuesped formularioHuesped){
-        System.out.println("Fecha de Nacimiento: " + huesped.getFechaDeNacimiento() + " ¿Desea modificarlo? (S/N)");
+        System.out.print("Fecha de Nacimiento: " + huesped.getFechaDeNacimiento() + " ¿Desea modificarlo? (S/N): ");
         String eleccion = aceptacion(scanner);
+        System.out.println();
         if(eleccion.equals("S")){
             huesped.setFechaDeNacimiento(formularioHuesped.verificarFechaNacimiento());
         }
     }
     
     public void modificarTelefono(Huesped huesped, Scanner scanner, FormularioHuesped formularioHuesped){
-        System.out.println("Teléfono: " + huesped.getTelefono() + " ¿Desea modificarlo? (S/N)");
+        System.out.print("Teléfono: " + huesped.getTelefono() + " ¿Desea modificarlo? (S/N): ");
         String eleccion = aceptacion(scanner);
+        System.out.println();
         if(eleccion.equals("S")){
             huesped.setTelefono(formularioHuesped.verificarTelefono());
         }
     }
 
     public void modificarEmail(Huesped huesped, Scanner scanner, FormularioHuesped formularioHuesped){
-        System.out.println("Email: " + huesped.getEmail() + " ¿Desea modificarlo? (S/N)");
+        System.out.print("Email: " + huesped.getEmail() + " ¿Desea modificarlo? (S/N): ");
         String eleccion = aceptacion(scanner);
+        System.out.println();
         if(eleccion.equals("S")){
             huesped.setEmail(formularioHuesped.verificarEmail());
         }
     }
 
     public void modificarOcupacion(Huesped huesped, Scanner scanner, FormularioHuesped formularioHuesped){
-        System.out.println("Ocupación: " + huesped.getOcupacion() + " ¿Desea modificarlo? (S/N)");
+        System.out.print("Ocupación: " + huesped.getOcupacion() + " ¿Desea modificarlo? (S/N): ");
         String eleccion = aceptacion(scanner);
+        System.out.println();
         if(eleccion.equals("S")){
             huesped.setOcupacion(formularioHuesped.verificarOcupacion());
         }
     }
     
     public void modificarNacionalidad(Huesped huesped, Scanner scanner, FormularioHuesped formularioHuesped){
-        System.out.println("Nacionalidad: " + huesped.getNacionalidad() + " ¿Desea modificarlo? (S/N)");
+        System.out.print("Nacionalidad: " + huesped.getNacionalidad() + " ¿Desea modificarlo? (S/N): ");
         String eleccion = aceptacion(scanner);
+        System.out.println();
         if(eleccion.equals("S")){
             huesped.setNacionalidad(formularioHuesped.verificarNacionalidad());
         }
@@ -152,48 +165,54 @@ public class ModificarHuesped {
     }
     
     public void modificarPais(Direccion direccion, Scanner scanner, FormularioHuesped formularioHuesped){
-        System.out.println("País: " + direccion.getPais() + " ¿Desea modificarlo? (S/N)");
+        System.out.print("País: " + direccion.getPais() + " ¿Desea modificarlo? (S/N): ");
         String eleccion = aceptacion(scanner);
+        System.out.println();
         if(eleccion.equals("S")){
             direccion.setPais(formularioHuesped.verificarPais());
         }
     }
     
     public void modificarProvincia(Direccion direccion, Scanner scanner, FormularioHuesped formularioHuesped){
-        System.out.println("Provincia: " + direccion.getProvincia() + " ¿Desea modificarlo? (S/N)");
+        System.out.print("Provincia: " + direccion.getProvincia() + " ¿Desea modificarlo? (S/N): ");
         String eleccion = aceptacion(scanner);
+        System.out.println();
         if(eleccion.equals("S")){
             direccion.setProvincia(formularioHuesped.verificarProvincia());
         }
     }
     
     public void modificarLocalidad(Direccion direccion, Scanner scanner, FormularioHuesped formularioHuesped){
-        System.out.println("Localidad: " + direccion.getLocalidad() + " ¿Desea modificarlo? (S/N)");
+        System.out.print("Localidad: " + direccion.getLocalidad() + " ¿Desea modificarlo? (S/N): ");
         String eleccion = aceptacion(scanner);
+        System.out.println();
         if(eleccion.equals("S")){
             direccion.setLocalidad(formularioHuesped.verificarLocalidad());
         }
     }
     
     public void modificarCalle(Direccion direccion, Scanner scanner, FormularioHuesped formularioHuesped){
-        System.out.println("Calle: " + direccion.getCalle() + " ¿Desea modificarlo? (S/N)");
+        System.out.print("Calle: " + direccion.getCalle() + " ¿Desea modificarlo? (S/N): ");
         String eleccion = aceptacion(scanner);
+        System.out.println();
         if(eleccion.equals("S")){
             direccion.setCalle(formularioHuesped.verificarCalle());
         }
     }
     
     public void modificarNumero(Direccion direccion, Scanner scanner, FormularioHuesped formularioHuesped){
-        System.out.println("Número: " + direccion.getNumero() + " ¿Desea modificarlo? (S/N)");
+        System.out.print("Número: " + direccion.getNumero() + " ¿Desea modificarlo? (S/N): ");
         String eleccion = aceptacion(scanner);
+        System.out.println();
         if(eleccion.equals("S")){
             direccion.setNumero(formularioHuesped.verificarNumero());
         }
     }
 
     public void modificarPiso(Direccion direccion, Scanner scanner, FormularioHuesped formularioHuesped){
-        System.out.println("Piso: " + direccion.getPiso() + " ¿Desea modificarlo? (S/N)");
+        System.out.print("Piso: " + direccion.getPiso() + " ¿Desea modificarlo? (S/N): ");
         String eleccion = aceptacion(scanner);
+        System.out.println();
         if(eleccion.equals("S")){
             direccion.setPiso(formularioHuesped.verificarPiso());
         }
@@ -201,8 +220,9 @@ public class ModificarHuesped {
     }
     
     public void modificarDepartamento(Direccion direccion, Scanner scanner, FormularioHuesped formularioHuesped){
-        System.out.println("Departamento: " + direccion.getDepartamento() + " ¿Desea modificarlo? (S/N)");
+        System.out.print("Departamento: " + direccion.getDepartamento() + " ¿Desea modificarlo? (S/N): ");
         String eleccion = aceptacion(scanner);
+        System.out.println();
         if(eleccion.equals("S")){
             direccion.setDepartamento(formularioHuesped.verificarDepartamento());
         }
@@ -210,8 +230,9 @@ public class ModificarHuesped {
     }
 
     public void modificarCodigoPostal(Direccion direccion, Scanner scanner, FormularioHuesped formularioHuesped){
-        System.out.println("Código Postal: " + direccion.getCodigoPostal() + " ¿Desea modificarlo? (S/N)");
+        System.out.print("Código Postal: " + direccion.getCodigoPostal() + " ¿Desea modificarlo? (S/N): ");
         String eleccion = aceptacion(scanner);
+        System.out.println();
         if(eleccion.equals("S")){
             direccion.setCodigoPostal(formularioHuesped.verificarCodigoPostal());
         }
@@ -224,6 +245,7 @@ public class ModificarHuesped {
                 return eleccion;
             }else{
                 System.out.println("Entrada inválida. Por favor ingrese 'S' para Sí o 'N' para No.");
+                System.out.print("Reingrese su elección: ");
             }
         }while(true);
     }
