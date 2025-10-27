@@ -14,16 +14,10 @@ import java.util.stream.Collectors;
 
 public class GestorHuesped {
     
-    private static GestorHuesped instancia;
-    private HuespedDAO huespedDAO = HuespedDAO.getInstancia();
-
-    private GestorHuesped() {}
-
-    public static GestorHuesped getInstancia() {
-        if (instancia == null) {
-            instancia = new GestorHuesped();
-        }
-        return instancia;
+    private final HuespedDAO huespedDAO;
+    
+    public GestorHuesped(HuespedDAO huespedDAO) {
+       this.huespedDAO = huespedDAO;
     }
 
     public List<Huesped> buscarHuesped(String apellido, String nombres, TipoDocumento tipoDocumento, String numeroDocumento) {

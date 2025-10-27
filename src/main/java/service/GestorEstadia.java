@@ -7,17 +7,10 @@ import repository.HuespedDAO;
 
 public class GestorEstadia{
 
-    private static GestorEstadia instancia;
-    private EstadiaDAO estadiaDAO = EstadiaDAO.getInstancia();
+    private final EstadiaDAO estadiaDAO;
 
-
-    private GestorEstadia() {}
-
-    public static GestorEstadia getInstancia() {
-        if (instancia == null) {
-            instancia = new GestorEstadia();
-        }
-        return instancia;
+    public GestorEstadia(EstadiaDAO estadiaDAO) {
+       this.estadiaDAO = estadiaDAO;
     }
 
     public boolean asociarHuespedAEstadia(int estadiaID, Huesped titular, List<Huesped> acompaniantes){

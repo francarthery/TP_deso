@@ -5,17 +5,10 @@ import repository.UsuarioDAO;
 
 public class GestorUsuario {
 
-    private static GestorUsuario instancia;
-    private UsuarioDAO usuarioDAO = UsuarioDAO.getInstancia();
+    private final UsuarioDAO usuarioDAO;
             
-    private GestorUsuario() { //Constructor privado para singleton
-    }
-    
-    public static GestorUsuario getInstancia() {
-        if (instancia == null) {
-            instancia = new GestorUsuario();
-        }
-        return instancia;
+    public GestorUsuario(UsuarioDAO usuarioDAO) {
+        this.usuarioDAO = usuarioDAO;
     }
 
     public boolean validarLogin(String nombreUsuario, String contrasena) throws UsuarioNoValidoException {

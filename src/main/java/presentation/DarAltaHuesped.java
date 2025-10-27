@@ -81,6 +81,7 @@ public class DarAltaHuesped {
             System.out.print("¿Desea cargar otro huésped? (S/N): ");
             opcion = aceptacion(scanner);
             opcion = opcion.toUpperCase();
+            System.out.println();
         } while (opcion.equals("S"));
     }
 

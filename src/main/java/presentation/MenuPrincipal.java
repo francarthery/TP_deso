@@ -1,12 +1,21 @@
 package presentation;
+
 import domain.Huesped;
 import service.GestorEstadia;
 import service.GestorHuesped;
+
 import java.util.Scanner;
-import java.util.List;
 
 public class MenuPrincipal {
-    
+
+    private final GestorHuesped gestorHuesped;
+    private final GestorEstadia gestorEstadia;
+
+    public MenuPrincipal(GestorHuesped gestorHuesped, GestorEstadia gestorEstadia) {
+        this.gestorHuesped = gestorHuesped;
+        this.gestorEstadia = gestorEstadia;
+    }
+
     public void menuPrincipal(Scanner scanner) {
         int opcion = -1;
 
@@ -20,9 +29,6 @@ public class MenuPrincipal {
             opcion = scanner.nextInt();
             System.out.println();
             scanner.nextLine();
-            
-            GestorHuesped gestorHuesped = GestorHuesped.getInstancia(); 
-            GestorEstadia gestorEstadia = GestorEstadia.getInstancia();
 
             switch (opcion) {
                 case 1:
