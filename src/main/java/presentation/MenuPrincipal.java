@@ -46,7 +46,6 @@ public class MenuPrincipal {
                         break;
                     default:
                         System.out.println("Opción no válida. Por favor, intente de nuevo.");
-                        menuPrincipal(scanner);
                         break;
                 }
             } catch (InputMismatchException e) {
