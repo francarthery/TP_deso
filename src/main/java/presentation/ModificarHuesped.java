@@ -2,14 +2,8 @@ package presentation;
 import service.GestorEstadia;
 import service.GestorHuesped;
 import domain.Huesped;
-
-import presentation.FormularioHuesped;
-import java.text.Normalizer.Form;
 import java.util.Scanner;
 import domain.Direccion;
-import java.time.LocalDate;
-import domain.TipoDocumento;
-import domain.IVA;
 
 public class ModificarHuesped {
     
