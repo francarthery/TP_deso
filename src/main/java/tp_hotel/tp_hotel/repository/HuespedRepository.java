@@ -7,5 +7,5 @@ import tp_hotel.tp_hotel.model.TipoDocumento;
 
 @Repository
 public interface HuespedRepository extends JpaRepository<Huesped, Integer> {
-    boolean existsByDocumentoAndNumeroDocumento(TipoDocumento documento, String numeroDocumento);
+    boolean existsByTipoDocumentoAndNumeroDocumento(TipoDocumento tipoDocumento, String numeroDocumento);
 }

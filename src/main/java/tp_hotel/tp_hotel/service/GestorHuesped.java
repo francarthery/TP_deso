@@ -37,7 +37,7 @@ public class GestorHuesped {
         }
 
         if (tipoDocumento != null) {
-            stream = stream.filter(h -> h.getDocumento() == tipoDocumento);
+            stream = stream.filter(h -> h.getTipoDocumento() == tipoDocumento);
         }
 
         if (numeroDocumento != null && !numeroDocumento.isEmpty()) {
@@ -48,7 +48,7 @@ public class GestorHuesped {
     }
 
     public boolean documentoExistente(TipoDocumento tipoDocumento, String numeroDocumento){
-        return huespedRepository.existsByDocumentoAndNumeroDocumento(tipoDocumento, numeroDocumento);
+        return huespedRepository.existsByTipoDocumentoAndNumeroDocumento(tipoDocumento, numeroDocumento);
     }
 
     public Huesped darAltaHuesped(String apellido, String nombres, TipoDocumento documento, String numeroDocumento,
@@ -71,7 +71,7 @@ public class GestorHuesped {
         Huesped huesped = Huesped.builder()
                 .apellido(apellido)
                 .nombres(nombres)
-                .documento(documento)
+                .tipoDocumento(documento)
                 .numeroDocumento(numeroDocumento)
                 .cuit(cuit)
                 .posicionFrenteAlIVA(posicionFrenteAlIVA)
@@ -83,6 +83,9 @@ public class GestorHuesped {
                 .direccion(direccion)
                 .build();
         
+        if(huesped == null){
+            return null;
+        }
         return huespedRepository.save(huesped);
     }
 
@@ -108,5 +111,9 @@ public class GestorHuesped {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public Huesped buscarHuespedPorId(int id) {
+        return huespedRepository.findById(id).orElse(null);
     }
 }

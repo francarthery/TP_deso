@@ -9,3 +9,7 @@ Abrir consola MySQL: docker exec -it tp_hotel_mysql mysql -u root -proot
 Seleccionar DB: USE tp_hotel_db;
 Mostrar tablas: SHOW TABLES;
 Mostrar una tabla: DESCRIBE nombre;
+
+##
+Detener container (-v hace que se borre toda la BD)
+docker-compose down [-v] 

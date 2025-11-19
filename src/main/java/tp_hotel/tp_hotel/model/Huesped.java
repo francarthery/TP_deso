@@ -36,7 +36,7 @@ public class Huesped {
     private String nombres;
     
     @Enumerated(EnumType.STRING)
-    private TipoDocumento documento;
+    private TipoDocumento tipoDocumento;
     
     @Column(length = 20, nullable = false, unique = true)
     private String numeroDocumento;
