@@ -1,20 +1,23 @@
-package tp_hotel.tp_hotel.model;
+package tp_hotel.tp_hotel.domain;
 
+import java.time.LocalDate;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-public class Hotel {
-    
+@NoArgsConstructor
+@AllArgsConstructor
+public class Estadia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    private String name;
-    private String address;
-    private Integer stars;
+    private LocalDate checkIn;
+    private LocalDate checkOut;    
 }
