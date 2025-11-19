@@ -1,10 +1,10 @@
 INSERT INTO usuario (username, password, rol) VALUES
 -- Administradores del sistema
-('admin', '123456', 'ADMINISTRADOR'),
-('admin.sistemas', '123456', 'ADMINISTRADOR'),
-('gerente.general', '123456', 'ADMINISTRADOR'),
-('super.usuario', '123456', 'ADMINISTRADOR'),
-('director.hotel', '123456', 'ADMINISTRADOR'),
+('francarthery', '46296695', 'ADMINISTRADOR'),
+('taiomarelli', '12345678', 'ADMINISTRADOR'),
+('masterlauty01', '46297001', 'ADMINISTRADOR'),
+('gerohassan', '46492893', 'ADMINISTRADOR'),
+('dodo', '12346578', 'ADMINISTRADOR'),
 
 -- Conserjes (Turno Mañana)
 ('conserje.ana', '123456', 'CONSERJE'),

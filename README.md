@@ -10,6 +10,8 @@ Seleccionar DB: USE tp_hotel_db;
 Mostrar tablas: SHOW TABLES;
 Mostrar una tabla: DESCRIBE nombre;
 
+En la carpeta scripts hay datos de prueba para insertar en la BD.
+
 ##
-Detener container (-v hace que se borre toda la BD)
+Detener container (-v hace que ademas se borre toda la info de la BD):
 docker-compose down [-v] 
