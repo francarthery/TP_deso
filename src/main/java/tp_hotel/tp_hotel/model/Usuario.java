@@ -1,4 +1,4 @@
-package tp_hotel.tp_hotel.domain;
+package tp_hotel.tp_hotel.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Column;
