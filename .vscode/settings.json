@@ -1,3 +1,4 @@
 {
-    "java.configuration.upLocalDateBuildConfiguration": "interactive"
+    "java.configuration.upLocalDateBuildConfiguration": "interactive",
+    "java.compile.nullAnalysis.mode": "automatic"
 }

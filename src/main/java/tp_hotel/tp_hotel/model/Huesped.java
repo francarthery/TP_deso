@@ -1,4 +1,4 @@
-package tp_hotel.tp_hotel.domain;
+package tp_hotel.tp_hotel.model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -67,4 +67,8 @@ public class Huesped {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<Estadia> estadias = new ArrayList<>();
+
+    public void agregarEstadia(Estadia estadia) {
+        this.estadias.add(estadia);
+    }
 }
