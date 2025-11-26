@@ -1,12 +1,10 @@
 package tp_hotel.tp_hotel.repository;
 
 import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import tp_hotel.tp_hotel.model.Estadia;
+import tp_hotel.tp_hotel.model.Reserva;
 
 @Repository
-public interface EstadiaRepository extends JpaRepository<Estadia, Long> {
-    List<Estadia> findByHabitacionNumero(String numero);
+public interface ReservaRepository extends JpaRepository<Reserva, Integer> {
 }

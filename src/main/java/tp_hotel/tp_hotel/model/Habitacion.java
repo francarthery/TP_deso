@@ -1,0 +1,54 @@
+package tp_hotel.tp_hotel.model;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Habitacion {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(length = 10, nullable = false)
+    private String numero;
+
+    @Column(length = 10, nullable = false)
+    private String piso;
+
+    private Float costoNoche; 
+
+    @Enumerated(EnumType.STRING)
+    private CategoriaHabitacion categoria;
+
+    @Enumerated(EnumType.STRING)
+    private EstadoHabitacion estado;
+
+    @Enumerated(EnumType.STRING)
+    private EstadoHabitacion estadoActual;
+
+    @OneToMany(mappedBy = "habitacion")
+    @ToString.Exclude
+    private List<Reserva> reservas = new ArrayList<>();
+
+    @OneToMany(mappedBy = "habitacion")
+    @ToString.Exclude
+    private List<Estadia> estadias = new ArrayList<>();
+}

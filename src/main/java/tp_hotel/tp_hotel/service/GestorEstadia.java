@@ -26,8 +26,7 @@ public class GestorEstadia {
             System.out.println("Estadía no encontrada");
             return false;
         }
-
-        // Asociar al titular
+        
         if (titular != null) {
             titular.agregarEstadia(estadia);
             huespedRepository.save(titular);
@@ -36,7 +35,6 @@ public class GestorEstadia {
             return false;
         }
 
-        // Asociar a los acompañantes
         for (Huesped huesped : acompaniantes) {
             if (huesped != null) {
                 huesped.agregarEstadia(estadia);
@@ -53,5 +51,11 @@ public class GestorEstadia {
         return huespedRepository.findById(huespedID)
                 .map(h -> !h.getEstadias().isEmpty())
                 .orElse(false);
+    }
+    
+    public void iniciarEstadia(Estadia e) {
+    }
+
+    public void finalizarEstadia(int id) {
     }
 }
