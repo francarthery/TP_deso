@@ -14,10 +14,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Data
@@ -64,10 +66,20 @@ public class Huesped {
     @Embedded
     private Direccion direccion;
     
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "huesped", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
+    @ToString.Exclude
     private List<Estadia> estadias = new ArrayList<>();
 
+    @OneToMany(mappedBy = "titular", cascade = CascadeType.ALL)
+    @Builder.Default
+    @ToString.Exclude
+    private List<Reserva> reservas = new ArrayList<>();
+
+    @OneToOne(mappedBy = "huesped", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private PersonaFisica personaFisica;
+    
     public void agregarEstadia(Estadia estadia) {
         this.estadias.add(estadia);
     }
