@@ -1,5 +1,7 @@
 package tp_hotel.tp_hotel.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +42,7 @@ public class Estadia {
 
     @ManyToOne
     @JoinColumn(name = "huesped_id", nullable = false)
+    @JsonIgnoreProperties({"estadias", "reservas"})
     private Huesped huesped;
 
     @OneToMany(mappedBy = "estadia", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -48,9 +51,11 @@ public class Estadia {
 
     @OneToOne
     @JoinColumn(name = "reserva_id")
+    @JsonIgnoreProperties("estadia")
     private Reserva reserva;
 
     @OneToOne(mappedBy = "estadia", cascade = CascadeType.ALL)
     @ToString.Exclude
+    @JsonIgnore
     private Factura factura;
 }

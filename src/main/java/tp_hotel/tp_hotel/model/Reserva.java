@@ -1,5 +1,7 @@
 package tp_hotel.tp_hotel.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,9 +32,11 @@ public class Reserva {
 
     @ManyToOne
     @JoinColumn(name = "huesped_id", nullable = false)
+    @JsonIgnoreProperties({"reservas", "estadias"})
     private Huesped titular;
 
     @OneToOne(mappedBy = "reserva")
     @ToString.Exclude
+    @JsonIgnore
     private Estadia estadia;
 }
