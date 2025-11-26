@@ -11,6 +11,7 @@ import tp_hotel.tp_hotel.model.Estadia;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/habitaciones")
+@CrossOrigin(origins = "http://localhost:3000")
 public class HabitacionController{
     
     private final GestorHabitacion gestorHabitacion;

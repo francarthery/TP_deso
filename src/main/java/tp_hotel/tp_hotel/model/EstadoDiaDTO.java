@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 public class EstadoDiaDTO {
     private LocalDate fecha;
     private EstadoHabitacion estado;
-    private Integer idReferencia; // ID de la Reserva o Estadia
+    private Integer idReferencia;
 }
