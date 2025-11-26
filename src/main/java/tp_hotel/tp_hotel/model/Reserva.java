@@ -25,7 +25,7 @@ public class Reserva {
     private EstadoReserva estado;
 
     @ManyToOne
-    @JoinColumn(name = "habitacion_id", nullable = false)
+    @JoinColumn(name = "habitacion_numero", nullable = false)
     private Habitacion habitacion;
 
     @ManyToOne

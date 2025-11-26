@@ -1,24 +1,100 @@
 package tp_hotel.tp_hotel.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import tp_hotel.tp_hotel.model.Estadia;
+import tp_hotel.tp_hotel.model.EstadiaDTO;
+import tp_hotel.tp_hotel.model.EstadoReserva;
+import tp_hotel.tp_hotel.model.Habitacion;
 import tp_hotel.tp_hotel.model.Huesped;
+import tp_hotel.tp_hotel.model.Reserva;
 import tp_hotel.tp_hotel.repository.EstadiaRepository;
+import tp_hotel.tp_hotel.repository.HabitacionRepository;
 import tp_hotel.tp_hotel.repository.HuespedRepository;
+import tp_hotel.tp_hotel.repository.ReservaRepository;
 
 @Service
 public class GestorEstadia {
 
     private final EstadiaRepository estadiaRepository;
     private final HuespedRepository huespedRepository;
+    private final HabitacionRepository habitacionRepository;
+    private final ReservaRepository reservaRepository;
 
     @Autowired
-    public GestorEstadia(EstadiaRepository estadiaRepository, HuespedRepository huespedRepository) {
+    public GestorEstadia(EstadiaRepository estadiaRepository, HuespedRepository huespedRepository, 
+                         HabitacionRepository habitacionRepository, ReservaRepository reservaRepository) {
        this.estadiaRepository = estadiaRepository;
        this.huespedRepository = huespedRepository;
+       this.habitacionRepository = habitacionRepository;
+       this.reservaRepository = reservaRepository;
     }
+
+    @Transactional
+    public List<Estadia> crearEstadias(List<EstadiaDTO> estadiasDTO) {
+        List<Estadia> estadiasCreadas = new ArrayList<>();
+
+        for (EstadiaDTO dto : estadiasDTO) {
+            // Validaciones básicas
+            if (dto.getNumeroHabitacion() == null || dto.getIdHuesped() == null) {
+                throw new IllegalArgumentException("Faltan datos obligatorios (Habitación o Huésped).");
+            }
+            if (dto.getCheckIn() == null || dto.getCheckOut() == null) {
+                throw new IllegalArgumentException("Las fechas de Check-In y Check-Out son obligatorias.");
+            }
+            if (dto.getCheckIn().isAfter(dto.getCheckOut())) {
+                throw new IllegalArgumentException("La fecha de Check-In no puede ser posterior al Check-Out.");
+            }
+
+            // Buscar entidades
+            Habitacion habitacion = habitacionRepository.findById(dto.getNumeroHabitacion())
+                    .orElseThrow(() -> new IllegalArgumentException("Habitación no encontrada: " + dto.getNumeroHabitacion()));
+            
+            Huesped huesped = huespedRepository.findById(dto.getIdHuesped())
+                    .orElseThrow(() -> new IllegalArgumentException("Huésped no encontrado: " + dto.getIdHuesped()));
+
+            Reserva reserva = null;
+            if (dto.getIdReserva() != null) {
+                reserva = reservaRepository.findById(dto.getIdReserva())
+                        .orElseThrow(() -> new IllegalArgumentException("Reserva no encontrada: " + dto.getIdReserva()));
+                
+                // Validar que la reserva corresponda a la habitación y huésped (opcional pero recomendado)
+                if (!reserva.getHabitacion().getNumero().equals(habitacion.getNumero())) {
+                     throw new IllegalArgumentException("La reserva no coincide con la habitación seleccionada.");
+                }
+                
+                // Actualizar estado de la reserva si es necesario
+                // reserva.setEstado(EstadoReserva.OCUPADA); // Si tuvieras ese estado
+            }
+
+            // Validar disponibilidad (Check-in)
+            // Verificar si la habitación ya está ocupada en esas fechas por OTRA estadía
+            boolean ocupada = estadiaRepository.findAll().stream().anyMatch(e -> 
+                e.getHabitacion().getNumero().equals(habitacion.getNumero()) &&
+                !dto.getCheckIn().isAfter(e.getCheckOut()) && 
+                !dto.getCheckOut().isBefore(e.getCheckIn())
+            );
+
+            if (ocupada) {
+                throw new IllegalArgumentException("La habitación " + habitacion.getNumero() + " ya está ocupada en las fechas seleccionadas.");
+            }
+
+            Estadia estadia = new Estadia();
+            estadia.setCheckIn(dto.getCheckIn());
+            estadia.setCheckOut(dto.getCheckOut());
+            estadia.setHabitacion(habitacion);
+            estadia.setHuesped(huesped);
+            estadia.setReserva(reserva);
+
+            estadiasCreadas.add(estadiaRepository.save(estadia));
+        }
+        return estadiasCreadas;
+    }
+
 
     public boolean asociarHuespedAEstadia(long estadiaID, Huesped titular, List<Huesped> acompaniantes){
         Estadia estadia = estadiaRepository.findById(estadiaID).orElse(null);

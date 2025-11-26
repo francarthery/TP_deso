@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tp_hotel.tp_hotel.model.Huesped;
+import tp_hotel.tp_hotel.model.HuespedDTO;
 import tp_hotel.tp_hotel.model.TipoDocumento;
 import tp_hotel.tp_hotel.service.GestorEstadia;
 import tp_hotel.tp_hotel.service.GestorHuesped;
@@ -47,19 +48,12 @@ public class HuespedController {
 
     @PostMapping
     public ResponseEntity<?> crearHuesped(@RequestBody Huesped huesped) {
-        if (gestorHuesped.documentoExistente(huesped.getTipoDocumento(), huesped.getNumeroDocumento())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("El huésped con ese documento ya existe.");
+        try {
+            Huesped nuevoHuesped = gestorHuesped.registrarHuesped(huesped);
+            return ResponseEntity.status(HttpStatus.CREATED).body(nuevoHuesped);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
-        
-        Huesped nuevoHuesped = gestorHuesped.darAltaHuesped(
-                huesped.getApellido(), huesped.getNombres(), huesped.getTipoDocumento(), huesped.getNumeroDocumento(),
-                huesped.getCuit(), huesped.getPosicionFrenteAlIVA(), huesped.getFechaDeNacimiento(),
-                huesped.getTelefono(), huesped.getEmail(), huesped.getOcupacion(), huesped.getNacionalidad(),
-                huesped.getDireccion().getPais(), huesped.getDireccion().getProvincia(), huesped.getDireccion().getLocalidad(),
-                huesped.getDireccion().getCalle(), huesped.getDireccion().getNumero(), huesped.getDireccion().getPiso(),
-                huesped.getDireccion().getDepartamento(), huesped.getDireccion().getCodigoPostal()
-        );
-        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoHuesped);
     }
 
     @PutMapping("/{id}")

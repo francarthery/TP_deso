@@ -16,7 +16,6 @@ public class PersonaJuridica extends ResponsablePago {
     @Column(length = 20)
     private String cuit;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "direccion_id")
+    @Embedded
     private Direccion direccion;
 }

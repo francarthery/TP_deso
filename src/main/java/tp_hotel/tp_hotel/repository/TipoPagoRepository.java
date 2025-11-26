@@ -10,6 +10,6 @@ import tp_hotel.tp_hotel.model.TipoPago;
 @Repository
 public interface TipoPagoRepository extends JpaRepository<TipoPago, Integer> {
 
-    @Query("SELECT tp FROM Pago JOIN pago.formasDePago tp WHERE pago.factura.numero = :numero")
+    @Query("SELECT tp FROM Pago pago JOIN pago.formasDePago tp WHERE pago.factura.numero = :numero")
     List<TipoPago> findByFacturaNumero(@Param("numero") String numero);
 }

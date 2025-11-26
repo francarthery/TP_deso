@@ -10,5 +10,4 @@ public abstract class ResponsablePago {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
 }

@@ -13,13 +13,13 @@ import tp_hotel.tp_hotel.model.CategoriaHabitacion;
 import tp_hotel.tp_hotel.model.Habitacion;
 
 @Repository
-public interface HabitacionRepository extends JpaRepository<Habitacion, Integer> {
-    Optional<Habitacion> findByNumero(String numero);
+public interface HabitacionRepository extends JpaRepository<Habitacion, String> {
+    // Optional<Habitacion> findByNumero(String numero); // Ya es el ID
 
-    @Query("SELECT habitacion FROM Habitacion WHERE habitacion.categoria = :categoria AND habitacion.id NOT IN " +
-           "(SELECT reserva.habitacion.id FROM Reserva WHERE " +
-           "reserva.estado <> 'CANCELADA' AND " +
-           "(:desde <= reserva.fechaFin AND :hasta >= reserva.fechaInicio))")
+    @Query("SELECT h FROM Habitacion h WHERE h.categoria = :categoria AND h.numero NOT IN " +
+           "(SELECT r.habitacion.numero FROM Reserva r WHERE " +
+           "r.estado <> 'CANCELADA' AND " +
+           "(:desde <= r.fechaFin AND :hasta >= r.fechaInicio))")
     List<Habitacion> buscarDisponibles(@Param("categoria") CategoriaHabitacion categoria,
                                        @Param("desde") LocalDate desde,
                                        @Param("hasta") LocalDate hasta);

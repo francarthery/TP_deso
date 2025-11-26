@@ -116,4 +116,11 @@ public class GestorHuesped {
     public Huesped buscarHuespedPorId(int id) {
         return huespedRepository.findById(id).orElse(null);
     }
+
+    public Huesped registrarHuesped(Huesped huesped) {
+        if (documentoExistente(huesped.getTipoDocumento(), huesped.getNumeroDocumento())) {
+            throw new IllegalArgumentException("¡CUIDADO! El tipo y número de documento ya existen en el sistema.");
+        }
+        return huespedRepository.save(huesped);
+    }
 }

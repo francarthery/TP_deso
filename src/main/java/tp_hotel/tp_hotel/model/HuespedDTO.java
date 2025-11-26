@@ -21,4 +21,5 @@ public class HuespedDTO {
     private String nacionalidad;
     private String telefono;
     private String email;
+    private DireccionDTO direccion;
 }
