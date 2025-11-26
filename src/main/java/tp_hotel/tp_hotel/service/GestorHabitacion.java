@@ -75,7 +75,7 @@ public class GestorHabitacion {
                         estadoDia.setEstado(EstadoHabitacion.RESERVADA);
                         estadoDia.setIdReferencia(reservaActiva.getId());
                     } else {
-                        estadoDia.setEstado(EstadoHabitacion.LIBRE);
+                        estadoDia.setEstado(EstadoHabitacion.DISPONIBLE);
                     }
                 }
                 estadosDia.add(estadoDia);

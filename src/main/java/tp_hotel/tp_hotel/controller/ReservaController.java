@@ -28,10 +28,10 @@ public class ReservaController {
 
     @PostMapping
     public ResponseEntity<?> crearReservas(@RequestBody List<ReservaDTO> reservasDTO) {
+        // Procesar la creación de reservas
         try {
             List<Reserva> reservasCreadas = gestorReserva.crearReservas(reservasDTO);
             
-            // Convertir a DTO para la respuesta (opcional, pero recomendado para no exponer entidades)
             List<ReservaDTO> respuesta = reservasCreadas.stream().map(r -> {
                 ReservaDTO dto = new ReservaDTO();
                 dto.setId(r.getId());
@@ -39,7 +39,6 @@ public class ReservaController {
                 dto.setFechaFin(r.getFechaFin());
                 dto.setEstado(r.getEstado());
                 dto.setFechaCreacion(r.getFechaCreacion());
-                dto.setIdHabitacion(r.getHabitacion().getId());
                 dto.setNumeroHabitacion(r.getHabitacion().getNumero());
                 dto.setIdHuesped(r.getTitular().getId());
                 dto.setNombreHuesped(r.getTitular().getNombres());

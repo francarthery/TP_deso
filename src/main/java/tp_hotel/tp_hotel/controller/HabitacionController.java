@@ -61,7 +61,6 @@ public class HabitacionController{
                 dto.setCheckIn(e.getCheckIn());
                 dto.setCheckOut(e.getCheckOut());
                 dto.setNumeroHabitacion(e.getHabitacion().getNumero());
-                dto.setNumeroHabitacion(e.getHabitacion().getNumero());
                 dto.setIdHuesped(e.getHuesped().getId());
                 dto.setNombreHuesped(e.getHuesped().getNombres());
                 dto.setApellidoHuesped(e.getHuesped().getApellido());

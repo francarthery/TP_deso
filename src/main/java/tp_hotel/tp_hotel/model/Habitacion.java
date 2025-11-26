@@ -37,9 +37,6 @@ public class Habitacion {
     private CategoriaHabitacion categoria;
 
     @Enumerated(EnumType.STRING)
-    private EstadoHabitacion estado;
-
-    @Enumerated(EnumType.STRING)
     private EstadoHabitacion estadoActual;
 
     @OneToMany(mappedBy = "habitacion")
