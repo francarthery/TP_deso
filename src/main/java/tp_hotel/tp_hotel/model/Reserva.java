@@ -19,8 +19,11 @@ public class Reserva {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(nullable = false)
     private LocalDate fechaInicio;
+    @Column(nullable = false)
     private LocalDate fechaFin;
+    @Column(nullable = false)
     private LocalDateTime fechaCreacion;
 
     @Enumerated(EnumType.STRING)

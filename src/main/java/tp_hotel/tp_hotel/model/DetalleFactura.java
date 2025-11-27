@@ -14,16 +14,16 @@ public class DetalleFactura {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false)
+    @Column(length = 255, nullable = false)
     private String descripcion;
     
     @Column(nullable = false)
     private Integer cantidad;
     
-    @Column(nullable = false)
+    @Column(length = 10, nullable = false)
     private Float precioUnitario;
     
-    @Column(nullable = false)
+    @Column(length = 12, nullable = false)
     private Float subtotal;
 
     @ManyToOne

@@ -17,10 +17,8 @@ public class Factura {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id; 
-
-    @Column(length = 50, unique = true, nullable = false)
-    private String numero; 
-
+    
+    @Column(nullable = false)
     private LocalDate fecha;
 
     @Enumerated(EnumType.STRING)
@@ -29,6 +27,7 @@ public class Factura {
     @Enumerated(EnumType.STRING)
     private EstadoFactura estado;
 
+    @Column(length = 12, nullable = false)
     private Float total;
 
     @ManyToOne

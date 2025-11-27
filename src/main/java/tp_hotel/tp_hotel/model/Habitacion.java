@@ -26,7 +26,7 @@ import lombok.ToString;
 public class Habitacion {
     
     @Id
-    @Column(length = 10, nullable = false)
+    @Column(length = 4, nullable = false)
     private String numero;
 
     @Column(length = 10, nullable = false)

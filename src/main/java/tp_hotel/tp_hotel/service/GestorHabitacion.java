@@ -67,7 +67,7 @@ public class GestorHabitacion {
                     Reserva reservaActiva = reservas.stream()
                         .filter(r -> r.getHabitacion().getNumero().equals(habitacion.getNumero()) &&
                                 !finalFecha.isBefore(r.getFechaInicio()) && finalFecha.isBefore(r.getFechaFin()) &&
-                                (r.getEstado() == null || r.getEstado().toString().equals("RESERVADA")))
+                                !r.getEstado().toString().equals("CANCELADA"))
                         .findFirst()
                         .orElse(null);
                     

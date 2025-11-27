@@ -15,10 +15,13 @@ public class Consumo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(length = 255, nullable = false)
     private String descripcion;
 
+    @Column(length = 10, nullable = false)
     private Float monto;
     
+    @Column(nullable = false)
     private LocalDate fecha;
 
     @ManyToOne

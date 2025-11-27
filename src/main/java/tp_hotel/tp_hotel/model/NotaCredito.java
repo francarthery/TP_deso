@@ -15,10 +15,13 @@ public class NotaCredito {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(unique = true)
+    @Column(length = 50, unique = true)
     private String numero;
     
+    @Column(nullable = false)
     private LocalDate fecha;
+
+    @Column(length = 12, nullable = false)
     private Float monto;
 
     @ManyToOne

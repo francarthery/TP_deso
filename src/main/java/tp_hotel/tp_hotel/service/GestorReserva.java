@@ -1,5 +1,6 @@
 package tp_hotel.tp_hotel.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,5 +66,19 @@ public class GestorReserva {
         }
 
         return reservasCreadas;
+    }
+    
+    public void confirmarReserva(Reserva r) {
+    }
+
+    public void cancelarReserva(int id) {
+    }
+
+    public List<Reserva> mostrarReservasPorHuesped(String apellido, String nombre) {
+        return null;
+    }
+
+    public List<Habitacion> obtenerDisponibilidad(LocalDate desde, LocalDate hasta) {
+        return null;
     }
 }

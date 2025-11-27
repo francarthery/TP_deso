@@ -42,7 +42,7 @@ public class Huesped {
     @Enumerated(EnumType.STRING)
     private TipoDocumento tipoDocumento;
     
-    @Column(length = 10, nullable = false)
+    @Column(length = 10, nullable = false, unique = true)
     private String numeroDocumento;
 
     @Column(length = 11)
@@ -83,6 +83,7 @@ public class Huesped {
     
     @OneToOne(mappedBy = "huesped", cascade = CascadeType.ALL)
     @ToString.Exclude
+    @JsonIgnore
     private PersonaFisica personaFisica;
     
     public void agregarEstadia(Estadia estadia) {

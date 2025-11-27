@@ -16,7 +16,10 @@ public class Pago {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(nullable = false)
     private LocalDate fechaPago;
+
+    @Column(length = 12, nullable = false)
     private Float montoTotal;
 
     @ManyToOne
