@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -40,18 +42,19 @@ public class Huesped {
     @Enumerated(EnumType.STRING)
     private TipoDocumento tipoDocumento;
     
-    @Column(length = 20, nullable = false, unique = true)
+    @Column(length = 10, nullable = false)
     private String numeroDocumento;
 
-    @Column(length = 20)
+    @Column(length = 11)
     private String cuit;
     
     @Enumerated(EnumType.STRING)
     private IVA posicionFrenteAlIVA;
     
+    @Column(nullable = false)
     private LocalDate fechaDeNacimiento;
 
-    @Column(length = 20)
+    @Column(length = 20, nullable = false)
     private String telefono;
 
     @Column(length = 100)
@@ -60,7 +63,7 @@ public class Huesped {
     @Column(length = 50)
     private String ocupacion;
 
-    @Column(length = 50)
+    @Column(length = 85, nullable = false)
     private String nacionalidad;
     
     @Embedded
@@ -69,13 +72,15 @@ public class Huesped {
     @OneToMany(mappedBy = "huesped", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     @ToString.Exclude
+    @JsonIgnore
     private List<Estadia> estadias = new ArrayList<>();
 
     @OneToMany(mappedBy = "titular", cascade = CascadeType.ALL)
     @Builder.Default
     @ToString.Exclude
+    @JsonIgnore
     private List<Reserva> reservas = new ArrayList<>();
-
+    
     @OneToOne(mappedBy = "huesped", cascade = CascadeType.ALL)
     @ToString.Exclude
     private PersonaFisica personaFisica;

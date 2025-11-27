@@ -42,7 +42,7 @@ public class Estadia {
 
     @ManyToOne
     @JoinColumn(name = "huesped_id", nullable = false)
-    @JsonIgnoreProperties({"estadias", "reservas"})
+    // @JsonIgnoreProperties({"estadias", "reservas"})
     private Huesped huesped;
 
     @OneToMany(mappedBy = "estadia", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -53,7 +53,7 @@ public class Estadia {
     @JoinColumn(name = "reserva_id")
     @JsonIgnoreProperties("estadia")
     private Reserva reserva;
-
+    
     @OneToOne(mappedBy = "estadia", cascade = CascadeType.ALL)
     @ToString.Exclude
     @JsonIgnore
