@@ -11,6 +11,7 @@ import tp_hotel.tp_hotel.model.IVA;
 @NoArgsConstructor
 @AllArgsConstructor
 public class HuespedDTO {
+    private Integer id;
     private String apellido;
     private String nombres;
     private TipoDocumento tipoDocumento;
@@ -24,6 +25,7 @@ public class HuespedDTO {
     private DireccionDTO direccion;
 
     public HuespedDTO(Huesped huesped) {
+        this.id = huesped.getId();
         this.apellido = huesped.getApellido();
         this.nombres = huesped.getNombres();
         this.tipoDocumento = huesped.getTipoDocumento();

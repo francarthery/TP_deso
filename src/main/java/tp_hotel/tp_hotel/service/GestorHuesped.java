@@ -25,26 +25,12 @@ public class GestorHuesped {
     }
 
     public List<Huesped> buscarHuesped(String apellido, String nombres, TipoDocumento tipoDocumento, String numeroDocumento) {
-        List<Huesped> huespedes = huespedRepository.findAll();
+        // Si los strings vienen vacíos (""), los pasamos a null para que la query los ignore correctamente
+        String apellidoFiltro = (apellido != null && !apellido.isEmpty()) ? apellido : null;
+        String nombresFiltro = (nombres != null && !nombres.isEmpty()) ? nombres : null;
+        String numeroDocumentoFiltro = (numeroDocumento != null && !numeroDocumento.isEmpty()) ? numeroDocumento : null;
 
-        Stream<Huesped> stream = huespedes.stream();
-        if (apellido != null && !apellido.isEmpty()) {
-            stream = stream.filter(h -> h.getApellido().equalsIgnoreCase(apellido));
-        }
-
-        if (nombres != null && !nombres.isEmpty()) {
-            stream = stream.filter(h -> h.getNombres().equalsIgnoreCase(nombres));
-        }
-
-        if (tipoDocumento != null) {
-            stream = stream.filter(h -> h.getTipoDocumento() == tipoDocumento);
-        }
-
-        if (numeroDocumento != null && !numeroDocumento.isEmpty()) {
-            stream = stream.filter(h -> h.getNumeroDocumento().equalsIgnoreCase(numeroDocumento));
-        }
-
-        return stream.collect(Collectors.toList());
+        return huespedRepository.buscarConFiltros(apellidoFiltro, nombresFiltro, tipoDocumento, numeroDocumentoFiltro);
     }
 
     public boolean documentoExistente(TipoDocumento tipoDocumento, String numeroDocumento){
