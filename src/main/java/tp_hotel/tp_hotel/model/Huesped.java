@@ -74,12 +74,6 @@ public class Huesped {
     @ToString.Exclude
     @JsonIgnore
     private List<Estadia> estadias = new ArrayList<>();
-
-    @OneToMany(mappedBy = "titular", cascade = CascadeType.ALL)
-    @Builder.Default
-    @ToString.Exclude
-    @JsonIgnore
-    private List<Reserva> reservas = new ArrayList<>();
     
     @OneToOne(mappedBy = "huesped", cascade = CascadeType.ALL)
     @ToString.Exclude

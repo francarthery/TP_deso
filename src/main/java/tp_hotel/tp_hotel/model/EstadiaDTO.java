@@ -16,16 +16,12 @@ public class EstadiaDTO {
     private LocalDate checkIn;
     private LocalDate checkOut;
     
-    // IDs para creación
-    private String numeroHabitacion; // Ahora es el ID
+    private String numeroHabitacion;
     private Integer idHuesped;
-    private Integer idReserva; // Opcional, si viene de una reserva
-    
-    // Datos informativos
-    // private String numeroHabitacion; // Ya está arriba
+    private Integer idReserva;
+
     private String nombreHuesped;
     private String apellidoHuesped;
-    
+
     private List<ConsumoDTO> consumos = new ArrayList<>();
-    // Evitamos anidar entidades completas como Reserva o Factura para no ciclar
 }

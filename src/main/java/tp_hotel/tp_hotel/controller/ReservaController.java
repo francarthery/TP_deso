@@ -11,11 +11,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
-
+import org.springframework.web.bind.annotation.GetMapping;
 
 import tp_hotel.tp_hotel.model.Reserva;
 import tp_hotel.tp_hotel.model.ReservaDTO;
 import tp_hotel.tp_hotel.service.GestorReserva;
+import tp_hotel.tp_hotel.model.EstadiaDTO;
 
 @RestController
 @RequestMapping("/api/reservas")
@@ -55,4 +56,30 @@ public class ReservaController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al procesar las reservas.");
         }
     }
+
+    @GetMapping("/verificar")
+    public ResponseEntity<?> verificarReservas(@RequestBody EstadiaDTO estadiaDTO){
+        try {
+            List<Reserva> reservasSolapadas = gestorReserva.buscarReservasSolapadas(estadiaDTO);
+            
+            List<ReservaDTO> respuesta = reservasSolapadas.stream().map(r -> {
+                ReservaDTO dto = new ReservaDTO();
+                dto.setId(r.getId());
+                dto.setFechaInicio(r.getFechaInicio());
+                dto.setFechaFin(r.getFechaFin());
+                dto.setEstado(r.getEstado());
+                dto.setFechaCreacion(r.getFechaCreacion());
+                dto.setNumeroHabitacion(r.getHabitacion().getNumero());
+                dto.setNombreHuesped(r.getNombreHuesped());
+                dto.setApellidoHuesped(r.getApellidoHuesped());
+                dto.setTelefonoHuesped(r.getTelefonoHuesped());
+                return dto;
+            }).collect(Collectors.toList());
+
+            return ResponseEntity.ok(respuesta);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al verificar reservas.");
+        }
+    }
+
 }
