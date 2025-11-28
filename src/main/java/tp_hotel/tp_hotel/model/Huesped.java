@@ -45,7 +45,7 @@ public class Huesped {
     @Column(length = 10, nullable = false, unique = true)
     private String numeroDocumento;
 
-    @Column(length = 11)
+    @Column(length = 20)
     private String cuit;
     
     @Enumerated(EnumType.STRING)
