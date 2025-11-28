@@ -28,10 +28,6 @@ public class GestorUsuario {
         return true;
     }
 
-    public boolean login(String username, String password) {
-        return false;
-    }
-
     public void logout() {
     }
 
