@@ -29,4 +29,16 @@ public class Pago {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "pago_id")
     private List<TipoPago> formasDePago;
+
+    public Float calcularTotalIngresos(){
+        Float totalIngresos = 0.0f;
+
+        if(this.formasDePago != null){
+            for(TipoPago tp : formasDePago){
+                totalIngresos += tp.getMonto();
+            }
+        }
+
+        return totalIngresos;
+    }
 }

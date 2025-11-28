@@ -48,4 +48,22 @@ public class Factura {
     @OneToMany(mappedBy = "factura")
     @ToString.Exclude
     private List<Pago> pagos = new ArrayList<>();
+
+    public void agregarDetalleFactura(DetalleFactura detalleFactura){
+        this.detalles.add(detalleFactura);
+        this.total+= detalleFactura.getSubtotal();
+    }
+
+    public void registrarPago(Pago pago){
+        this.pagos.add(pago);
+        Float totalPagado = 0.0f;
+        if(this.pagos != null){
+            for(Pago p : pagos){
+                totalPagado+= p.getMontoTotal();
+            }
+        }
+        if(totalPagado >= total){
+            this.estado = EstadoFactura.PAGADA;
+        }
+    }
 }

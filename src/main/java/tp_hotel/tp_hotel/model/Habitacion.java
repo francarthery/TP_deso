@@ -32,8 +32,6 @@ public class Habitacion {
     @Column(length = 10, nullable = false)
     private String piso;
 
-    private Float costoNoche; 
-
     @Enumerated(EnumType.STRING)
     private CategoriaHabitacion categoria;
 

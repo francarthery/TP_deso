@@ -29,4 +29,10 @@ public class DetalleFactura {
     @ManyToOne
     @JoinColumn(name = "factura_id", nullable = false)
     private Factura factura;
+
+    @PrePersist 
+    @PreUpdate
+    public void calcularSubtotal() {
+        this.subtotal = this.cantidad * this.precioUnitario;
+    }
 }

@@ -78,7 +78,7 @@ public class GestorReserva {
     public void confirmarReserva(Reserva r) {
     }
 
-    public void cancelarReserva(int id) {
+    public void cancelarReserva(Integer id) {
     }
 
     public List<Reserva> mostrarReservasPorHuesped(String apellido, String nombre) {

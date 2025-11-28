@@ -113,7 +113,7 @@ public class GestorHuesped {
         }
     }
 
-    public Huesped buscarHuespedPorId(int id) {
+    public Huesped buscarHuespedPorId(Integer id) {
         return huespedRepository.findById(id).orElse(null);
     }
 

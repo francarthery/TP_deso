@@ -1,6 +1,7 @@
 package tp_hotel.tp_hotel.model;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,5 +83,11 @@ public class Huesped {
     
     public void agregarEstadia(Estadia estadia) {
         this.estadias.add(estadia);
+    }
+
+    public boolean esMayorDeEdad(){
+        LocalDate hoy = LocalDate.now();
+        Period edad = Period.between(this.fechaDeNacimiento, hoy);
+        return edad.getYears() >= 18;
     }
 }

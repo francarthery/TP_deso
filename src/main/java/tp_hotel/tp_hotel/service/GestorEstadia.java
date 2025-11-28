@@ -98,7 +98,6 @@ public class GestorEstadia {
         return estadiasCreadas;
     }
 
-
     public boolean asociarHuespedAEstadia(long estadiaID, Huesped titular, List<Huesped> acompaniantes){
         Estadia estadia = estadiaRepository.findById(estadiaID).orElse(null);
         if (estadia == null) {
@@ -135,6 +134,6 @@ public class GestorEstadia {
     public void iniciarEstadia(Estadia e) {
     }
 
-    public void finalizarEstadia(int id) {
+    public void finalizarEstadia(Integer id) {
     }
 }
