@@ -15,7 +15,6 @@ import tp_hotel.tp_hotel.model.Habitacion;
 import tp_hotel.tp_hotel.model.Huesped;
 import tp_hotel.tp_hotel.model.Reserva;
 import tp_hotel.tp_hotel.model.ReservaDTO;
-import tp_hotel.tp_hotel.model.EstadiaDTO;
 import tp_hotel.tp_hotel.repository.HabitacionRepository;
 import tp_hotel.tp_hotel.repository.HuespedRepository;
 import tp_hotel.tp_hotel.repository.ReservaRepository;
@@ -85,11 +84,11 @@ public class GestorReserva {
         return null;
     }
 
-    public List<Reserva> buscarReservasSolapadas(EstadiaDTO estadiaDTO) {
+    public List<Reserva> buscarReservasSolapadas(String numeroHabitacion, LocalDate checkIn, LocalDate checkOut) {
         return reservaRepository.findReservasSolapadas(
-            estadiaDTO.getNumeroHabitacion(), 
-            estadiaDTO.getCheckIn(), 
-            estadiaDTO.getCheckOut()
+            numeroHabitacion, 
+            checkIn, 
+            checkOut
         );
     }
 

@@ -20,4 +20,30 @@ public class DireccionDTO {
     public String getDireccionCompleta() {
         return this.calle + " " + this.numero + ", " + this.localidad;
     }
+
+    public DireccionDTO(Direccion direccion) {
+        if (direccion != null) {
+            this.pais = direccion.getPais();
+            this.provincia = direccion.getProvincia();
+            this.localidad = direccion.getLocalidad();
+            this.calle = direccion.getCalle();
+            this.numero = direccion.getNumero();
+            this.piso = direccion.getPiso();
+            this.departamento = direccion.getDepartamento();
+            this.codigoPostal = direccion.getCodigoPostal();
+        }
+    }
+
+    public Direccion toEntity() {
+        Direccion direccion = new Direccion();
+        direccion.setPais(this.pais);
+        direccion.setProvincia(this.provincia);
+        direccion.setLocalidad(this.localidad);
+        direccion.setCalle(this.calle);
+        direccion.setNumero(this.numero);
+        direccion.setPiso(this.piso);
+        direccion.setDepartamento(this.departamento);
+        direccion.setCodigoPostal(this.codigoPostal);
+        return direccion;
+    }
 }

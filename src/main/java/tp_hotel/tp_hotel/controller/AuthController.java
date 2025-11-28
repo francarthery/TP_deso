@@ -25,9 +25,9 @@ public class AuthController {
         try {
             boolean isValid = gestorUsuario.validarLogin(loginRequest.getUsername(), loginRequest.getPassword());
             if (isValid) {
-                return ResponseEntity.ok().body("Login successful");
+                return ResponseEntity.ok().body("Login exitoso");
             } else {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
             }
         } catch (UsuarioNoValidoException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());

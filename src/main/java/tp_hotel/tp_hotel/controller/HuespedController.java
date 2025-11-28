@@ -27,59 +27,52 @@ public class HuespedController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Huesped>> buscarHuesped(
+    public ResponseEntity<List<HuespedDTO>> buscarHuesped(
             @RequestParam(required = false) String apellido,
             @RequestParam(required = false) String nombres,
             @RequestParam(required = false) TipoDocumento tipoDocumento,
             @RequestParam(required = false) String numeroDocumento) {
         List<Huesped> huespedes = gestorHuesped.buscarHuesped(apellido, nombres, tipoDocumento, numeroDocumento);
-        return ResponseEntity.ok(huespedes);
+        List<HuespedDTO> huespedesDTO = huespedes.stream()
+            .map(HuespedDTO::new)
+            .toList();
+
+        return ResponseEntity.ok(huespedesDTO);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Huesped> getHuespedById(@PathVariable int id) {
+    public ResponseEntity<HuespedDTO> getHuespedById(@PathVariable int id) {
         Huesped huesped = gestorHuesped.buscarHuespedPorId(id);
         if (huesped != null) {
-            return ResponseEntity.ok(huesped);
+            return ResponseEntity.ok(new HuespedDTO(huesped));
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping
-    public ResponseEntity<?> crearHuesped(@RequestBody Huesped huesped) {
+    public ResponseEntity<?> crearHuesped(@RequestBody HuespedDTO huespedDTO) {
         try {
+            Huesped huesped = huespedDTO.toEntity();
             Huesped nuevoHuesped = gestorHuesped.registrarHuesped(huesped);
-            return ResponseEntity.status(HttpStatus.CREATED).body(nuevoHuesped);
+            return ResponseEntity.status(HttpStatus.CREATED).body(new HuespedDTO(nuevoHuesped));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> modificarHuesped(@PathVariable Integer id, @RequestBody Huesped huespedDetails) {
-        Huesped existingHuesped = gestorHuesped.buscarHuespedPorId(id);
-        if (existingHuesped == null) {
+    public ResponseEntity<?> modificarHuesped(@PathVariable Integer id, @RequestBody HuespedDTO huespedDetailsDTO) {
+        if (gestorHuesped.buscarHuespedPorId(id) == null) {
             return ResponseEntity.notFound().build();
         }
 
-        // Update fields
-        existingHuesped.setApellido(huespedDetails.getApellido());
-        existingHuesped.setNombres(huespedDetails.getNombres());
-        existingHuesped.setTipoDocumento(huespedDetails.getTipoDocumento());
-        existingHuesped.setNumeroDocumento(huespedDetails.getNumeroDocumento());
-        existingHuesped.setCuit(huespedDetails.getCuit());
-        existingHuesped.setPosicionFrenteAlIVA(huespedDetails.getPosicionFrenteAlIVA());
-        existingHuesped.setFechaDeNacimiento(huespedDetails.getFechaDeNacimiento());
-        existingHuesped.setTelefono(huespedDetails.getTelefono());
-        existingHuesped.setEmail(huespedDetails.getEmail());
-        existingHuesped.setOcupacion(huespedDetails.getOcupacion());
-        existingHuesped.setNacionalidad(huespedDetails.getNacionalidad());
-        existingHuesped.setDireccion(huespedDetails.getDireccion());
+        Huesped huespedAActualizar = huespedDetailsDTO.toEntity();
+        huespedAActualizar.setId(id);
         
-        boolean success = gestorHuesped.modificarHuesped(existingHuesped);
+        boolean success = gestorHuesped.modificarHuesped(huespedAActualizar);
         if (success) {
-            return ResponseEntity.ok(existingHuesped);
+            return ResponseEntity.ok(new HuespedDTO(huespedAActualizar));
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al modificar el huésped.");
         }

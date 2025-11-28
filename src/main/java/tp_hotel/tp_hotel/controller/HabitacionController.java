@@ -39,16 +39,17 @@ public class HabitacionController{
     }
 
     @GetMapping("/estado")
-    public ResponseEntity<?> mostrarEstadoHabitaciones(
+    public ResponseEntity<List<HabitacionEstadoDTO>> mostrarEstadoHabitaciones(
         @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate desde,
         @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate hasta){
         
-        try {
-            List<HabitacionEstadoDTO> estadoHabitaciones = gestorHabitacion.obtenerEstadoHabitaciones(desde, hasta);
-            return ResponseEntity.ok(estadoHabitaciones);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+        if(desde == null || hasta == null || desde.isAfter(hasta)){
+            return ResponseEntity.badRequest().build();
         }
+
+        List<HabitacionEstadoDTO> estadoHabitaciones = gestorHabitacion.obtenerEstadoHabitaciones(desde, hasta);
+
+        return ResponseEntity.ok(estadoHabitaciones);
     }
 
     @PostMapping("/ocupar-habitacion")
@@ -56,20 +57,9 @@ public class HabitacionController{
         try {
             List<Estadia> estadiasCreadas = gestorEstadia.crearEstadias(estadiasDTO);
             
-            List<EstadiaDTO> respuesta = estadiasCreadas.stream().map(e -> {
-                EstadiaDTO dto = new EstadiaDTO();
-                dto.setId(e.getId());
-                dto.setCheckIn(e.getCheckIn());
-                dto.setCheckOut(e.getCheckOut());
-                dto.setNumeroHabitacion(e.getHabitacion().getNumero());
-                dto.setIdHuesped(e.getHuesped().getId());
-                dto.setNombreHuesped(e.getHuesped().getNombres());
-                dto.setApellidoHuesped(e.getHuesped().getApellido());
-                if (e.getReserva() != null) {
-                    dto.setIdReserva(e.getReserva().getId());
-                }
-                return dto;
-            }).collect(Collectors.toList());
+            List<EstadiaDTO> respuesta = estadiasCreadas.stream()
+                .map(EstadiaDTO::new)
+                .collect(Collectors.toList());
 
             return ResponseEntity.status(HttpStatus.CREATED).body(respuesta);
         } catch (IllegalArgumentException e) {

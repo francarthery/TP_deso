@@ -19,4 +19,18 @@ public class ReservaDTO {
     private String nombreHuesped;
     private String apellidoHuesped;
     private String telefonoHuesped;
+
+    public ReservaDTO(Reserva reserva) {
+        this.id = reserva.getId();
+        this.fechaInicio = reserva.getFechaInicio();
+        this.fechaFin = reserva.getFechaFin();
+        this.estado = reserva.getEstado();
+        this.fechaCreacion = reserva.getFechaCreacion();
+        if (reserva.getHabitacion() != null) {
+            this.numeroHabitacion = reserva.getHabitacion().getNumero();
+        }
+        this.nombreHuesped = reserva.getNombreHuesped();
+        this.apellidoHuesped = reserva.getApellidoHuesped();
+        this.telefonoHuesped = reserva.getTelefonoHuesped();
+    }
 }
