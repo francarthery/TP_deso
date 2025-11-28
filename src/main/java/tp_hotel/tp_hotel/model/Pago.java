@@ -17,7 +17,10 @@ public class Pago {
     private Integer id;
 
     @Column(nullable = false)
-    private LocalDate fechaPago;
+    private LocalDate fechaInicio;
+
+    @Column(nullable = false)
+    private LocalDate fechaFin;
 
     @Column(length = 12, nullable = false)
     private Float montoTotal;
