@@ -39,17 +39,16 @@ public class HabitacionController{
     }
 
     @GetMapping("/estado")
-    public ResponseEntity<List<HabitacionEstadoDTO>> mostrarEstadoHabitaciones(
+    public ResponseEntity<?> mostrarEstadoHabitaciones(
         @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate desde,
         @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate hasta){
         
-        if(desde == null || hasta == null || desde.isAfter(hasta)){
-            return ResponseEntity.badRequest().build();
+        try {
+            List<HabitacionEstadoDTO> estadoHabitaciones = gestorHabitacion.obtenerEstadoHabitaciones(desde, hasta);
+            return ResponseEntity.ok(estadoHabitaciones);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
-
-        List<HabitacionEstadoDTO> estadoHabitaciones = gestorHabitacion.obtenerEstadoHabitaciones(desde, hasta);
-
-        return ResponseEntity.ok(estadoHabitaciones);
     }
 
     @PostMapping("/ocupar-habitacion")

@@ -1,1 +1,1 @@
-select * from huesped
+select * from reserva
