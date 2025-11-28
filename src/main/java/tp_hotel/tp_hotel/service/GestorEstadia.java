@@ -65,9 +65,6 @@ public class GestorEstadia {
                 }
             }
 
-            // Validar disponibilidad (Check-in)
-            // Verificar si la habitación ya está ocupada en esas fechas por OTRA estadía
-
             boolean ocupada = estadiaRepository.findAll().stream().anyMatch(e -> 
                 e.getHabitacion().getNumero().equals(habitacion.getNumero()) &&
                 !dto.getCheckIn().isAfter(e.getCheckOut()) && 

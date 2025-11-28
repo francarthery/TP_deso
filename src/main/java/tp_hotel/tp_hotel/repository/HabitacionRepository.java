@@ -14,7 +14,6 @@ import tp_hotel.tp_hotel.model.Habitacion;
 
 @Repository
 public interface HabitacionRepository extends JpaRepository<Habitacion, String> {
-    // Optional<Habitacion> findByNumero(String numero); // Ya es el ID
 
     @Query("SELECT h FROM Habitacion h WHERE h.categoria = :categoria AND h.numero NOT IN " +
            "(SELECT r.habitacion.numero FROM Reserva r WHERE " +
