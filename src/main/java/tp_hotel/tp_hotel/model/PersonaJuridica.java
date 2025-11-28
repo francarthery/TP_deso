@@ -10,10 +10,10 @@ import lombok.EqualsAndHashCode;
 @PrimaryKeyJoinColumn(name = "id")
 public class PersonaJuridica extends ResponsablePago {
 
-    @Column(length = 50)
+    @Column(length = 150, nullable = false)
     private String razonSocial;
 
-    @Column(length = 20)
+    @Column(length = 11, nullable = false)
     private String cuit;
 
     @Embedded

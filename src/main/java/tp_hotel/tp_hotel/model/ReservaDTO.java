@@ -15,14 +15,8 @@ public class ReservaDTO {
     private LocalDate fechaFin;
     private EstadoReserva estado;
     private LocalDateTime fechaCreacion;
-    
-    // Datos para creación/referencia
-    private String numeroHabitacion; // Ahora es el ID
-    private Integer idHuesped;
-    
-    // Datos informativos (opcionales en creación)
+    private String numeroHabitacion; 
     private String nombreHuesped;
     private String apellidoHuesped;
     private String telefonoHuesped;
-    // private String numeroHabitacion; // Ya está arriba como ID
 }

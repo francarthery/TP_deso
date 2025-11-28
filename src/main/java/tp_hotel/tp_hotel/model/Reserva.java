@@ -26,17 +26,19 @@ public class Reserva {
     @Column(nullable = false)
     private LocalDateTime fechaCreacion;
 
+    @Column(length = 50, nullable = false)
+    private String nombreHuesped;
+    @Column(length = 50, nullable = false)
+    private String apellidoHuesped;
+    @Column(length = 20, nullable = false)
+    private String telefonoHuesped;
+    
     @Enumerated(EnumType.STRING)
     private EstadoReserva estado;
 
     @ManyToOne
     @JoinColumn(name = "habitacion_numero", nullable = false)
     private Habitacion habitacion;
-
-    @ManyToOne
-    @JoinColumn(name = "huesped_id", nullable = false)
-    @JsonIgnoreProperties({"reservas", "estadias"})
-    private Huesped titular;
 
     @OneToOne(mappedBy = "reserva")
     @ToString.Exclude

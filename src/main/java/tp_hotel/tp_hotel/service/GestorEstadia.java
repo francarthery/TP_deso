@@ -39,7 +39,6 @@ public class GestorEstadia {
         List<Estadia> estadiasCreadas = new ArrayList<>();
 
         for (EstadiaDTO dto : estadiasDTO) {
-            // Validaciones básicas
             if (dto.getNumeroHabitacion() == null || dto.getIdHuesped() == null) {
                 throw new IllegalArgumentException("Faltan datos obligatorios (Habitación o Huésped).");
             }
@@ -50,7 +49,6 @@ public class GestorEstadia {
                 throw new IllegalArgumentException("La fecha de Check-In no puede ser posterior al Check-Out.");
             }
 
-            // Buscar entidades
             Habitacion habitacion = habitacionRepository.findById(dto.getNumeroHabitacion())
                     .orElseThrow(() -> new IllegalArgumentException("Habitación no encontrada: " + dto.getNumeroHabitacion()));
             
@@ -62,13 +60,9 @@ public class GestorEstadia {
                 reserva = reservaRepository.findById(dto.getIdReserva())
                         .orElseThrow(() -> new IllegalArgumentException("Reserva no encontrada: " + dto.getIdReserva()));
                 
-                // Validar que la reserva corresponda a la habitación y huésped (opcional pero recomendado)
                 if (!reserva.getHabitacion().getNumero().equals(habitacion.getNumero())) {
                      throw new IllegalArgumentException("La reserva no coincide con la habitación seleccionada.");
                 }
-                
-                // Actualizar estado de la reserva si es necesario
-                // reserva.setEstado(EstadoReserva.OCUPADA); // Si tuvieras ese estado
             }
 
             // Validar disponibilidad (Check-in)

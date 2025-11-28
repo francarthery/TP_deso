@@ -12,11 +12,11 @@ import tp_hotel.tp_hotel.model.Factura;
 
 @Repository
 public interface FacturaRepository extends JpaRepository<Factura, Integer> {
-    // Optional<Factura> findByNumero(String numero);
+    Optional<Factura> findByNumero(String numero);
 
     List<Factura> findByEstado(EstadoFactura estado);
 
     List<Factura> findByEstadia(Estadia estadia);
 
-    // void deleteByNumero(String numero);
+    void deleteByNumero(String numero);
 }

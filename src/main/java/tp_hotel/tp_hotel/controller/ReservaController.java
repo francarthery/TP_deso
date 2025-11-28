@@ -31,7 +31,6 @@ public class ReservaController {
 
     @PostMapping
     public ResponseEntity<?> crearReservas(@RequestBody List<ReservaDTO> reservasDTO) {
-        // Procesar la creación de reservas
         try {
             List<Reserva> reservasCreadas = gestorReserva.crearReservas(reservasDTO);
             
@@ -43,9 +42,9 @@ public class ReservaController {
                 dto.setEstado(r.getEstado());
                 dto.setFechaCreacion(r.getFechaCreacion());
                 dto.setNumeroHabitacion(r.getHabitacion().getNumero());
-                dto.setIdHuesped(r.getTitular().getId());
-                dto.setNombreHuesped(r.getTitular().getNombres());
-                dto.setApellidoHuesped(r.getTitular().getApellido());
+                dto.setNombreHuesped(r.getNombreHuesped());
+                dto.setApellidoHuesped(r.getApellidoHuesped());
+                dto.setTelefonoHuesped(r.getTelefonoHuesped());
                 return dto;
             }).collect(Collectors.toList());
 

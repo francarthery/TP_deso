@@ -9,6 +9,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FacturaDTO {
+    private Integer id;
     private String numero;
     private LocalDate fecha;
     private TipoFactura tipo;

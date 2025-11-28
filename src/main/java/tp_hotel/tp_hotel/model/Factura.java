@@ -18,6 +18,9 @@ public class Factura {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id; 
     
+    @Column(length = 13, nullable = false)
+    private String numero;
+
     @Column(nullable = false)
     private LocalDate fecha;
 

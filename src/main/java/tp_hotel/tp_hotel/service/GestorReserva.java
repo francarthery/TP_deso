@@ -24,13 +24,11 @@ public class GestorReserva {
 
     private final ReservaRepository reservaRepository;
     private final HabitacionRepository habitacionRepository;
-    private final HuespedRepository huespedRepository;
 
     @Autowired
-    public GestorReserva(ReservaRepository reservaRepository, HabitacionRepository habitacionRepository, HuespedRepository huespedRepository) {
+    public GestorReserva(ReservaRepository reservaRepository, HabitacionRepository habitacionRepository) {
         this.reservaRepository = reservaRepository;
         this.habitacionRepository = habitacionRepository;
-        this.huespedRepository = huespedRepository;
     }
 
     @Transactional
@@ -38,8 +36,17 @@ public class GestorReserva {
         List<Reserva> reservasCreadas = new ArrayList<>();
 
         for (ReservaDTO dto : reservasDTO) {
-            if (dto.getNumeroHabitacion() == null || dto.getIdHuesped() == null) {
-                throw new IllegalArgumentException("Faltan datos obligatorios (Habitación o Huésped).");
+            if (dto.getNumeroHabitacion() == null) {
+                throw new IllegalArgumentException("Falta el número de habitación");
+            }
+            if(dto.getNombreHuesped() == null){
+                throw new IllegalArgumentException("Falta el nombre del huesped");               
+            }
+            if(dto.getApellidoHuesped() == null){
+                throw new IllegalArgumentException("Falta el apellido del huesped");               
+            }
+            if(dto.getTelefonoHuesped() == null){
+                throw new IllegalArgumentException("Falta el teléfono del huesped");               
             }
             if (dto.getFechaInicio() == null || dto.getFechaFin() == null) {
                 throw new IllegalArgumentException("Las fechas de inicio y fin son obligatorias.");
@@ -50,9 +57,6 @@ public class GestorReserva {
 
             Habitacion habitacion = habitacionRepository.findById(dto.getNumeroHabitacion())
                     .orElseThrow(() -> new IllegalArgumentException("Habitación no encontrada: " + dto.getNumeroHabitacion()));
-            
-            Huesped huesped = huespedRepository.findById(dto.getIdHuesped())
-                    .orElseThrow(() -> new IllegalArgumentException("Huésped no encontrado: " + dto.getIdHuesped()));
 
             Reserva reserva = new Reserva();
             reserva.setFechaInicio(dto.getFechaInicio());
@@ -60,7 +64,9 @@ public class GestorReserva {
             reserva.setFechaCreacion(LocalDateTime.now());
             reserva.setEstado(EstadoReserva.CONFIRMADA);
             reserva.setHabitacion(habitacion);
-            reserva.setTitular(huesped);
+            reserva.setNombreHuesped(dto.getNombreHuesped());
+            reserva.setApellidoHuesped(dto.getApellidoHuesped());
+            reserva.setTelefonoHuesped(dto.getTelefonoHuesped());
 
             reservasCreadas.add(reservaRepository.save(reserva));
         }
