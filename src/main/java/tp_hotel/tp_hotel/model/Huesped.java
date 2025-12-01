@@ -44,7 +44,7 @@ public class Huesped {
     @Column(nullable = false)
     private TipoDocumento tipoDocumento;
     
-    @Column(length = 10, nullable = false, unique = true)
+    @Column(length = 10, nullable = false)
     private String numeroDocumento;
 
     @Column(length = 20)
