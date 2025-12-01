@@ -15,4 +15,7 @@ public interface ReservaRepository extends JpaRepository<Reserva, Integer> {
 
     @Query("SELECT r FROM Reserva r WHERE r.habitacion.numero = :numeroHabitacion AND r.fechaInicio <= :fechaFin AND r.fechaFin >= :fechaInicio")
     List<Reserva> findReservasSolapadas(@Param("numeroHabitacion") String numeroHabitacion, @Param("fechaInicio") LocalDate fechaInicio, @Param("fechaFin") LocalDate fechaFin);
+
+    @Query("SELECT r FROM Reserva r WHERE r.fechaInicio <= :fechaFin AND r.fechaFin >= :fechaInicio")
+    List<Reserva> findReservasPorFecha(@Param("fechaInicio") LocalDate fechaInicio, @Param ("fechaFin") LocalDate fechaFin);
 }

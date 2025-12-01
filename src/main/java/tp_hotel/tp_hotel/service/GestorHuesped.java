@@ -25,7 +25,10 @@ public class GestorHuesped {
     }
 
     public List<Huesped> buscarHuesped(String apellido, String nombres, TipoDocumento tipoDocumento, String numeroDocumento) {
-        // Si los strings vienen vacíos (""), los pasamos a null para que la query los ignore correctamente
+        if((apellido == null || apellido.isEmpty()) && (nombres == null || nombres.isEmpty()) && 
+        (numeroDocumento == null || numeroDocumento.isEmpty()) && tipoDocumento == null){
+            return huespedRepository.findAll();
+        }
         String apellidoFiltro = (apellido != null && !apellido.isEmpty()) ? apellido : null;
         String nombresFiltro = (nombres != null && !nombres.isEmpty()) ? nombres : null;
         String numeroDocumentoFiltro = (numeroDocumento != null && !numeroDocumento.isEmpty()) ? numeroDocumento : null;

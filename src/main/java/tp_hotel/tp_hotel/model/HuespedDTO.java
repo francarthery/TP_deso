@@ -16,9 +16,9 @@ public class HuespedDTO {
     private String nombres;
     private TipoDocumento tipoDocumento;
     private String numeroDocumento;
-    private LocalDate fechaNacimiento;
+    private LocalDate fechaDeNacimiento;
     private String cuit;
-    private IVA posicionIVA;
+    private IVA posicionFrenteAlIVA;
     private String nacionalidad;
     private String telefono;
     private String email;
@@ -30,9 +30,9 @@ public class HuespedDTO {
         this.nombres = huesped.getNombres();
         this.tipoDocumento = huesped.getTipoDocumento();
         this.numeroDocumento = huesped.getNumeroDocumento();
-        this.fechaNacimiento = huesped.getFechaDeNacimiento();
+        this.fechaDeNacimiento = huesped.getFechaDeNacimiento();
         this.cuit = huesped.getCuit();
-        this.posicionIVA = huesped.getPosicionFrenteAlIVA();
+        this.posicionFrenteAlIVA = huesped.getPosicionFrenteAlIVA();
         this.nacionalidad = huesped.getNacionalidad();
         this.telefono = huesped.getTelefono();
         this.email = huesped.getEmail();
@@ -47,9 +47,9 @@ public class HuespedDTO {
         huesped.setNombres(this.nombres);
         huesped.setTipoDocumento(this.tipoDocumento);
         huesped.setNumeroDocumento(this.numeroDocumento);
-        huesped.setFechaDeNacimiento(this.fechaNacimiento);
+        huesped.setFechaDeNacimiento(this.fechaDeNacimiento);
         huesped.setCuit(this.cuit);
-        huesped.setPosicionFrenteAlIVA(this.posicionIVA);
+        huesped.setPosicionFrenteAlIVA(this.posicionFrenteAlIVA);
         huesped.setNacionalidad(this.nacionalidad);
         huesped.setTelefono(this.telefono);
         huesped.setEmail(this.email);

@@ -41,6 +41,7 @@ public class Huesped {
     private String nombres;
     
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private TipoDocumento tipoDocumento;
     
     @Column(length = 10, nullable = false, unique = true)
@@ -61,7 +62,7 @@ public class Huesped {
     @Column(length = 100)
     private String email;
 
-    @Column(length = 50)
+    @Column(length = 50, nullable = false)
     private String ocupacion;
 
     @Column(length = 85, nullable = false)

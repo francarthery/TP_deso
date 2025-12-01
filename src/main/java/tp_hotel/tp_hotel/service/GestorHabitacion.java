@@ -36,8 +36,8 @@ public class GestorHabitacion {
 
     public List<HabitacionEstadoDTO> obtenerEstadoHabitaciones(LocalDate desde, LocalDate hasta) {
         List<Habitacion> habitaciones = habitacionRepository.findAll();
-        List<Reserva> reservas = reservaRepository.findAll(); // Optimizar con query por fecha si es necesario
-        List<Estadia> estadias = estadiaRepository.findAll(); // Optimizar con query por fecha si es necesario
+        List<Reserva> reservas = reservaRepository.findReservasPorFecha(desde, hasta); 
+        List<Estadia> estadias = estadiaRepository.findEstadiasPorFecha(desde, hasta); 
 
         List<HabitacionEstadoDTO> reporte = new ArrayList<>();
 
