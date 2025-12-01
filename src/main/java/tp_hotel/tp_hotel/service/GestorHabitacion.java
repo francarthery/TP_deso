@@ -13,6 +13,7 @@ import tp_hotel.tp_hotel.model.CategoriaHabitacion;
 import tp_hotel.tp_hotel.model.Estadia;
 import tp_hotel.tp_hotel.model.EstadoDiaDTO;
 import tp_hotel.tp_hotel.model.EstadoHabitacion;
+import tp_hotel.tp_hotel.model.EstadoReserva;
 import tp_hotel.tp_hotel.model.Habitacion;
 import tp_hotel.tp_hotel.model.HabitacionEstadoDTO;
 import tp_hotel.tp_hotel.model.Reserva;
@@ -67,7 +68,7 @@ public class GestorHabitacion {
                     Reserva reservaActiva = reservas.stream()
                         .filter(r -> r.getHabitacion().getNumero().equals(habitacion.getNumero()) &&
                                 !finalFecha.isBefore(r.getFechaInicio()) && finalFecha.isBefore(r.getFechaFin()) &&
-                                !r.getEstado().toString().equals("CANCELADA"))
+                                !r.getEstado().equals(EstadoReserva.CANCELADA))
                         .findFirst()
                         .orElse(null);
                     

@@ -14,6 +14,6 @@ import tp_hotel.tp_hotel.model.Reserva;
 public interface EstadiaRepository extends JpaRepository<Estadia, Long> {
     List<Estadia> findByHabitacionNumero(String numero);
 
-    @Query("SELECT e FROM Estadia e WHERE e.fechaInicio <= :fechaFin AND e.fechaFin >= :fechaInicio")
+    @Query("SELECT e FROM Estadia e WHERE e.checkIn <= :fechaFin AND e.checkOut >= :fechaInicio")
     List<Estadia> findEstadiasPorFecha(@Param("fechaInicio") LocalDate fechaInicio, @Param ("fechaFin") LocalDate fechaFin);
 }
