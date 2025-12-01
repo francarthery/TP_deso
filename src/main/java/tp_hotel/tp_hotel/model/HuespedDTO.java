@@ -22,6 +22,7 @@ public class HuespedDTO {
     private String nacionalidad;
     private String telefono;
     private String email;
+    private String ocupacion;
     private DireccionDTO direccion;
 
     public HuespedDTO(Huesped huesped) {
@@ -36,6 +37,7 @@ public class HuespedDTO {
         this.nacionalidad = huesped.getNacionalidad();
         this.telefono = huesped.getTelefono();
         this.email = huesped.getEmail();
+        this.ocupacion = huesped.getOcupacion();
         if (huesped.getDireccion() != null) {
             this.direccion = new DireccionDTO(huesped.getDireccion());
         }
@@ -53,6 +55,7 @@ public class HuespedDTO {
         huesped.setNacionalidad(this.nacionalidad);
         huesped.setTelefono(this.telefono);
         huesped.setEmail(this.email);
+        huesped.setOcupacion(this.ocupacion);
         if (this.direccion != null) {
             huesped.setDireccion(this.direccion.toEntity());
         }
