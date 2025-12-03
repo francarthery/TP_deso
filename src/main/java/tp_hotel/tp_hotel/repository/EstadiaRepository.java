@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import tp_hotel.tp_hotel.model.Estadia;
-import tp_hotel.tp_hotel.model.Reserva;
 
 @Repository
 public interface EstadiaRepository extends JpaRepository<Estadia, Long> {

@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,11 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import tp_hotel.tp_hotel.model.EstadoReserva;
 import tp_hotel.tp_hotel.model.Habitacion;
-import tp_hotel.tp_hotel.model.Huesped;
 import tp_hotel.tp_hotel.model.Reserva;
 import tp_hotel.tp_hotel.model.ReservaDTO;
 import tp_hotel.tp_hotel.repository.HabitacionRepository;
-import tp_hotel.tp_hotel.repository.HuespedRepository;
 import tp_hotel.tp_hotel.repository.ReservaRepository;
 
 @Service

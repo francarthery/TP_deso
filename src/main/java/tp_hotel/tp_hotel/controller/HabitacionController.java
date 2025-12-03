@@ -2,11 +2,7 @@ package tp_hotel.tp_hotel.controller;
 import tp_hotel.tp_hotel.service.GestorHabitacion;
 import tp_hotel.tp_hotel.service.GestorEstadia;
 import tp_hotel.tp_hotel.model.EstadiaDTO;
-import tp_hotel.tp_hotel.model.Reserva;
-import tp_hotel.tp_hotel.model.ReservaDTO;
-import tp_hotel.tp_hotel.model.Habitacion;
 import tp_hotel.tp_hotel.model.HabitacionEstadoDTO;
-import tp_hotel.tp_hotel.model.EstadoHabitacion;
 import tp_hotel.tp_hotel.model.Estadia;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -21,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController

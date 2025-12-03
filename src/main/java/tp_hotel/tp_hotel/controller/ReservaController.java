@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import tp_hotel.tp_hotel.model.Reserva;
 import tp_hotel.tp_hotel.model.ReservaDTO;
 import tp_hotel.tp_hotel.service.GestorReserva;
