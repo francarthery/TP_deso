@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import tp_hotel.tp_hotel.model.Estadia;
 import tp_hotel.tp_hotel.model.EstadiaDTO;
-import tp_hotel.tp_hotel.model.EstadoReserva;
 import tp_hotel.tp_hotel.model.Habitacion;
 import tp_hotel.tp_hotel.model.Huesped;
 import tp_hotel.tp_hotel.model.Reserva;
