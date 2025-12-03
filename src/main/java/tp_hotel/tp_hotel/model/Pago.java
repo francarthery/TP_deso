@@ -25,7 +25,7 @@ public class Pago {
     @Column(length = 12, nullable = false)
     private Float montoTotal;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "factura_id", nullable = false)
     private Factura factura;
 

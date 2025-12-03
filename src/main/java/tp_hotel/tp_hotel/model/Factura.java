@@ -45,25 +45,26 @@ public class Factura {
     @JoinColumn(name = "factura_id")
     private List<DetalleFactura> detalles = new ArrayList<>();
 
-    @OneToMany(mappedBy = "factura")
+    @OneToOne(mappedBy = "factura", cascade = CascadeType.ALL)
     @ToString.Exclude
-    private List<Pago> pagos = new ArrayList<>();
+    private Pago pago;
 
     public void agregarDetalleFactura(DetalleFactura detalleFactura){
         this.detalles.add(detalleFactura);
         this.total+= detalleFactura.getSubtotal();
     }
 
-    public void registrarPago(Pago pago){
-        this.pagos.add(pago);
-        Float totalPagado = 0.0f;
-        if(this.pagos != null){
-            for(Pago p : pagos){
-                totalPagado+= p.getMontoTotal();
-            }
-        }
-        if(totalPagado >= total){
+    public void registrarPago(Pago nuevoPago) {
+        Float totalIngresado = nuevoPago.calcularTotalIngresos();
+
+        nuevoPago.setMontoTotal(totalIngresado);
+
+        if (totalIngresado >= this.total) {
+            this.pago = nuevoPago;
             this.estado = EstadoFactura.PAGADA;
+            nuevoPago.setFactura(this);
+        } else {
+            throw new RuntimeException("El monto de los medios de pago no cubre el total de la factura");
         }
     }
 }
