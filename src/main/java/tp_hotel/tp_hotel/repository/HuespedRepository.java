@@ -21,8 +21,8 @@ public interface HuespedRepository extends JpaRepository<Huesped, Integer> {
     Optional<Huesped> findByTipoDocumentoAndNumeroDocumento(TipoDocumento tipoDocumento, String numeroDocumento);
 
     @Query("SELECT h FROM Huesped h WHERE " +
-           "(:apellido IS NULL OR h.apellido = :apellido) AND " +
-           "(:nombres IS NULL OR h.nombres = :nombres) AND " +
+           "(:apellido IS NULL OR h.apellido LIKE CONCAT(:apellido, '%')) AND " +
+           "(:nombres IS NULL OR h.nombres LIKE CONCAT(:nombres, '%')) AND " +
            "(:tipoDocumento IS NULL OR h.tipoDocumento = :tipoDocumento) AND " +
            "(:numeroDocumento IS NULL OR h.numeroDocumento = :numeroDocumento)")
     List<Huesped> buscarConFiltros(
