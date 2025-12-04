@@ -59,7 +59,7 @@ public class GestorReserva {
             reserva.setFechaInicio(dto.getFechaInicio());
             reserva.setFechaFin(dto.getFechaFin());
             reserva.setFechaCreacion(LocalDateTime.now());
-            reserva.setEstado(EstadoReserva.PENDIENTE);
+            reserva.setEstado(EstadoReserva.CONFIRMADA);
             reserva.setHabitacion(habitacion);
             reserva.setNombreHuesped(dto.getNombreHuesped());
             reserva.setApellidoHuesped(dto.getApellidoHuesped());
@@ -78,17 +78,16 @@ public class GestorReserva {
         reservaRepository.deleteById(id);
     }
 
-    @Transactional
     public void cancelarReservasPorHuesped(List<Integer> idsReservas){
-        reservaRepository.cancelarReservas(idsReservas, EstadoReserva.CANCELADA);
+        reservaRepository.deleteAllById(idsReservas);
     }
 
-    public List<Reserva> mostrarReservasNoCanceladasPorHuesped(String apellido, String nombre) {
+    public List<Reserva> mostrarReservasPorHuesped(String apellido, String nombre) {
         String apellidoFiltro = (apellido != null && !apellido.isEmpty()) ? apellido : null;
         String nombresFiltro = (nombre != null && !nombre.isEmpty()) ? nombre : null;
-        return reservaRepository.findByApellidoHuespedNombreHuesped(apellidoFiltro, nombresFiltro, EstadoReserva.CANCELADA);
+        return reservaRepository.findByApellidoHuespedYNombreHuesped(apellidoFiltro, nombresFiltro);
     }
-    
+
     public List<Reserva> buscarReservasSolapadas(String numeroHabitacion, LocalDate checkIn, LocalDate checkOut) {
         return reservaRepository.findReservasSolapadas(
             numeroHabitacion, 

@@ -19,6 +19,7 @@ public class ReservaDTO {
     private String nombreHuesped;
     private String apellidoHuesped;
     private String telefonoHuesped;
+    private CategoriaHabitacion categoriaHabitacion;
 
     public ReservaDTO(Reserva reserva) {
         this.id = reserva.getId();
@@ -28,9 +29,11 @@ public class ReservaDTO {
         this.fechaCreacion = reserva.getFechaCreacion();
         if (reserva.getHabitacion() != null) {
             this.numeroHabitacion = reserva.getHabitacion().getNumero();
+            this.categoriaHabitacion = reserva.getHabitacion().getCategoria();
         }
         this.nombreHuesped = reserva.getNombreHuesped();
         this.apellidoHuesped = reserva.getApellidoHuesped();
         this.telefonoHuesped = reserva.getTelefonoHuesped();
+
     }
 }
