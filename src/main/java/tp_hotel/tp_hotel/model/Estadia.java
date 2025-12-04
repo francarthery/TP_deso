@@ -57,4 +57,8 @@ public class Estadia {
     @ToString.Exclude
     @JsonIgnore
     private Factura factura;
+
+    public Factura facturar(){
+        return this.factura;
+    }
 }

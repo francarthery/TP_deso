@@ -14,7 +14,7 @@ public class ReservaDTO {
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
     private EstadoReserva estado;
-    private LocalDateTime fechaCreacion;
+    private LocalDate fechaCreacion;
     private String numeroHabitacion; 
     private String nombreHuesped;
     private String apellidoHuesped;
