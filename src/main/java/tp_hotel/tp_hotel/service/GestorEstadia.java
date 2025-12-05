@@ -38,8 +38,8 @@ public class GestorEstadia {
         List<Estadia> estadiasCreadas = new ArrayList<>();
 
         for (EstadiaDTO dto : estadiasDTO) {
-            if (dto.getNumeroHabitacion() == null || dto.getIdHuesped() == null) {
-                throw new IllegalArgumentException("Faltan datos obligatorios (Habitación o Huésped).");
+            if (dto.getNumeroHabitacion() == null) {
+                throw new IllegalArgumentException("Faltan datos obligatorios (Habitación).");
             }
             if (dto.getCheckIn() == null || dto.getCheckOut() == null) {
                 throw new IllegalArgumentException("Las fechas de Check-In y Check-Out son obligatorias.");
@@ -51,8 +51,14 @@ public class GestorEstadia {
             Habitacion habitacion = habitacionRepository.findById(dto.getNumeroHabitacion())
                     .orElseThrow(() -> new IllegalArgumentException("Habitación no encontrada: " + dto.getNumeroHabitacion()));
             
-            Huesped huesped = huespedRepository.findById(dto.getIdHuesped())
-                    .orElseThrow(() -> new IllegalArgumentException("Huésped no encontrado: " + dto.getIdHuesped()));
+            
+            Integer idTitular = dto.getIdHuespedTitular();
+            if (idTitular == null) {
+                 throw new IllegalArgumentException("El ID del titular es obligatorio.");
+            }
+          
+            Huesped titular = huespedRepository.findById(idTitular)
+                    .orElseThrow(() -> new IllegalArgumentException("Huésped titular no encontrado: " + idTitular));
 
             Reserva reserva = null;
             if (dto.getIdReserva() != null) {
@@ -70,17 +76,6 @@ public class GestorEstadia {
                 !dto.getCheckOut().isBefore(e.getCheckIn())
             );
 
-            boolean reservada = reservaRepository.findAll().stream().anyMatch(r -> 
-                r.getHabitacion().getNumero().equals(habitacion.getNumero()) &&
-                r.getId().equals(dto.getIdReserva()) &&
-                !dto.getCheckIn().isAfter(r.getFechaFin()) && 
-                !dto.getCheckOut().isBefore(r.getFechaInicio())
-            );
-
-            if (reservada) {
-                throw new IllegalArgumentException("La habitación " + habitacion.getNumero() + " está reservada en las fechas seleccionadas.");
-            }
-
             if (ocupada) {
                 throw new IllegalArgumentException("La habitación " + habitacion.getNumero() + " ya está ocupada en las fechas seleccionadas.");
             }
@@ -89,44 +84,33 @@ public class GestorEstadia {
             estadia.setCheckIn(dto.getCheckIn());
             estadia.setCheckOut(dto.getCheckOut());
             estadia.setHabitacion(habitacion);
-            estadia.setHuesped(huesped);
             estadia.setReserva(reserva);
+            
+            estadia.setHuespedTitular(titular);
+            titular.agregarEstadiaComoTitular(estadia);
+
+            if (dto.getIdsHuespedesInvitados() != null) {
+                List<Huesped> invitados = new ArrayList<>();
+                for (Integer idInvitado : dto.getIdsHuespedesInvitados()) {
+                    Huesped invitado = huespedRepository.findById(idInvitado)
+                        .orElseThrow(() -> new IllegalArgumentException("Huésped invitado no encontrado: " + idInvitado));
+                    
+                    invitados.add(invitado);
+                    invitado.agregarEstadiaComoInvitado(estadia);
+                }
+                estadia.setHuespedInvitados(invitados);
+            }
 
             estadiasCreadas.add(estadiaRepository.save(estadia));
+            
         }
         return estadiasCreadas;
     }
-
-    public boolean asociarHuespedAEstadia(long estadiaID, Huesped titular, List<Huesped> acompaniantes){
-        Estadia estadia = estadiaRepository.findById(estadiaID).orElse(null);
-        if (estadia == null) {
-            System.out.println("Estadía no encontrada");
-            return false;
-        }
-        
-        if (titular != null) {
-            titular.agregarEstadia(estadia);
-            huespedRepository.save(titular);
-        } else {
-            System.out.println("No ha sido posible cargar la estadía al titular");
-            return false;
-        }
-
-        for (Huesped huesped : acompaniantes) {
-            if (huesped != null) {
-                huesped.agregarEstadia(estadia);
-                huespedRepository.save(huesped);
-            } else {
-                System.out.println("No ha sido posible cargar la estadía a un acompañante.");
-                return false;
-            }
-        }
-        return true;
-    }
+    
 
     public boolean tieneEstadia(int huespedID){
         return huespedRepository.findById(huespedID)
-                .map(h -> !h.getEstadias().isEmpty())
+                .map(h -> !h.getEstadiasComoTitular().isEmpty() || !h.getEstadiasComoInvitado().isEmpty())
                 .orElse(false);
     }
     

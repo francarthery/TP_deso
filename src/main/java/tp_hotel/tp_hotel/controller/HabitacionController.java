@@ -55,7 +55,7 @@ public class HabitacionController{
             List<EstadiaDTO> respuesta = estadiasCreadas.stream()
                 .map(EstadiaDTO::new)
                 .collect(Collectors.toList());
-
+            
             return ResponseEntity.status(HttpStatus.CREATED).body(respuesta);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
