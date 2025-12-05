@@ -38,45 +38,17 @@ public class GestorHuesped {
         return huespedRepository.existsByTipoDocumentoAndNumeroDocumento(tipoDocumento, numeroDocumento);
     }
 
-    public Huesped darAltaHuesped(String apellido, String nombres, TipoDocumento documento, String numeroDocumento,
-                                String cuit, IVA posicionFrenteAlIVA, LocalDate fechaDeNacimiento, String telefono, 
-                                String email, String ocupacion, String nacionalidad, String pais, String provincia,
-                                String ciudad, String calle, String numero, String piso, String departamento, 
-                                String codigoPostal) {
-        
-        Direccion direccion = Direccion.builder()
-                .pais(pais)
-                .provincia(provincia)
-                .localidad(ciudad)
-                .calle(calle)
-                .numero(numero)
-                .piso(piso)
-                .departamento(departamento)
-                .codigoPostal(codigoPostal)
-                .build();         
-        
-        Huesped huesped = Huesped.builder()
-                .apellido(apellido)
-                .nombres(nombres)
-                .tipoDocumento(documento)
-                .numeroDocumento(numeroDocumento)
-                .cuit(cuit)
-                .posicionFrenteAlIVA(posicionFrenteAlIVA)
-                .fechaDeNacimiento(fechaDeNacimiento)
-                .telefono(telefono)
-                .email(email)
-                .ocupacion(ocupacion)
-                .nacionalidad(nacionalidad)
-                .direccion(direccion)
-                .build();
-        
-        if(huesped == null){
-            return null;
-        }
-        return huespedRepository.save(huesped);
-    }
+    public boolean modificarHuesped(Huesped huesped, Boolean dniUnico) {
+         if (dniUnico && documentoExistente(huesped.getTipoDocumento(), huesped.getNumeroDocumento())) {
+            List<Huesped> existente = huespedRepository.findByTipoDocumentoAndNumeroDocumento(
+                huesped.getTipoDocumento(), 
+                huesped.getNumeroDocumento()
+            );
 
-    public boolean modificarHuesped(Huesped huesped) {
+            if (existente.size() > 1 || existente.size() == 1 && !existente.get(0).getId().equals(huesped.getId())) {
+                throw new IllegalArgumentException("¡CUIDADO! El tipo y número de documento ya existen en el sistema.");
+            }
+        }
         if (huesped == null) {
             return false;
         }
@@ -104,8 +76,8 @@ public class GestorHuesped {
         return huespedRepository.findById(id).orElse(null);
     }
 
-    public Huesped registrarHuesped(Huesped huesped) {
-        if (documentoExistente(huesped.getTipoDocumento(), huesped.getNumeroDocumento())) {
+    public Huesped registrarHuesped(Huesped huesped, Boolean dniUnico) {
+        if (dniUnico && documentoExistente(huesped.getTipoDocumento(), huesped.getNumeroDocumento())) {
             throw new IllegalArgumentException("¡CUIDADO! El tipo y número de documento ya existen en el sistema.");
         }
         return huespedRepository.save(huesped);

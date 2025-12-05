@@ -51,10 +51,12 @@ public class HuespedController {
     }
 
     @PostMapping
-    public ResponseEntity<?> crearHuesped(@RequestBody HuespedDTO huespedDTO) {
+    public ResponseEntity<?> crearHuesped(
+        @RequestBody HuespedDTO huespedDTO,
+        @RequestParam (required = false, defaultValue = "true") Boolean dniUnico) {
         try {
             Huesped huesped = huespedDTO.toEntity();
-            Huesped nuevoHuesped = gestorHuesped.registrarHuesped(huesped);
+            Huesped nuevoHuesped = gestorHuesped.registrarHuesped(huesped, dniUnico);
             return ResponseEntity.status(HttpStatus.CREATED).body(new HuespedDTO(nuevoHuesped));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
@@ -62,7 +64,9 @@ public class HuespedController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> modificarHuesped(@PathVariable Integer id, @RequestBody HuespedDTO huespedDetailsDTO) {
+    public ResponseEntity<?> modificarHuesped(@PathVariable Integer id, 
+        @RequestBody HuespedDTO huespedDetailsDTO,
+        @RequestParam (required = false, defaultValue = "true") Boolean dniUnico) {
         if (gestorHuesped.buscarHuespedPorId(id) == null) {
             return ResponseEntity.notFound().build();
         }
@@ -70,12 +74,17 @@ public class HuespedController {
         Huesped huespedAActualizar = huespedDetailsDTO.toEntity();
         huespedAActualizar.setId(id);
         
-        boolean success = gestorHuesped.modificarHuesped(huespedAActualizar);
-        if (success) {
-            return ResponseEntity.ok(new HuespedDTO(huespedAActualizar));
-        } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al modificar el huésped.");
+        try {
+            boolean success = gestorHuesped.modificarHuesped(huespedAActualizar, dniUnico);
+            if (success) {
+                return ResponseEntity.ok(new HuespedDTO(huespedAActualizar));
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al modificar el huésped.");
+            }
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
+        
     }
 
     @DeleteMapping("/{id}")
