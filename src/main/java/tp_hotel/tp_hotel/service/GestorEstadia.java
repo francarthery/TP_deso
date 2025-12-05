@@ -50,8 +50,7 @@ public class GestorEstadia {
 
             Habitacion habitacion = habitacionRepository.findById(dto.getNumeroHabitacion())
                     .orElseThrow(() -> new IllegalArgumentException("Habitación no encontrada: " + dto.getNumeroHabitacion()));
-            
-            
+
             Integer idTitular = dto.getIdHuespedTitular();
             if (idTitular == null) {
                  throw new IllegalArgumentException("El ID del titular es obligatorio.");
@@ -85,7 +84,7 @@ public class GestorEstadia {
             estadia.setCheckOut(dto.getCheckOut());
             estadia.setHabitacion(habitacion);
             estadia.setReserva(reserva);
-            
+             
             estadia.setHuespedTitular(titular);
             titular.agregarEstadiaComoTitular(estadia);
 
@@ -107,6 +106,7 @@ public class GestorEstadia {
         return estadiasCreadas;
     }
     
+
 
     public boolean tieneEstadia(int huespedID){
         return huespedRepository.findById(huespedID)

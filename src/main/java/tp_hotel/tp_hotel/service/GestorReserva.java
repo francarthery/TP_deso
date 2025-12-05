@@ -58,7 +58,7 @@ public class GestorReserva {
             Reserva reserva = new Reserva();
             reserva.setFechaInicio(dto.getFechaInicio());
             reserva.setFechaFin(dto.getFechaFin());
-            reserva.setFechaCreacion(LocalDateTime.now());
+            reserva.setFechaCreacion(LocalDate.now());
             reserva.setEstado(EstadoReserva.PENDIENTE);
             reserva.setHabitacion(habitacion);
             reserva.setNombreHuesped(dto.getNombreHuesped());

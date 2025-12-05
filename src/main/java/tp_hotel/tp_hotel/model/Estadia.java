@@ -45,7 +45,7 @@ public class Estadia {
     @ManyToOne
     @JoinColumn(name = "huesped_titular_id", nullable = false)
     private Huesped huespedTitular;
-
+    
     @ManyToMany
     @JoinTable(
         name = "estadia_huespedes_invitados",
@@ -68,4 +68,8 @@ public class Estadia {
     @ToString.Exclude
     @JsonIgnore
     private Factura factura;
+
+    public Factura facturar(){
+        return this.factura;
+    }
 }

@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -23,7 +22,7 @@ public class Reserva {
     @Column(nullable = false)
     private LocalDate fechaFin;
     @Column(nullable = false)
-    private LocalDateTime fechaCreacion;
+    private LocalDate fechaCreacion;
 
     @Column(length = 50, nullable = false)
     private String nombreHuesped;
