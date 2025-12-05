@@ -1,5 +1,5 @@
 INSERT INTO huesped (
-    apellido, nombres, tipo_documento, numero_documento, cuit, posicion_frente_al_iva, 
+    apellido, nombres, tipo_documento, numero_documento, cuit, posicion_frente_alIva, 
     fecha_de_nacimiento, telefono, email, ocupacion, nacionalidad, 
     calle, numero, departamento, piso, codigo_postal, localidad, provincia, pais
 ) VALUES
