@@ -17,11 +17,10 @@ public class EstadiaDTO {
     private LocalDate checkOut;
     
     private String numeroHabitacion;
-    private Integer idHuesped;
     private Integer idReserva;
 
-    private String nombreHuesped;
-    private String apellidoHuesped;
+    private Integer idHuespedTitular;
+    private List<Integer> idsHuespedesInvitados;
 
     private List<ConsumoDTO> consumos = new ArrayList<>();
 
@@ -32,11 +31,15 @@ public class EstadiaDTO {
         if (estadia.getHabitacion() != null) {
             this.numeroHabitacion = estadia.getHabitacion().getNumero();
         }
-        if (estadia.getHuesped() != null) {
-            this.idHuesped = estadia.getHuesped().getId();
-            this.nombreHuesped = estadia.getHuesped().getNombres();
-            this.apellidoHuesped = estadia.getHuesped().getApellido();
+        if (estadia.getHuespedTitular() != null) {
+            this.idHuespedTitular = estadia.getHuespedTitular().getId();
         }
+        if (estadia.getHuespedInvitados() != null) {
+            this.idsHuespedesInvitados = estadia.getHuespedInvitados().stream()
+                .map(Huesped::getId)
+                .toList();
+        }
+        
         if (estadia.getReserva() != null) {
             this.idReserva = estadia.getReserva().getId();
         }

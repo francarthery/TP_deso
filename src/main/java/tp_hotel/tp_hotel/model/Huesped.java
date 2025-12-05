@@ -16,6 +16,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
@@ -71,19 +72,29 @@ public class Huesped {
     @Embedded
     private Direccion direccion;
     
-    @OneToMany(mappedBy = "huesped", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "huespedTitular", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     @ToString.Exclude
     @JsonIgnore
-    private List<Estadia> estadias = new ArrayList<>();
+    private List<Estadia> estadiasComoTitular = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "huespedInvitados")
+    @Builder.Default
+    @ToString.Exclude
+    @JsonIgnore
+    private List<Estadia> estadiasComoInvitado = new ArrayList<>();
 
     @OneToOne(mappedBy = "huesped", cascade = CascadeType.ALL)
     @ToString.Exclude
     @JsonIgnore
     private PersonaFisica personaFisica;
     
-    public void agregarEstadia(Estadia estadia) {
-        this.estadias.add(estadia);
+    public void agregarEstadiaComoTitular(Estadia estadia) {
+        this.estadiasComoTitular.add(estadia);
+    }
+
+    public void agregarEstadiaComoInvitado(Estadia estadia){
+        this.estadiasComoInvitado.add(estadia);
     }
 
     public boolean esMayorDeEdad(){

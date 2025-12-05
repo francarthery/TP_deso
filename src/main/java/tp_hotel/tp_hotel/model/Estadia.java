@@ -13,6 +13,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -41,8 +43,17 @@ public class Estadia {
     private Habitacion habitacion;
 
     @ManyToOne
-    @JoinColumn(name = "huesped_id", nullable = false)
-    private Huesped huesped;
+    @JoinColumn(name = "huesped_titular_id", nullable = false)
+    private Huesped huespedTitular;
+    
+    @ManyToMany
+    @JoinTable(
+        name = "estadia_huespedes_invitados",
+        joinColumns = @JoinColumn(name = "estadia_id"),
+        inverseJoinColumns = @JoinColumn(name = "huesped_id")
+    )
+    @ToString.Exclude
+    private List<Huesped> huespedInvitados = new ArrayList<>();
 
     @OneToMany(mappedBy = "estadia", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
