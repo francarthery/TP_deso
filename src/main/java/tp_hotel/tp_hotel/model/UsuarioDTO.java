@@ -18,6 +18,5 @@ public class UsuarioDTO {
     @Size(min = 8, max = 100) @NotNull
     private String password;
 
-    @NotNull
     private Rol rol;
 }
