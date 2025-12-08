@@ -1,5 +1,8 @@
 package tp_hotel.tp_hotel.model;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,13 +11,28 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DireccionDTO {
+    @Pattern(regexp = "^[A-Za-zÀ-ÖØ-öø-ÿ\\s]+$") @Size(min = 1, max = 30)
     private String pais;
+    
+    @Pattern(regexp = "^[A-Za-zÀ-ÖØ-öø-ÿ\\s]+$") @Size(min = 1, max = 50)
     private String provincia;
+    
+    @Pattern(regexp = "^[A-Za-zÀ-ÖØ-öø-ÿ\\s]+$") @Size(min = 1, max = 50)
     private String localidad;
+
+    @NotNull @Size(min = 1, max = 100)
     private String calle;
+
+    @NotNull @Pattern(regexp = "^[0-9]+$") @Size(min = 1, max = 10)
     private String numero; 
+
+    @Size(min = 1, max = 4)
     private String piso;
+
+    @Size(min = 1, max = 5)
     private String departamento;
+
+    @NotNull @Size(min = 1, max = 10)
     private String codigoPostal;
     
     public String getDireccionCompleta() {

@@ -5,22 +5,52 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class HuespedDTO {
     private Integer id;
+    
+    @Pattern(regexp = "^[a-zA-Z]+$") @Size(min = 1, max = 50) @NotNull
     private String apellido;
+    
+    @Pattern(regexp = "^[a-zA-Z]+$") @Size(min = 1, max = 50) @NotNull
     private String nombres;
+
+    @NotNull
     private TipoDocumento tipoDocumento;
+
+    @Size(min = 1, max = 10) @NotNull
     private String numeroDocumento;
+
+    @Past @NotNull
     private LocalDate fechaDeNacimiento;
+
+    @Size(min = 1, max = 11)
+    @Pattern(regexp = "^[0-9]{2}-?[0-9]{8}-?[0-9]$")
     private String cuit;
+
+    @NotNull
     private IVA posicionFrenteAlIVA;
+
+    @NotNull @Size(min = 1, max = 85)
     private String nacionalidad;
+
+    @NotNull @Size(min = 1, max = 20)
     private String telefono;
+    
+    @Email 
     private String email;
+
+    @NotNull @Size(min = 1, max = 50)
     private String ocupacion;
+    
     private DireccionDTO direccion;
 
     public HuespedDTO(Huesped huesped) {

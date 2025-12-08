@@ -22,7 +22,6 @@ public class GestorEstadia {
     private final EstadiaRepository estadiaRepository;
     private final HuespedRepository huespedRepository;
     private final HabitacionRepository habitacionRepository;
-    private final ReservaRepository reservaRepository;
 
     @Autowired
     public GestorEstadia(EstadiaRepository estadiaRepository, HuespedRepository huespedRepository, 
@@ -30,7 +29,6 @@ public class GestorEstadia {
        this.estadiaRepository = estadiaRepository;
        this.huespedRepository = huespedRepository;
        this.habitacionRepository = habitacionRepository;
-       this.reservaRepository = reservaRepository;
     }
 
     @Transactional
@@ -51,7 +49,6 @@ public class GestorEstadia {
             Habitacion habitacion = habitacionRepository.findById(dto.getNumeroHabitacion())
                     .orElseThrow(() -> new IllegalArgumentException("Habitación no encontrada: " + dto.getNumeroHabitacion()));
             
-            
             Integer idTitular = dto.getIdHuespedTitular();
             if (idTitular == null) {
                  throw new IllegalArgumentException("El ID del titular es obligatorio.");
@@ -59,16 +56,6 @@ public class GestorEstadia {
           
             Huesped titular = huespedRepository.findById(idTitular)
                     .orElseThrow(() -> new IllegalArgumentException("Huésped titular no encontrado: " + idTitular));
-
-            Reserva reserva = null;
-            if (dto.getIdReserva() != null) {
-                reserva = reservaRepository.findById(dto.getIdReserva())
-                        .orElseThrow(() -> new IllegalArgumentException("Reserva no encontrada: " + dto.getIdReserva()));
-                
-                if (!reserva.getHabitacion().getNumero().equals(habitacion.getNumero())) {
-                     throw new IllegalArgumentException("La reserva no coincide con la habitación seleccionada.");
-                }
-            }
 
             boolean ocupada = estadiaRepository.findAll().stream().anyMatch(e -> 
                 e.getHabitacion().getNumero().equals(habitacion.getNumero()) &&
@@ -84,7 +71,6 @@ public class GestorEstadia {
             estadia.setCheckIn(dto.getCheckIn());
             estadia.setCheckOut(dto.getCheckOut());
             estadia.setHabitacion(habitacion);
-            estadia.setReserva(reserva);
             
             estadia.setHuespedTitular(titular);
             titular.agregarEstadiaComoTitular(estadia);

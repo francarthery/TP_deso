@@ -17,7 +17,6 @@ public class EstadiaDTO {
     private LocalDate checkOut;
     
     private String numeroHabitacion;
-    private Integer idReserva;
 
     private Integer idHuespedTitular;
     private List<Integer> idsHuespedesInvitados;
@@ -40,8 +39,5 @@ public class EstadiaDTO {
                 .toList();
         }
         
-        if (estadia.getReserva() != null) {
-            this.idReserva = estadia.getReserva().getId();
-        }
     }
 }

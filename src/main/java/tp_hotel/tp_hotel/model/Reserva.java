@@ -38,9 +38,4 @@ public class Reserva {
     @ManyToOne
     @JoinColumn(name = "habitacion_numero", nullable = false)
     private Habitacion habitacion;
-
-    @OneToOne(mappedBy = "reserva")
-    @ToString.Exclude
-    @JsonIgnore
-    private Estadia estadia;
 }

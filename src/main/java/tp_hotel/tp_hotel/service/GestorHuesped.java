@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import tp_hotel.tp_hotel.model.BusquedaHuespedDTO;
 import tp_hotel.tp_hotel.model.Direccion;
 import tp_hotel.tp_hotel.model.Huesped;
 import tp_hotel.tp_hotel.model.IVA;
@@ -22,16 +23,15 @@ public class GestorHuesped {
        this.huespedRepository = huespedRepository;
     }
 
-    public List<Huesped> buscarHuesped(String apellido, String nombres, TipoDocumento tipoDocumento, String numeroDocumento) {
-        if((apellido == null || apellido.isEmpty()) && (nombres == null || nombres.isEmpty()) && 
-        (numeroDocumento == null || numeroDocumento.isEmpty()) && tipoDocumento == null){
-            return huespedRepository.findAll();
-        }
-        String apellidoFiltro = (apellido != null && !apellido.isEmpty()) ? apellido : null;
-        String nombresFiltro = (nombres != null && !nombres.isEmpty()) ? nombres : null;
-        String numeroDocumentoFiltro = (numeroDocumento != null && !numeroDocumento.isEmpty()) ? numeroDocumento : null;
-
-        return huespedRepository.buscarConFiltros(apellidoFiltro, nombresFiltro, tipoDocumento, numeroDocumentoFiltro);
+    public List<Huesped> buscarHuesped(BusquedaHuespedDTO busquedaHuespedDTO) {
+        String apellido = busquedaHuespedDTO.getApellido();
+        String nombres = busquedaHuespedDTO.getNombres();
+        TipoDocumento tipoDocumento = busquedaHuespedDTO.getTipoDocumento();
+        String numeroDocumento = busquedaHuespedDTO.getNumeroDocumento();
+        
+        if(apellido == null && nombres == null && numeroDocumento == null && tipoDocumento == null) return huespedRepository.findAll();
+        
+        return huespedRepository.buscarConFiltros(apellido, nombres, tipoDocumento, numeroDocumento);
     }
 
     public boolean documentoExistente(TipoDocumento tipoDocumento, String numeroDocumento){

@@ -20,10 +20,10 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     
-    @Column(length = 100, nullable = false, unique = true)
+    @Column(length = 30, nullable = false, unique = true)
     private String username;
 
-    @Column(length = 255, nullable = false)
+    @Column(length = 100, nullable = false)
     private String password;
     
     @Enumerated(EnumType.STRING)

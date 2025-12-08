@@ -58,11 +58,6 @@ public class Estadia {
     @OneToMany(mappedBy = "estadia", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     private List<Consumo> consumos = new ArrayList<>();
-
-    @OneToOne
-    @JoinColumn(name = "reserva_id")
-    @JsonIgnoreProperties("estadia")
-    private Reserva reserva;
     
     @OneToOne(mappedBy = "estadia", cascade = CascadeType.ALL)
     @ToString.Exclude

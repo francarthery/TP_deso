@@ -3,7 +3,13 @@ package tp_hotel.tp_hotel.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
+
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+import tp_hotel.tp_hotel.model.BusquedaHuespedDTO;
 import tp_hotel.tp_hotel.model.Huesped;
 import tp_hotel.tp_hotel.model.HuespedDTO;
 import tp_hotel.tp_hotel.model.TipoDocumento;
@@ -15,6 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/huespedes")
 @CrossOrigin(origins = "http://localhost:3000")
+@Validated
 public class HuespedController {
 
     private final GestorHuesped gestorHuesped;
@@ -27,12 +34,9 @@ public class HuespedController {
     }
 
     @GetMapping
-    public ResponseEntity<List<HuespedDTO>> buscarHuesped(
-            @RequestParam(required = false) String apellido,
-            @RequestParam(required = false) String nombres,
-            @RequestParam(required = false) TipoDocumento tipoDocumento,
-            @RequestParam(required = false) String numeroDocumento) {
-        List<Huesped> huespedes = gestorHuesped.buscarHuesped(apellido, nombres, tipoDocumento, numeroDocumento);
+    public ResponseEntity<List<HuespedDTO>> buscarHuesped(@Valid BusquedaHuespedDTO busquedaHuespedDTO) {
+        
+        List<Huesped> huespedes = gestorHuesped.buscarHuesped(busquedaHuespedDTO);
         List<HuespedDTO> huespedesDTO = huespedes.stream()
             .map(HuespedDTO::new)
             .toList();
@@ -52,7 +56,7 @@ public class HuespedController {
 
     @PostMapping
     public ResponseEntity<?> crearHuesped(
-        @RequestBody HuespedDTO huespedDTO,
+        @Valid @RequestBody HuespedDTO huespedDTO,
         @RequestParam (required = false, defaultValue = "true") Boolean dniUnico) {
         try {
             Huesped huesped = huespedDTO.toEntity();
@@ -65,7 +69,7 @@ public class HuespedController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> modificarHuesped(@PathVariable Integer id, 
-        @RequestBody HuespedDTO huespedDetailsDTO,
+        @Valid @RequestBody HuespedDTO huespedDetailsDTO,
         @RequestParam (required = false, defaultValue = "true") Boolean dniUnico) {
         if (gestorHuesped.buscarHuespedPorId(id) == null) {
             return ResponseEntity.notFound().build();
@@ -90,7 +94,7 @@ public class HuespedController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> darBajaHuesped(@PathVariable int id) {
         if (gestorEstadia.tieneEstadia(id)) {
-             return ResponseEntity.status(HttpStatus.CONFLICT).body("El huésped no puede ser eliminado pues se ha alojado en el Hotel.");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("El huésped no puede ser eliminado pues se ha alojado en el Hotel.");
         }
         
         Huesped huesped = gestorHuesped.buscarHuespedPorId(id);
