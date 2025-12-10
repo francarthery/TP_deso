@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import tp_hotel.tp_hotel.exceptions.HuespedNoEncontradoException;
 import tp_hotel.tp_hotel.model.BusquedaHuespedDTO;
 import tp_hotel.tp_hotel.model.Direccion;
 import tp_hotel.tp_hotel.model.Huesped;
@@ -31,7 +32,11 @@ public class GestorHuesped {
         
         if(apellido == null && nombres == null && numeroDocumento == null && tipoDocumento == null) return huespedRepository.findAll();
         
-        return huespedRepository.buscarConFiltros(apellido, nombres, tipoDocumento, numeroDocumento);
+        List<Huesped> huespedes = huespedRepository.buscarConFiltros(apellido, nombres, tipoDocumento, numeroDocumento);    
+        if(huespedes.isEmpty()) {
+            throw new HuespedNoEncontradoException("¡CUIDADO! No se encontraron huéspedes con los criterios de búsqueda proporcionados.");
+        }
+        return huespedes;
     }
 
     public boolean documentoExistente(TipoDocumento tipoDocumento, String numeroDocumento){
@@ -74,6 +79,14 @@ public class GestorHuesped {
 
     public Huesped buscarHuespedPorId(Integer id) {
         return huespedRepository.findById(id).orElse(null);
+    }
+
+    public List<Huesped> buscarHuespedesPorId(List<Integer> ids) {
+        List<Huesped> huespedes = huespedRepository.findAllById(ids);
+        if(huespedes.size() != ids.size()) {
+            throw new IllegalArgumentException("¡CUIDADO! Algunos huéspedes no fueron encontrados.");
+        }
+        return huespedes; 
     }
 
     public Huesped registrarHuesped(Huesped huesped, Boolean dniUnico) {

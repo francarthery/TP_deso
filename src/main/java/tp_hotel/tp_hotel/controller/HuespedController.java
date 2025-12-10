@@ -54,6 +54,22 @@ public class HuespedController {
         }
     }
 
+    @GetMapping("/lista")
+    public ResponseEntity<?> getHuespedesById(@RequestBody List<Integer> ids){
+        try{
+            List<Huesped> huespedes = gestorHuesped.buscarHuespedesPorId(ids);
+
+            List<HuespedDTO> huespedesDTO = huespedes.stream()
+            .map(HuespedDTO::new)
+            .toList();
+            
+            return ResponseEntity.ok(huespedesDTO);
+        } catch(IllegalArgumentException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+    
+    
     @PostMapping
     public ResponseEntity<?> crearHuesped(
         @Valid @RequestBody HuespedDTO huespedDTO,

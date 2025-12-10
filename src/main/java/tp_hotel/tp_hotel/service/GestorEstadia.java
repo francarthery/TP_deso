@@ -1,11 +1,15 @@
 package tp_hotel.tp_hotel.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import tp_hotel.tp_hotel.exceptions.HabitacionNoExistenteException;
 import tp_hotel.tp_hotel.model.Estadia;
 import tp_hotel.tp_hotel.model.EstadiaDTO;
 import tp_hotel.tp_hotel.model.Habitacion;
@@ -45,6 +49,9 @@ public class GestorEstadia {
             if (dto.getCheckIn().isAfter(dto.getCheckOut())) {
                 throw new IllegalArgumentException("La fecha de Check-In no puede ser posterior al Check-Out.");
             }
+            if (dto.getCheckIn().isEqual(LocalDate.now())) {
+                throw new IllegalArgumentException("La fecha de Check-In no puede ser distinta al dia de hoy.");
+            }
 
             Habitacion habitacion = habitacionRepository.findById(dto.getNumeroHabitacion())
                     .orElseThrow(() -> new IllegalArgumentException("Habitación no encontrada: " + dto.getNumeroHabitacion()));
@@ -57,13 +64,10 @@ public class GestorEstadia {
             Huesped titular = huespedRepository.findById(idTitular)
                     .orElseThrow(() -> new IllegalArgumentException("Huésped titular no encontrado: " + idTitular));
 
-            boolean ocupada = estadiaRepository.findAll().stream().anyMatch(e -> 
-                e.getHabitacion().getNumero().equals(habitacion.getNumero()) &&
-                !dto.getCheckIn().isAfter(e.getCheckOut()) && 
-                !dto.getCheckOut().isBefore(e.getCheckIn())
-            );
 
-            if (ocupada) {
+            Estadia ocupada = estadiaRepository.findByNumeroYRango(dto.getNumeroHabitacion(), dto.getCheckIn(), dto.getCheckOut());
+
+            if (ocupada != null) {
                 throw new IllegalArgumentException("La habitación " + habitacion.getNumero() + " ya está ocupada en las fechas seleccionadas.");
             }
 
@@ -98,6 +102,18 @@ public class GestorEstadia {
         return huespedRepository.findById(huespedID)
                 .map(h -> !h.getEstadiasComoTitular().isEmpty() || !h.getEstadiasComoInvitado().isEmpty())
                 .orElse(false);
+    }
+    
+    public Estadia buscarEstadiaActiva(String numeroHabitacion) {
+        if(habitacionRepository.findById(numeroHabitacion).isEmpty()) {
+            throw new HabitacionNoExistenteException("La habitación con número " + numeroHabitacion + " no existe.");
+        }
+        return estadiaRepository.findActivaByHabitacionNumero(numeroHabitacion, LocalDate.now())
+        .orElseThrow(() -> new IllegalArgumentException("No hay estadía activa para la habitación: " + numeroHabitacion));
+    }
+    
+    public List<Estadia> buscarEstadias(String numeroHabitacion){
+        return estadiaRepository.findByHabitacionNumero(numeroHabitacion);
     }
     
     public void iniciarEstadia(Estadia e) {
