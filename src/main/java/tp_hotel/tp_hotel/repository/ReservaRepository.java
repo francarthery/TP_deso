@@ -15,11 +15,11 @@ import tp_hotel.tp_hotel.model.EstadoReserva;
 @Repository
 public interface ReservaRepository extends JpaRepository<Reserva, Integer> {
 
-    @Query("SELECT r FROM Reserva r WHERE r.habitacion.numero = :numeroHabitacion AND r.fechaInicio <= :fechaFin AND r.fechaFin >= :fechaInicio")
+    @Query("SELECT r FROM Reserva r WHERE r.habitacion.numero = :numeroHabitacion AND r.fechaInicio <= :fechaFin AND r.fechaFin >= :fechaInicio AND r.estado != 'CANCELADA'")
     List<Reserva> findReservasSolapadas(@Param("numeroHabitacion") String numeroHabitacion, @Param("fechaInicio") LocalDate fechaInicio, @Param("fechaFin") LocalDate fechaFin);
 
-    @Query("SELECT r FROM Reserva r WHERE r.fechaInicio <= :fechaFin AND r.fechaFin >= :fechaInicio")
-    List<Reserva> findReservasPorFecha(@Param("fechaInicio") LocalDate fechaInicio, @Param ("fechaFin") LocalDate fechaFin);
+    @Query("SELECT r FROM Reserva r WHERE r.fechaInicio <= :fechaFin AND r.fechaFin >= :fechaInicio AND r.estado != 'CANCELADA'")
+    List<Reserva> findReservasPorFecha(@Param("fechaInicio") LocalDate fechaInicio, @Param("fechaFin") LocalDate fechaFin);
 
     @Query("SELECT r FROM Reserva r WHERE (:nombreHuesped IS NULL OR r.nombreHuesped LIKE CONCAT(:nombreHuesped, '%'))" + 
             "AND r.apellidoHuesped LIKE CONCAT(:apellidoHuesped, '%') and r.estado != :estado")

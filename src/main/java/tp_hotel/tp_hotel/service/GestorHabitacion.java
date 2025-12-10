@@ -55,7 +55,7 @@ public class GestorHabitacion {
                 
                 Estadia estadiaActiva = estadias.stream()
                     .filter(e -> e.getHabitacion().getNumero().equals(habitacion.getNumero()) &&
-                            !finalFecha.isBefore(e.getCheckIn()) && finalFecha.isBefore(e.getCheckOut()))
+                            !finalFecha.isBefore(e.getCheckIn()) && !finalFecha.isAfter(e.getCheckOut()))
                     .findFirst()
                     .orElse(null);
 
@@ -65,7 +65,7 @@ public class GestorHabitacion {
                 } else {
                     Reserva reservaActiva = reservas.stream()
                         .filter(r -> r.getHabitacion().getNumero().equals(habitacion.getNumero()) &&
-                                !finalFecha.isBefore(r.getFechaInicio()) && finalFecha.isBefore(r.getFechaFin()) &&
+                                !finalFecha.isBefore(r.getFechaInicio()) && !finalFecha.isAfter(r.getFechaFin()) &&
                                 !r.getEstado().equals(EstadoReserva.CANCELADA))
                         .findFirst()
                         .orElse(null);

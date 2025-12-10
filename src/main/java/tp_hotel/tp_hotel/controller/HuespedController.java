@@ -54,7 +54,7 @@ public class HuespedController {
         }
     }
 
-    @GetMapping("/lista")
+    @PostMapping("/lista")
     public ResponseEntity<?> getHuespedesById(@RequestBody List<Integer> ids){
         try{
             List<Huesped> huespedes = gestorHuesped.buscarHuespedesPorId(ids);
