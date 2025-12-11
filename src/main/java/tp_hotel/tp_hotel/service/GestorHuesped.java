@@ -44,19 +44,24 @@ public class GestorHuesped {
     }
 
     public boolean modificarHuesped(Huesped huesped, Boolean dniUnico) {
-         if (dniUnico && documentoExistente(huesped.getTipoDocumento(), huesped.getNumeroDocumento())) {
-            List<Huesped> existente = huespedRepository.findByTipoDocumentoAndNumeroDocumento(
-                huesped.getTipoDocumento(), 
-                huesped.getNumeroDocumento()
-            );
-
-            if (existente.size() > 1 || existente.size() == 1 && !existente.get(0).getId().equals(huesped.getId())) {
-                throw new IllegalArgumentException("¡CUIDADO! El tipo y número de documento ya existen en el sistema.");
-            }
-        }
         if (huesped == null) {
-            return false;
+            throw new IllegalArgumentException("Huésped no puede ser nulo.");
         }
+        if(!documentoExistente(huesped.getTipoDocumento(), huesped.getNumeroDocumento())){
+            throw new IllegalArgumentException("El huesped no existe en el sistema.");
+        }
+
+        Huesped existente = huespedRepository.findByTipoDocumentoAndNumeroDocumento(
+            huesped.getTipoDocumento(), 
+            huesped.getNumeroDocumento()
+        );
+
+        if (dniUnico && !existente.getId().equals(huesped.getId())) {
+            throw new IllegalArgumentException("¡CUIDADO! El tipo y número de documento ya existen en el sistema.");
+        }
+
+        huesped.setId(existente.getId());
+
         try {
             huespedRepository.save(huesped);
             return true;
@@ -93,6 +98,14 @@ public class GestorHuesped {
         if (dniUnico && documentoExistente(huesped.getTipoDocumento(), huesped.getNumeroDocumento())) {
             throw new IllegalArgumentException("¡CUIDADO! El tipo y número de documento ya existen en el sistema.");
         }
+        if(!dniUnico){
+            Huesped existente = huespedRepository.findByTipoDocumentoAndNumeroDocumento(
+                huesped.getTipoDocumento(), 
+                huesped.getNumeroDocumento()
+            );
+            huesped.setId(existente.getId());
+        }
+
         return huespedRepository.save(huesped);
     }
 }
