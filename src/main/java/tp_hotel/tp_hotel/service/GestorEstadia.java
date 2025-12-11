@@ -49,7 +49,7 @@ public class GestorEstadia {
             if (dto.getCheckIn().isAfter(dto.getCheckOut())) {
                 throw new IllegalArgumentException("La fecha de Check-In no puede ser posterior al Check-Out.");
             }
-            if (dto.getCheckIn().isEqual(LocalDate.now())) {
+            if (!dto.getCheckIn().isEqual(LocalDate.now())) {
                 throw new IllegalArgumentException("La fecha de Check-In no puede ser distinta al dia de hoy.");
             }
 
