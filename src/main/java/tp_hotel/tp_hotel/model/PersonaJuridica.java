@@ -12,7 +12,7 @@ public class PersonaJuridica extends ResponsablePago {
     @Column(length = 150, nullable = false)
     private String razonSocial;
 
-    @Column(length = 11, nullable = false)
+    @Column(length = 13, nullable = false)
     private String cuit;
 
     @Column(length = 20, nullable = false)

@@ -17,10 +17,10 @@ import jakarta.validation.constraints.Size;
 public class HuespedDTO {
     private Integer id;
     
-    @Pattern(regexp = "^[a-zA-Z]+$") @Size(min = 1, max = 50) @NotNull
+    @Pattern(regexp = "^[a-zA-Z ]+$") @Size(min = 1, max = 50) @NotNull
     private String apellido;
     
-    @Pattern(regexp = "^[a-zA-Z]+$") @Size(min = 1, max = 50) @NotNull
+    @Pattern(regexp = "^[a-zA-Z ]+$") @Size(min = 1, max = 50) @NotNull
     private String nombres;
 
     @NotNull
@@ -32,7 +32,7 @@ public class HuespedDTO {
     @Past @NotNull
     private LocalDate fechaDeNacimiento;
 
-    @Size(min = 1, max = 11)
+    @Size(min = 1, max = 13)
     @Pattern(regexp = "^[0-9]{2}-?[0-9]{8}-?[0-9]$")
     private String cuit;
 
