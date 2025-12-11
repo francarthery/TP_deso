@@ -40,16 +40,10 @@ public class GestorEstadia {
         List<Estadia> estadiasCreadas = new ArrayList<>();
 
         for (EstadiaDTO dto : estadiasDTO) {
-            if (dto.getNumeroHabitacion() == null) {
-                throw new IllegalArgumentException("Faltan datos obligatorios (Habitación).");
-            }
-            if (dto.getCheckIn() == null || dto.getCheckOut() == null) {
-                throw new IllegalArgumentException("Las fechas de Check-In y Check-Out son obligatorias.");
-            }
             if (dto.getCheckIn().isAfter(dto.getCheckOut())) {
                 throw new IllegalArgumentException("La fecha de Check-In no puede ser posterior al Check-Out.");
             }
-            if (dto.getCheckIn().isEqual(LocalDate.now())) {
+            if (!dto.getCheckIn().isEqual(LocalDate.now())) {
                 throw new IllegalArgumentException("La fecha de Check-In no puede ser distinta al dia de hoy.");
             }
 
@@ -57,9 +51,6 @@ public class GestorEstadia {
                     .orElseThrow(() -> new IllegalArgumentException("Habitación no encontrada: " + dto.getNumeroHabitacion()));
             
             Integer idTitular = dto.getIdHuespedTitular();
-            if (idTitular == null) {
-                 throw new IllegalArgumentException("El ID del titular es obligatorio.");
-            }
           
             Huesped titular = huespedRepository.findById(idTitular)
                     .orElseThrow(() -> new IllegalArgumentException("Huésped titular no encontrado: " + idTitular));

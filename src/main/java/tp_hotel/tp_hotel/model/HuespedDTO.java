@@ -32,7 +32,7 @@ public class HuespedDTO {
     @Past @NotNull
     private LocalDate fechaDeNacimiento;
 
-    @Size(min = 1, max = 11)
+    @Size(min = 1, max = 13)
     @Pattern(regexp = "^[0-9]{2}-?[0-9]{8}-?[0-9]$")
     private String cuit;
 

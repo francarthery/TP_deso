@@ -7,17 +7,26 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class EstadiaDTO {
 
     private Long id;
+
+    @NotNull
     private LocalDate checkIn;
+
+    @NotNull
     private LocalDate checkOut;
     
+    @NotNull @Size(min = 1, max = 2)
     private String numeroHabitacion;
 
+    @NotNull
     private Integer idHuespedTitular;
     private List<Integer> idsHuespedesInvitados;
 

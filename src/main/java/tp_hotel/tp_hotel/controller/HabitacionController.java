@@ -7,6 +7,7 @@ import tp_hotel.tp_hotel.model.Estadia;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import jakarta.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import java.time.LocalDate;
 import java.util.List;
@@ -22,6 +26,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/habitaciones")
 @CrossOrigin(origins = "http://localhost:3000")
+@Validated
 public class HabitacionController{
     
     private final GestorHabitacion gestorHabitacion;
@@ -48,7 +53,7 @@ public class HabitacionController{
     }
 
     @PostMapping("/ocupar-habitacion")
-    public ResponseEntity<?> ocuparHabitaciones(@RequestBody List<EstadiaDTO> estadiasDTO){
+    public ResponseEntity<?> ocuparHabitaciones(@Valid @RequestBody List<EstadiaDTO> estadiasDTO){
         try {
             List<Estadia> estadiasCreadas = gestorEstadia.crearEstadias(estadiasDTO);
             

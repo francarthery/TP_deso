@@ -25,4 +25,5 @@ public class PersonaFisica extends ResponsablePago {
     public String getTelefono(){
         return this.huesped.getTelefono();
     }
+    
 }

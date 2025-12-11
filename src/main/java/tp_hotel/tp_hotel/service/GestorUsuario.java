@@ -2,7 +2,7 @@ package tp_hotel.tp_hotel.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tp_hotel.tp_hotel.model.Rol; // Import necesario para asignarRol
+import tp_hotel.tp_hotel.model.Rol; 
 import tp_hotel.tp_hotel.model.Usuario;
 import tp_hotel.tp_hotel.exceptions.UsuarioNoValidoException;
 import tp_hotel.tp_hotel.repository.UsuarioRepository;
