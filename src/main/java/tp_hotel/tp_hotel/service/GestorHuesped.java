@@ -48,7 +48,7 @@ public class GestorHuesped {
             throw new IllegalArgumentException("Huésped no puede ser nulo.");
         }
         if(!documentoExistente(huesped.getTipoDocumento(), huesped.getNumeroDocumento())){
-            throw new IllegalArgumentException("El huesped no existe en el sistema.");
+            throw new HuespedNoEncontradoException("El huesped no existe en el sistema.");
         }
 
         Huesped existente = huespedRepository.findByTipoDocumentoAndNumeroDocumento(

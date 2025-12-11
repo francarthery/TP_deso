@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import tp_hotel.tp_hotel.exceptions.HuespedNoEncontradoException;
 import tp_hotel.tp_hotel.model.BusquedaHuespedDTO;
 import tp_hotel.tp_hotel.model.Huesped;
 import tp_hotel.tp_hotel.model.HuespedDTO;
@@ -36,12 +37,16 @@ public class HuespedController {
     @GetMapping
     public ResponseEntity<List<HuespedDTO>> buscarHuesped(@Valid BusquedaHuespedDTO busquedaHuespedDTO) {
         
-        List<Huesped> huespedes = gestorHuesped.buscarHuesped(busquedaHuespedDTO);
-        List<HuespedDTO> huespedesDTO = huespedes.stream()
-            .map(HuespedDTO::new)
-            .toList();
+        try{
+            List<Huesped> huespedes = gestorHuesped.buscarHuesped(busquedaHuespedDTO);
+            List<HuespedDTO> huespedesDTO = huespedes.stream()
+                .map(HuespedDTO::new)
+                .toList();
 
-        return ResponseEntity.ok(huespedesDTO);
+            return ResponseEntity.ok(huespedesDTO);
+        } catch (HuespedNoEncontradoException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
     @GetMapping("/{id}")
@@ -103,6 +108,8 @@ public class HuespedController {
             }
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        } catch (HuespedNoEncontradoException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
         
     }
