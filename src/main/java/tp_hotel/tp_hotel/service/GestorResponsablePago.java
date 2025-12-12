@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import tp_hotel.tp_hotel.exceptions.CuitYaExistenteException;
 import tp_hotel.tp_hotel.exceptions.PersonaJuridicaNoExistenteException;
 import tp_hotel.tp_hotel.model.BusquedaResponsablePagoDTO;
 import tp_hotel.tp_hotel.model.Huesped;
@@ -31,8 +32,19 @@ public class GestorResponsablePago {
         this.huespedRepository = huespedRepository;
     }
 
+    public boolean cuitUnico(String cuit) {
+        Optional<PersonaJuridica> personaJuridica = personaJuridicaRepository.findByCuit(cuit);
+        return personaJuridica.isEmpty();
+    }   
+    
     public List<PersonaJuridica> buscarPersonaJuridica(BusquedaResponsablePagoDTO busquedaResponsablePagoDTO) {
-        List<PersonaJuridica> responsables = personaJuridicaRepository.findByCuitYRazonSocial(busquedaResponsablePagoDTO.getCuit(), busquedaResponsablePagoDTO.getRazonSocial());
+        String cuit = busquedaResponsablePagoDTO.getCuit();
+        String razonSocial = busquedaResponsablePagoDTO.getRazonSocial();
+        if(!cuitUnico(cuit)){
+            throw new CuitYaExistenteException("El cuit ingresado ya existe en el sistema.");
+        }
+        
+        List<PersonaJuridica> responsables = personaJuridicaRepository.findByCuitYRazonSocial(cuit, razonSocial);
         
         if(responsables.isEmpty()){
             throw new PersonaJuridicaNoExistenteException("No se encontró un responsable pago para los atributos proporcionados.");

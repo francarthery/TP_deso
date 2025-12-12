@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
+import tp_hotel.tp_hotel.exceptions.CuitYaExistenteException;
 import tp_hotel.tp_hotel.exceptions.PersonaJuridicaNoExistenteException;
 import tp_hotel.tp_hotel.model.BusquedaResponsablePagoDTO;
 import tp_hotel.tp_hotel.model.PersonaJuridica;
@@ -57,6 +58,8 @@ public class ResponsablePagoController {
             PersonaJuridica personaJuridica = personaJuridicaDTO.toEntity();
             ResponsablePago respuesta = gestorResponsablePago.darAltaPersonaJuridica(personaJuridica);
             return ResponseEntity.status(HttpStatus.CREATED).body(respuesta.getId());
+        }catch(CuitYaExistenteException c){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(c.getMessage());
         }catch(Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage()); 
         }
