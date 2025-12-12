@@ -32,4 +32,13 @@ public class PersonaJuridicaDTO {
         }
         return personaJuridica;
     }
+
+    public PersonaJuridicaDTO(PersonaJuridica personaJuridica){
+        this.razonSocial = personaJuridica.getRazonSocial();
+        this.cuit = personaJuridica.getCUIT();
+        this.telefono = personaJuridica.getTelefono();
+        if (personaJuridica.getDireccion() != null) {
+            this.direccion = new DireccionDTO(personaJuridica.getDireccion());
+        }
+    }
 }

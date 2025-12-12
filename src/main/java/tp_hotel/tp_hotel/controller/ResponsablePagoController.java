@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
+import tp_hotel.tp_hotel.exceptions.PersonaJuridicaNoExistenteException;
+import tp_hotel.tp_hotel.model.BusquedaResponsablePagoDTO;
 import tp_hotel.tp_hotel.model.PersonaJuridica;
 import tp_hotel.tp_hotel.model.PersonaJuridicaDTO;
 import tp_hotel.tp_hotel.model.ResponsablePago;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import java.util.stream.Collectors;
 
 
 
@@ -59,14 +62,18 @@ public class ResponsablePagoController {
         }
     }
     
-
-    // @GetMapping
-    // public ResponsaEntity<List<ResponsablePago>> buscarResponsablePago(
-    //     @RequestParam (required = false) String cuit, 
-    //     @RequestParam (required = false) String razonSocial) {
-        
-    //     gestorResponsablePago.buscarResponsable(cuit, razonSocial);
-    // }
+    @GetMapping
+    public ResponseEntity<?> buscarPersonaJuridica(@Valid BusquedaResponsablePagoDTO busquedaResponsableDTO) {
+        try{
+            List<PersonaJuridica> responsablesPago = gestorResponsablePago.buscarPersonaJuridica(busquedaResponsableDTO);
+            List<PersonaJuridicaDTO> respuesta = responsablesPago.stream()
+                .map(PersonaJuridicaDTO::new)
+                .collect(Collectors.toList());
+            return ResponseEntity.ok(respuesta);
+        }catch(PersonaJuridicaNoExistenteException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
     
     // @DeleteMapping()
     // public boolean darBajaResponsablePago(){

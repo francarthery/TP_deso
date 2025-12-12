@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import tp_hotel.tp_hotel.exceptions.PersonaJuridicaNoExistenteException;
+import tp_hotel.tp_hotel.model.BusquedaResponsablePagoDTO;
 import tp_hotel.tp_hotel.model.Huesped;
 import tp_hotel.tp_hotel.model.PersonaFisica;
 import tp_hotel.tp_hotel.model.PersonaJuridica;
@@ -29,8 +31,15 @@ public class GestorResponsablePago {
         this.huespedRepository = huespedRepository;
     }
 
-    public List<ResponsablePago> buscarResponsable(String razonSocial, String cuit) {
-        return null;
+    public List<PersonaJuridica> buscarPersonaJuridica(BusquedaResponsablePagoDTO busquedaResponsablePagoDTO) {
+        List<PersonaJuridica> responsables = personaJuridicaRepository.findByCuitYRazonSocial(busquedaResponsablePagoDTO.getCuit(), busquedaResponsablePagoDTO.getRazonSocial());
+        
+        if(responsables.isEmpty()){
+            throw new PersonaJuridicaNoExistenteException("No se encontró un responsable pago para los atributos proporcionados.");
+        }
+
+        return responsables;
+        
     }
     
     public ResponsablePago darAltaPersonaFisica(Integer idPersonaFisica) {
@@ -38,7 +47,6 @@ public class GestorResponsablePago {
 
         if(personaFisica.isPresent()) return personaFisica.get();
 
-        
         Optional<Huesped> huesped = huespedRepository.findById(idPersonaFisica);
         if(!huesped.isPresent()) {
             throw new IllegalArgumentException("No se encontró un huésped con el identificador proporcionado.");
