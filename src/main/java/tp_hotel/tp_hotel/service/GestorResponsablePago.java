@@ -40,9 +40,6 @@ public class GestorResponsablePago {
     public List<PersonaJuridica> buscarPersonaJuridica(BusquedaResponsablePagoDTO busquedaResponsablePagoDTO) {
         String cuit = busquedaResponsablePagoDTO.getCuit();
         String razonSocial = busquedaResponsablePagoDTO.getRazonSocial();
-        if(!cuitUnico(cuit)){
-            throw new CuitYaExistenteException("El cuit ingresado ya existe en el sistema.");
-        }
         
         List<PersonaJuridica> responsables = personaJuridicaRepository.findByCuitYRazonSocial(cuit, razonSocial);
         
@@ -77,6 +74,9 @@ public class GestorResponsablePago {
     }
 
     public ResponsablePago darAltaPersonaJuridica(PersonaJuridica personaJuridica) {
+        if(!cuitUnico(personaJuridica.getCUIT())){
+            throw new CuitYaExistenteException("El cuit ingresado ya existe en el sistema.");
+        }
        return personaJuridicaRepository.save(personaJuridica);
     }
 

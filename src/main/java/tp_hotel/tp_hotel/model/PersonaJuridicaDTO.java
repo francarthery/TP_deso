@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PersonaJuridicaDTO {
+    private Integer id;
+
     @NotNull @Size(min = 1, max = 100) @Pattern(regexp = "^[a-zA-Z0-9ñÑÁÉÍÓÚÜáéíóúü.,&\\- ]+$")
     private String razonSocial;
 
@@ -34,6 +36,7 @@ public class PersonaJuridicaDTO {
     }
 
     public PersonaJuridicaDTO(PersonaJuridica personaJuridica){
+        this.id = personaJuridica.getId();
         this.razonSocial = personaJuridica.getRazonSocial();
         this.cuit = personaJuridica.getCUIT();
         this.telefono = personaJuridica.getTelefono();
