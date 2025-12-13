@@ -4,16 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FacturaDTO {
-    private Integer id;
-    private String numero;
+public class DatosFacturaDTO {
     private LocalDate fecha;
-    private TipoFactura tipo;
-    private EstadoFactura estado;
-    private Float total;
-    private String responsableCUIT;
+    private Integer idEstadia;
+    private List<Integer> idConsumos;
+    private Integer idResponsablePago;
 }

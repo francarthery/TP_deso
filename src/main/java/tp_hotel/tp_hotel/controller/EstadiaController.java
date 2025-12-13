@@ -13,7 +13,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import tp_hotel.tp_hotel.service.GestorEstadia;
 import tp_hotel.tp_hotel.model.EstadiaDTO;
+import tp_hotel.tp_hotel.model.HuespedDTO;
+import tp_hotel.tp_hotel.model.Consumo;
+import tp_hotel.tp_hotel.model.ConsumoDTO;
 import tp_hotel.tp_hotel.model.Estadia;
+import tp_hotel.tp_hotel.exceptions.EstadiaNoExistenteException;
 import tp_hotel.tp_hotel.exceptions.HabitacionNoExistenteException;
 
 @RestController
@@ -42,6 +46,22 @@ public class EstadiaController {
         }   
     }
 
-            
+    @GetMapping("/consumos/{idEstadia}")
+    public ResponseEntity<?> obtenerConsumosDeEstadia(@PathVariable Integer idEstadia){
+        try{
+            List<Consumo> consumos = gestorEstadia.obtenerConsumosDeEstadia(idEstadia);
+            List<ConsumoDTO> consumosDTO = consumos.stream()
+                .map(ConsumoDTO::new)
+                .toList();
+            return ResponseEntity.status(HttpStatus.OK).body(consumosDTO);
+        } 
+        catch(EstadiaNoExistenteException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }   
+    }
+       
 
 }

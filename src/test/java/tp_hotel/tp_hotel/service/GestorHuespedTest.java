@@ -51,7 +51,8 @@ public class GestorHuespedTest {
     @Test
     void buscarHuesped_SinFiltros_RetornaTodos() {
         // Arrange
-        when(huespedRepository.findAll()).thenReturn(Arrays.asList(huespedEjemplo));
+        when(huespedRepository.buscarConFiltros(null, null, null, null))
+        .thenReturn(Arrays.asList(huespedEjemplo));
 
         // Act
         List<Huesped> resultado = gestorHuesped.buscarHuesped(busquedaDTO);
@@ -59,8 +60,8 @@ public class GestorHuespedTest {
         // Assert
         assertNotNull(resultado);
         assertEquals(1, resultado.size());
-        verify(huespedRepository).findAll(); //Esto le pregunta al mock si recibio el llamado
-        verify(huespedRepository, never()).buscarConFiltros(any(), any(), any(), any()); //Esto le pregunta al mock si NO recibio el llamado
+        verify(huespedRepository).buscarConFiltros(any(), any(), any(), any()); //Esto le pregunta al mock si recibio el llamado
+        verify(huespedRepository, never()).findAll(); //Esto le pregunta al mock si NO recibio el llamado
     }
 
     @Test

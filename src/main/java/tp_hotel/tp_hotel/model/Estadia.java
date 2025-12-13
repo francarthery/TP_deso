@@ -30,7 +30,7 @@ import lombok.ToString;
 public class Estadia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
     
     @Column(nullable = false)
     private LocalDate checkIn;
@@ -59,8 +59,8 @@ public class Estadia {
     @ToString.Exclude
     private List<Consumo> consumos = new ArrayList<>();
     
-    @OneToOne(mappedBy = "estadia", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "estadia", cascade = CascadeType.ALL)
     @ToString.Exclude
     @JsonIgnore
-    private Factura factura;
+    private List<Factura> facturas = new ArrayList<>();
 }

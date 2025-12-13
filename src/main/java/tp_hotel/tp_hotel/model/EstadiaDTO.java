@@ -15,7 +15,7 @@ import jakarta.validation.constraints.Size;
 @AllArgsConstructor
 public class EstadiaDTO {
 
-    private Long id;
+    private Integer id;
 
     @NotNull
     private LocalDate checkIn;
@@ -30,7 +30,7 @@ public class EstadiaDTO {
     private Integer idHuespedTitular;
     private List<Integer> idsHuespedesInvitados;
 
-    private List<ConsumoDTO> consumos = new ArrayList<>();
+    private List<Integer> idsConsumos = new ArrayList<>();
 
     public EstadiaDTO(Estadia estadia) {
         this.id = estadia.getId();
@@ -47,6 +47,10 @@ public class EstadiaDTO {
                 .map(Huesped::getId)
                 .toList();
         }
-        
+        if (estadia.getConsumos() != null) {
+            this.idsConsumos = estadia.getConsumos().stream()
+                .map(Consumo::getId)
+                .toList();
+        }
     }
 }

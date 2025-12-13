@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import tp_hotel.tp_hotel.model.Estadia;
 
 @Repository
-public interface EstadiaRepository extends JpaRepository<Estadia, Long> {
+public interface EstadiaRepository extends JpaRepository<Estadia, Integer> {
     List<Estadia> findByHabitacionNumero(String numero);
 
     @Query("SELECT e FROM Estadia e WHERE e.checkIn <= :fechaFin AND e.checkOut >= :fechaInicio")

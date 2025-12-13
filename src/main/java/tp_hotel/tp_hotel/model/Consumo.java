@@ -22,9 +22,15 @@ public class Consumo {
     private Float monto;
     
     @Column(nullable = false)
+    private Integer cantidad;
+
+    @Column(nullable = false)
     private LocalDate fecha;
 
     @ManyToOne
     @JoinColumn(name = "estadia_id", nullable = false)
     private Estadia estadia;
+    
+    @Column(nullable = false)
+    private boolean facturado;
 }

@@ -14,4 +14,16 @@ public class ConsumoDTO {
     private Float monto;
     private LocalDate fecha;
     private Integer idEstadia;
+    private boolean facturado;
+    
+    public ConsumoDTO(Consumo consumo) {
+        this.id = consumo.getId();
+        this.descripcion = consumo.getDescripcion();
+        this.monto = consumo.getMonto();
+        this.fecha = consumo.getFecha();
+        this.facturado = consumo.isFacturado();
+        if (consumo.getEstadia() != null) {
+            this.idEstadia = consumo.getEstadia().getId();
+        }
+    }
 }

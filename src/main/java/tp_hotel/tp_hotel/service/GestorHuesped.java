@@ -30,8 +30,6 @@ public class GestorHuesped {
         TipoDocumento tipoDocumento = busquedaHuespedDTO.getTipoDocumento();
         String numeroDocumento = busquedaHuespedDTO.getNumeroDocumento();
         
-        if(apellido == null && nombres == null && numeroDocumento == null && tipoDocumento == null) return huespedRepository.findAll();
-        
         List<Huesped> huespedes = huespedRepository.buscarConFiltros(apellido, nombres, tipoDocumento, numeroDocumento);    
         if(huespedes.isEmpty()) {
             throw new HuespedNoEncontradoException("¡CUIDADO! No se encontraron huéspedes con los criterios de búsqueda proporcionados.");

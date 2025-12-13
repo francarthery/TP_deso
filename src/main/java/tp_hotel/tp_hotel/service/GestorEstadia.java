@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import tp_hotel.tp_hotel.exceptions.EstadiaNoExistenteException;
 import tp_hotel.tp_hotel.exceptions.HabitacionNoExistenteException;
+import tp_hotel.tp_hotel.model.Consumo;
 import tp_hotel.tp_hotel.model.Estadia;
 import tp_hotel.tp_hotel.model.EstadiaDTO;
 import tp_hotel.tp_hotel.model.Habitacion;
@@ -69,6 +71,17 @@ public class GestorEstadia {
             
             estadia.setHuespedTitular(titular);
             titular.agregarEstadiaComoTitular(estadia);
+            
+            Consumo consumo = new Consumo();
+            Float totalHabitacion = habitacion.getCostoNoche() * 
+                                     (dto.getCheckOut().toEpochDay() - dto.getCheckIn().toEpochDay());
+            consumo.setMonto(totalHabitacion);
+            consumo.setCantidad(1);
+            consumo.setDescripcion("Alojamiento - Número habitación: " + habitacion.getNumero() + ".");
+            consumo.setFecha(dto.getCheckIn());
+            consumo.setEstadia(estadia);
+            estadia.getConsumos().add(consumo);
+
 
             if (dto.getIdsHuespedesInvitados() != null) {
                 List<Huesped> invitados = new ArrayList<>();
@@ -107,7 +120,14 @@ public class GestorEstadia {
         return estadiaRepository.findByHabitacionNumero(numeroHabitacion);
     }
     
-    public void iniciarEstadia(Estadia e) {
+    public List<Consumo> obtenerConsumosDeEstadia(Integer idEstadia){
+        Optional<Estadia> estadia = estadiaRepository.findById(idEstadia);
+    
+        if (!estadia.isPresent()) {
+            throw new EstadiaNoExistenteException("La estadía con ID " + idEstadia + " no existe.");
+        }
+
+        return estadia.get().getConsumos();
     }
 
     public void finalizarEstadia(Integer id) {

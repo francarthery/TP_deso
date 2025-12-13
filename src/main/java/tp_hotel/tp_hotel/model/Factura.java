@@ -18,7 +18,7 @@ public class Factura {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id; 
     
-    @Column(length = 13, nullable = false)
+    @Column(length = 10, nullable = false)
     private String numero;
 
     @Column(nullable = false)
@@ -37,7 +37,7 @@ public class Factura {
     @JoinColumn(name = "responsable_id", nullable = false)
     private ResponsablePago responsableDePago;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "estadia_id")
     private Estadia estadia;
 
