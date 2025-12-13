@@ -10,7 +10,15 @@ Seleccionar DB: USE tp_hotel_db;
 Mostrar tablas: SHOW TABLES;
 Mostrar una tabla: DESCRIBE nombre;
 
-En la carpeta scripts hay datos de prueba para insertar en la BD.
+En la carpeta ./scripts hay datos de prueba para insertar en la BD.
+El orden de insercion de las tablas para respetar las FK es:
+-usuarios
+-huesped
+-habitacion
+-reservas
+-estadias
+-estadia_huespedes_invitados
+-consumos
 
 ##
 Detener container (-v hace que ademas se borre toda la info de la BD):
