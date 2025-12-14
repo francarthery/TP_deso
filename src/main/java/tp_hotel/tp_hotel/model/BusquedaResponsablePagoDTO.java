@@ -1,6 +1,5 @@
 package tp_hotel.tp_hotel.model;
 
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;

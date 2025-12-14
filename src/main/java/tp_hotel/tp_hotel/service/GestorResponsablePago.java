@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import tp_hotel.tp_hotel.exceptions.CuitYaExistenteException;
 import tp_hotel.tp_hotel.exceptions.PersonaJuridicaNoExistenteException;

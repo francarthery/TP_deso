@@ -7,13 +7,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+
 import tp_hotel.tp_hotel.exceptions.HuespedNoEncontradoException;
 import tp_hotel.tp_hotel.model.BusquedaHuespedDTO;
 import tp_hotel.tp_hotel.model.Huesped;
 import tp_hotel.tp_hotel.model.HuespedDTO;
-import tp_hotel.tp_hotel.model.TipoDocumento;
 import tp_hotel.tp_hotel.service.GestorEstadia;
 import tp_hotel.tp_hotel.service.GestorHuesped;
 

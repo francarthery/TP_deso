@@ -1,11 +1,9 @@
 package tp_hotel.tp_hotel.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 

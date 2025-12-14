@@ -1,3 +1,5 @@
+-- Active: 1765667767297@@localhost@3306@tp_hotel_db
+-- Active: 1765667767297@@localhost@3306@tp_hotel_db
 INSERT INTO consumo (descripcion, monto, cantidad, fecha, estadia_id, facturado) VALUES
 -- Estadia 1 (Familia, 13-23 Dec)
 ('Almuerzo Familiar', 35000.00, 1, '2025-12-13', 1, 0),

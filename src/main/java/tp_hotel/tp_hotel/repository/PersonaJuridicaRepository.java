@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import tp_hotel.tp_hotel.model.PersonaJuridica;
-import tp_hotel.tp_hotel.model.ResponsablePago;
 
 @Repository
 public interface PersonaJuridicaRepository extends JpaRepository<PersonaJuridica, Integer> {

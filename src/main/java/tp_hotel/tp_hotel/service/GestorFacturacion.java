@@ -20,13 +20,13 @@ import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 
+import tp_hotel.tp_hotel.exceptions.FacturasNoExistentesException;
 import tp_hotel.tp_hotel.model.Consumo;
 import tp_hotel.tp_hotel.model.DatosFacturaDTO;
 import tp_hotel.tp_hotel.model.DetalleFactura;
 import tp_hotel.tp_hotel.model.Estadia;
 import tp_hotel.tp_hotel.model.EstadoFactura;
 import tp_hotel.tp_hotel.model.Factura;
-import tp_hotel.tp_hotel.model.NotaCredito;
 import tp_hotel.tp_hotel.model.PersonaFisica;
 import tp_hotel.tp_hotel.model.PersonaJuridica;
 import tp_hotel.tp_hotel.model.ResponsablePago;
@@ -50,6 +50,13 @@ public class GestorFacturacion {
         this.consumoRepository = consumoRepository;
         this.responsablePagoRepository = responsablePagoRepository;
         this.estadiaRepository = estadiaRepository;
+    }
+
+    public List<Factura> obtenerFacturasPorHabitacionNoPagas(String numeroHabitacion) {
+        List<Factura> facturas = facturaRepository.findByNumeroHabitacionYEstado(numeroHabitacion, EstadoFactura.PENDIENTE);
+        if(facturas.isEmpty()) {
+            throw new FacturasNoExistentesException("No se encontraron facturas para la habitación: " + numeroHabitacion);
+        } else return facturas;
     }
 
     public byte[] generarFactura(DatosFacturaDTO d) {
@@ -83,7 +90,7 @@ public class GestorFacturacion {
         String nuevoNumero = String.format("%010d", ultimoNumero + 1);
 
         factura.setTotal(0f);
-        List<DetalleFactura> detalles = consumos.stream().map(c -> {
+        for (Consumo c : consumos) {
             c.setFacturado(true);
             DetalleFactura detalle = new DetalleFactura();
             detalle.setDescripcion(c.getDescripcion());
@@ -92,8 +99,7 @@ public class GestorFacturacion {
             detalle.setFactura(factura);
             detalle.calcularSubtotal();
             factura.agregarDetalleFactura(detalle);
-            return detalle;
-        }).toList();
+        }
         
         factura.setNumero(nuevoNumero);
         factura.setResponsableDePago(responsable);

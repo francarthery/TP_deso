@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import tp_hotel.tp_hotel.service.GestorEstadia;
 import tp_hotel.tp_hotel.model.EstadiaDTO;
-import tp_hotel.tp_hotel.model.HuespedDTO;
 import tp_hotel.tp_hotel.model.Consumo;
 import tp_hotel.tp_hotel.model.ConsumoDTO;
 import tp_hotel.tp_hotel.model.Estadia;

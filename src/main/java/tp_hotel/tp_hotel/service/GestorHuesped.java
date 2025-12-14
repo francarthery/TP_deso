@@ -1,6 +1,5 @@
 package tp_hotel.tp_hotel.service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +7,7 @@ import org.springframework.stereotype.Service;
 
 import tp_hotel.tp_hotel.exceptions.HuespedNoEncontradoException;
 import tp_hotel.tp_hotel.model.BusquedaHuespedDTO;
-import tp_hotel.tp_hotel.model.Direccion;
 import tp_hotel.tp_hotel.model.Huesped;
-import tp_hotel.tp_hotel.model.IVA;
 import tp_hotel.tp_hotel.model.TipoDocumento;
 import tp_hotel.tp_hotel.repository.HuespedRepository;
 

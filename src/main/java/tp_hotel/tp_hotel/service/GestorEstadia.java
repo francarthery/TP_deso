@@ -16,7 +16,6 @@ import tp_hotel.tp_hotel.model.Estadia;
 import tp_hotel.tp_hotel.model.EstadiaDTO;
 import tp_hotel.tp_hotel.model.Habitacion;
 import tp_hotel.tp_hotel.model.Huesped;
-import tp_hotel.tp_hotel.model.Reserva;
 import tp_hotel.tp_hotel.repository.EstadiaRepository;
 import tp_hotel.tp_hotel.repository.HabitacionRepository;
 import tp_hotel.tp_hotel.repository.HuespedRepository;
@@ -73,10 +72,8 @@ public class GestorEstadia {
             titular.agregarEstadiaComoTitular(estadia);
             
             Consumo consumo = new Consumo();
-            Float totalHabitacion = habitacion.getCostoNoche() * 
-                                     (dto.getCheckOut().toEpochDay() - dto.getCheckIn().toEpochDay());
-            consumo.setMonto(totalHabitacion);
-            consumo.setCantidad(1);
+            consumo.setMonto(habitacion.getCostoNoche());
+            consumo.setCantidad((int)(dto.getCheckOut().toEpochDay() - dto.getCheckIn().toEpochDay()));
             consumo.setDescripcion("Alojamiento - Número habitación: " + habitacion.getNumero() + ".");
             consumo.setFecha(dto.getCheckIn());
             consumo.setEstadia(estadia);
