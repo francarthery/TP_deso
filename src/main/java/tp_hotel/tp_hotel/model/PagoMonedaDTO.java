@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PagoMonedaExtranjeraDTO {
+public class PagoMonedaDTO {
     private String moneda;
     private Float cotizacion;
 }

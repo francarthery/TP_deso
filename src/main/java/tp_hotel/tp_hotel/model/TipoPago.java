@@ -11,7 +11,5 @@ public abstract class TipoPago {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    private Float monto;
-    private LocalDate fecha;
+    private Float importe;
 }

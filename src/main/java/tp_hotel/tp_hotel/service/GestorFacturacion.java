@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,10 +53,15 @@ public class GestorFacturacion {
         this.estadiaRepository = estadiaRepository;
     }
 
+    public Factura obtenerFacturaPorId(Integer idFactura) {
+        return facturaRepository.findById(idFactura)
+            .orElseThrow(() -> new FacturasNoExistentesException("No se encontró la factura con ID: " + idFactura));
+    }
+
     public List<Factura> obtenerFacturasPorHabitacionNoPagas(String numeroHabitacion) {
         List<Factura> facturas = facturaRepository.findByNumeroHabitacionYEstado(numeroHabitacion, EstadoFactura.PENDIENTE);
         if(facturas.isEmpty()) {
-            throw new FacturasNoExistentesException("No se encontraron facturas para la habitación: " + numeroHabitacion);
+            throw new FacturasNoExistentesException("No se encontraron facturas pendientes de pago para la habitación: " + numeroHabitacion);
         } else return facturas;
     }
 

@@ -13,16 +13,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import tp_hotel.tp_hotel.service.GestorFacturacion;
 import tp_hotel.tp_hotel.exceptions.FacturasNoExistentesException;
-import tp_hotel.tp_hotel.exceptions.HuespedNoEncontradoException;
 import tp_hotel.tp_hotel.model.DatosFacturaDTO;
 import tp_hotel.tp_hotel.model.Factura;
 import tp_hotel.tp_hotel.model.FacturaDTO;
-import tp_hotel.tp_hotel.model.Huesped;
-import tp_hotel.tp_hotel.model.HuespedDTO;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController

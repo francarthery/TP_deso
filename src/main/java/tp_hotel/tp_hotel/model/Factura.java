@@ -54,17 +54,4 @@ public class Factura {
         this.total+= detalleFactura.getSubtotal();
     }
 
-    public void registrarPago(Pago nuevoPago) {
-        Float totalIngresado = nuevoPago.calcularTotalIngresos();
-
-        nuevoPago.setMontoTotal(totalIngresado);
-
-        if (totalIngresado >= this.total) {
-            this.pago = nuevoPago;
-            this.estado = EstadoFactura.PAGADA;
-            nuevoPago.setFactura(this);
-        } else {
-            throw new RuntimeException("El monto de los medios de pago no cubre el total de la factura");
-        }
-    }
 }

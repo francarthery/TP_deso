@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @PrimaryKeyJoinColumn(name = "id")
-public class PagoMonedaExtranjera extends TipoPago {
-    private String moneda;
+public class PagoMoneda extends TipoPago {
+    private TipoMoneda moneda;
     private Float cotizacion;  
 }
