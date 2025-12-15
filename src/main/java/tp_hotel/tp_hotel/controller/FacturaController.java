@@ -50,7 +50,7 @@ public class FacturaController {
         }   
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("pdf/{id}")
     public ResponseEntity<?> getMethodName(@PathVariable Integer id) {
         try{
             byte[] pdfFactura = gestorFacturacion.generarPDFFactura(id);
