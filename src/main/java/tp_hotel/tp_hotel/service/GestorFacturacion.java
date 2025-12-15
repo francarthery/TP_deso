@@ -369,6 +369,6 @@ public class GestorFacturacion {
     public boolean existeFacturaDeResponsable(Integer id) {
         List<Factura> facturas = facturaRepository.findByResponsableId(id);
 
-        return facturas.isEmpty();
+        return !facturas.isEmpty();
     }
 }

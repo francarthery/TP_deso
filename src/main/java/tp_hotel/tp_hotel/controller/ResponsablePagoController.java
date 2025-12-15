@@ -94,7 +94,6 @@ public class ResponsablePagoController {
     }
 
 
-    
     @DeleteMapping("/{id}")
     public ResponseEntity<?> darBajaResponsablePago(@PathVariable Integer id){
         try{
