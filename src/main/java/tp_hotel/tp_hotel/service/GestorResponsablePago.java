@@ -1,13 +1,17 @@
 package tp_hotel.tp_hotel.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import jakarta.validation.Valid;
 import tp_hotel.tp_hotel.exceptions.CuitYaExistenteException;
+import tp_hotel.tp_hotel.exceptions.HuespedNoEncontradoException;
 import tp_hotel.tp_hotel.exceptions.PersonaJuridicaNoExistenteException;
+import tp_hotel.tp_hotel.exceptions.ResponsablePagoNoExistenteException;
 import tp_hotel.tp_hotel.model.BusquedaResponsablePagoDTO;
 import tp_hotel.tp_hotel.model.Huesped;
 import tp_hotel.tp_hotel.model.PersonaFisica;
@@ -48,19 +52,19 @@ public class GestorResponsablePago {
         }
 
         return responsables;
-        
     }
     
-    public ResponsablePago darAltaPersonaFisica(Integer idPersonaFisica) {
-        Optional<PersonaFisica> personaFisica = personaFisicaRepository.findByHuespedId(idPersonaFisica);
+    public ResponsablePago darAltaPersonaFisica(Integer idHuesped) {
+        Optional<PersonaFisica> personaFisica = personaFisicaRepository.findByHuespedId(idHuesped);
 
         if(personaFisica.isPresent()) return personaFisica.get();
 
-        Optional<Huesped> huesped = huespedRepository.findById(idPersonaFisica);
+        Optional<Huesped> huesped = huespedRepository.findById(idHuesped);
         if(!huesped.isPresent()) {
-            throw new IllegalArgumentException("No se encontró un huésped con el identificador proporcionado.");
+            throw new HuespedNoEncontradoException("No se encontró un huésped con el identificador proporcionado.");
         }
         PersonaFisica personaFisicaNueva = new PersonaFisica();
+        personaFisicaNueva.setRazonSocial(huesped.get().getApellido() + " " + huesped.get().getNombres());
         personaFisicaNueva.setHuesped(huesped.get());
         personaFisicaRepository.save(personaFisicaNueva);
         
@@ -79,6 +83,18 @@ public class GestorResponsablePago {
             throw new CuitYaExistenteException("El cuit ingresado ya existe en el sistema.");
         }
        return personaJuridicaRepository.save(personaJuridica);
+    }
+
+	public List<ResponsablePago> buscarResponsablePago(BusquedaResponsablePagoDTO busquedaResponsableDTO) {
+        List<ResponsablePago> responsables = new ArrayList<>();
+        responsables.addAll(personaJuridicaRepository.findByCuitYRazonSocial(busquedaResponsableDTO.getCuit(), busquedaResponsableDTO.getRazonSocial()));
+        responsables.addAll(personaFisicaRepository.findByCuitYRazonSocial(busquedaResponsableDTO.getCuit(), busquedaResponsableDTO.getRazonSocial()));
+
+        if(responsables.isEmpty()){
+            throw new ResponsablePagoNoExistenteException("No se encontró un responsable pago para los atributos proporcionados.");
+        }
+        
+        return responsables;
     }
 
 }

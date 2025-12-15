@@ -13,12 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import tp_hotel.tp_hotel.exceptions.CuitYaExistenteException;
+import tp_hotel.tp_hotel.exceptions.HuespedNoEncontradoException;
 import tp_hotel.tp_hotel.exceptions.PersonaJuridicaNoExistenteException;
 import tp_hotel.tp_hotel.exceptions.ResponsablePagoNoExistenteException;
 import tp_hotel.tp_hotel.model.BusquedaResponsablePagoDTO;
 import tp_hotel.tp_hotel.model.PersonaJuridica;
 import tp_hotel.tp_hotel.model.PersonaJuridicaDTO;
 import tp_hotel.tp_hotel.model.ResponsablePago;
+import tp_hotel.tp_hotel.model.ResponsablePagoDTO;
 import tp_hotel.tp_hotel.service.GestorResponsablePago;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,9 +48,8 @@ public class ResponsablePagoController {
         try{
             ResponsablePago personaFisica = gestorResponsablePago.darAltaPersonaFisica(idHuesped);
             return ResponseEntity.status(HttpStatus.CREATED).body(personaFisica.getId()); 
-        }
-        catch (IllegalArgumentException e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage()); 
+        }catch (HuespedNoEncontradoException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage()); 
         }
     }
 
@@ -65,11 +66,11 @@ public class ResponsablePagoController {
         }
     }
     
-    @GetMapping
+    @GetMapping("/personaJuridica")
     public ResponseEntity<?> buscarPersonaJuridica(@Valid BusquedaResponsablePagoDTO busquedaResponsableDTO) {
         try{
-            List<PersonaJuridica> responsablesPago = gestorResponsablePago.buscarPersonaJuridica(busquedaResponsableDTO);
-            List<PersonaJuridicaDTO> respuesta = responsablesPago.stream()
+            List<PersonaJuridica> personasJuridicas = gestorResponsablePago.buscarPersonaJuridica(busquedaResponsableDTO);
+            List<PersonaJuridicaDTO> respuesta = personasJuridicas.stream()
                 .map(PersonaJuridicaDTO::new)
                 .collect(Collectors.toList());
             return ResponseEntity.ok(respuesta);
@@ -77,6 +78,21 @@ public class ResponsablePagoController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
+
+    @GetMapping
+    public ResponseEntity<?> buscarResponsablePago(@Valid BusquedaResponsablePagoDTO busquedaResponsableDTO){
+        try {
+            List<ResponsablePago> responsablesPago = gestorResponsablePago.buscarResponsablePago(busquedaResponsableDTO);
+            List<ResponsablePagoDTO> respuesta = responsablesPago.stream()
+                .map(ResponsablePagoDTO::new)
+                .collect(Collectors.toList());
+            return ResponseEntity.ok(respuesta);
+        } catch(ResponsablePagoNoExistenteException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+
     
     // @DeleteMapping("/{id}")
     // public ResponseEntity<?> darBajaResponsablePago(@PathVariable Integer id){

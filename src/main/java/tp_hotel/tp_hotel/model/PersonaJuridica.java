@@ -9,9 +9,6 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class PersonaJuridica extends ResponsablePago {
     
-    @Column(length = 150, nullable = false)
-    private String razonSocial;
-
     @Column(length = 13, nullable = false)
     private String cuit;
 
@@ -21,9 +18,6 @@ public class PersonaJuridica extends ResponsablePago {
     @Embedded
     private Direccion direccion;
 
-    public String getRazonSocial(){
-        return this.razonSocial;
-    }
     public String getCUIT(){
         return this.cuit;
     }
