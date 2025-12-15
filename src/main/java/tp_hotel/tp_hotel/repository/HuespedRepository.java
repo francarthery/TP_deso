@@ -1,6 +1,7 @@
 package tp_hotel.tp_hotel.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,6 +14,8 @@ import tp_hotel.tp_hotel.model.TipoDocumento;
 public interface HuespedRepository extends JpaRepository<Huesped, Integer> {
     boolean existsByTipoDocumentoAndNumeroDocumento(TipoDocumento tipoDocumento, String numeroDocumento);
     
+    Optional<Huesped> findById(Integer id);
+
     List<Huesped> findByApellido(String apellido);
 
     void deleteByNumeroDocumento(String numeroDocumento);

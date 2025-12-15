@@ -6,8 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
-
-
+import tp_hotel.tp_hotel.exceptions.HuespedConEstadiaException;
 import tp_hotel.tp_hotel.exceptions.HuespedNoEncontradoException;
 import tp_hotel.tp_hotel.model.BusquedaHuespedDTO;
 import tp_hotel.tp_hotel.model.Huesped;
@@ -113,21 +112,14 @@ public class HuespedController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> darBajaHuesped(@PathVariable int id) {
-        if (gestorEstadia.tieneEstadia(id)) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("El huésped no puede ser eliminado pues se ha alojado en el Hotel.");
-        }
-        
-        Huesped huesped = gestorHuesped.buscarHuespedPorId(id);
-        if (huesped == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        boolean success = gestorHuesped.darBajaHuesped(huesped);
-        if (success) {
-            return ResponseEntity.ok("Huésped eliminado exitosamente.");
-        } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar el huésped.");
+    public ResponseEntity<?> darBajaHuesped(@PathVariable Integer id) {
+        try{
+            gestorHuesped.darBajaHuesped(id);
+            return ResponseEntity.status(HttpStatus.OK).body("Huésped eliminado exitosamente.");
+        }catch(HuespedNoEncontradoException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }catch(HuespedConEstadiaException e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
 }

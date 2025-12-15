@@ -1,10 +1,12 @@
 package tp_hotel.tp_hotel.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import tp_hotel.tp_hotel.exceptions.HuespedConEstadiaException;
 import tp_hotel.tp_hotel.exceptions.HuespedNoEncontradoException;
 import tp_hotel.tp_hotel.model.BusquedaHuespedDTO;
 import tp_hotel.tp_hotel.model.Huesped;
@@ -65,16 +67,21 @@ public class GestorHuesped {
         }
     }
 
-    public boolean darBajaHuesped(Huesped huesped) {
-        if (huesped == null) {
-            return false;
+    public boolean darBajaHuesped(Integer id) {
+        Optional<Huesped> huespedOptional = huespedRepository.findById(id);
+        
+        if(huespedOptional.isEmpty()){
+            throw new HuespedNoEncontradoException("El id ingresado " + id + " no corresponde a ningún huésped.");
         }
-        try {
-            huespedRepository.delete(huesped);
-            return true;
-        } catch (Exception e) {
-            return false;
+       
+        Huesped huesped = huespedOptional.get();
+        if(huesped.getEstadiasComoTitular().size() > 0 || huesped.getEstadiasComoInvitado().size() > 0){
+            throw new HuespedConEstadiaException("El huesped " + huesped.getApellido() + " " + huesped.getNombres() + ", ya se ha alojado anteriormente.");
         }
+        
+        huespedRepository.delete(huesped);
+
+        return true;
     }
 
     public Huesped buscarHuespedPorId(Integer id) {
