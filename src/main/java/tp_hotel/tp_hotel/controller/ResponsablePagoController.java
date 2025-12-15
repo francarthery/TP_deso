@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 import tp_hotel.tp_hotel.exceptions.CuitYaExistenteException;
 import tp_hotel.tp_hotel.exceptions.PersonaJuridicaNoExistenteException;
+import tp_hotel.tp_hotel.exceptions.ResponsablePagoNoExistenteException;
 import tp_hotel.tp_hotel.model.BusquedaResponsablePagoDTO;
 import tp_hotel.tp_hotel.model.PersonaJuridica;
 import tp_hotel.tp_hotel.model.PersonaJuridicaDTO;
@@ -78,8 +79,13 @@ public class ResponsablePagoController {
     }
     
     // @DeleteMapping("/{id}")
-    // public boolean darBajaResponsablePago(@PathVariable Integer id){
-        
+    // public ResponseEntity<?> darBajaResponsablePago(@PathVariable Integer id){
+    //     try{
+    //         gestorResponsablePago.darBajaResponsable(id);
+    //         return ResponseEntity.status(HttpStatus.OK).body("El responsable de pago ha sido eliminado exitosamente.");
+    //     }catch(ResponsablePagoNoExistenteException e){
+    //         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    //     }
     // }
     
 }

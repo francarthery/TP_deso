@@ -16,6 +16,7 @@ import tp_hotel.tp_hotel.model.ResponsablePago;
 import tp_hotel.tp_hotel.repository.HuespedRepository;
 import tp_hotel.tp_hotel.repository.PersonaFisicaRepository;
 import tp_hotel.tp_hotel.repository.PersonaJuridicaRepository;
+import tp_hotel.tp_hotel.repository.ResponsablePagoRepository;
 
 @Service
 public class GestorResponsablePago {
@@ -69,8 +70,9 @@ public class GestorResponsablePago {
     public void modificarResponsable(PersonaJuridica r) {
     }
 
-    public void darBajaResponsable(PersonaJuridica r) {
-    }
+    // public void darBajaResponsable(Integer id) {
+    //     Optional<ResponsablePago> responsableOptional = responsablePagoRepository.findById(id);
+    // }
 
     public ResponsablePago darAltaPersonaJuridica(PersonaJuridica personaJuridica) {
         if(!cuitUnico(personaJuridica.getCUIT())){

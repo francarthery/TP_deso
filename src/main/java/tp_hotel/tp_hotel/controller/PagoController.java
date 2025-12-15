@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
+import tp_hotel.tp_hotel.exceptions.FacturaPagadaException;
 import tp_hotel.tp_hotel.exceptions.FacturasNoExistentesException;
 import tp_hotel.tp_hotel.exceptions.PagoInsuficienteException;
 import tp_hotel.tp_hotel.exceptions.TipoPagoIncorrectoException;
@@ -40,7 +41,7 @@ public class PagoController {
         try{
             Integer pago = gestorPago.ingresarPago(tipoPago, facturaId);
             return ResponseEntity.status(HttpStatus.CREATED).body("El pago fue creado correctamente");
-        } catch (FacturasNoExistentesException | TipoPagoIncorrectoException e) {
+        } catch (FacturasNoExistentesException | TipoPagoIncorrectoException | FacturaPagadaException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch(PagoInsuficienteException e){
             return ResponseEntity.status(HttpStatus.PAYMENT_REQUIRED).body(e.getMessage());

@@ -117,7 +117,7 @@ public class HuespedController {
             gestorHuesped.darBajaHuesped(id);
             return ResponseEntity.status(HttpStatus.OK).body("Huésped eliminado exitosamente.");
         }catch(HuespedNoEncontradoException e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage()); 
         }catch(HuespedConEstadiaException e){
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }

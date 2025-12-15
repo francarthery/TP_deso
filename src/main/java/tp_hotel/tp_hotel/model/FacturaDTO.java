@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FacturaDTO {
+    private Integer id;
     private String numero;
     private LocalDate fecha;
     private TipoFactura tipo;
@@ -18,6 +19,7 @@ public class FacturaDTO {
     private float total;
     
     public FacturaDTO(Factura factura){
+        this.id = factura.getId();
         this.numero = factura.getNumero();
         this.fecha = factura.getFecha();
         this.tipo = factura.getTipo();

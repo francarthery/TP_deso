@@ -19,6 +19,7 @@ import tp_hotel.tp_hotel.model.TipoPagoDTO;
 import tp_hotel.tp_hotel.repository.FacturaRepository;
 import tp_hotel.tp_hotel.repository.PagoRepository;
 import tp_hotel.tp_hotel.strategy.StrategyFactory;
+import tp_hotel.tp_hotel.exceptions.FacturaPagadaException;
 import tp_hotel.tp_hotel.exceptions.FacturasNoExistentesException;
 import tp_hotel.tp_hotel.exceptions.PagoInsuficienteException;
 import tp_hotel.tp_hotel.exceptions.TipoPagoIncorrectoException;
@@ -59,6 +60,10 @@ public class GestorPago{
         
         Factura factura = gestorFacturacion.obtenerFacturaPorId(facturaId);
         
+        if(factura.getEstado() == EstadoFactura.PAGADA){
+            throw new FacturaPagadaException("La factura " + facturaId + " ya se encuentra pagada.");
+        }
+
         Pago pago = new Pago();
         pago.setFecha(LocalDate.now());
         pago.setFactura(factura);
