@@ -36,7 +36,7 @@ public interface FacturaRepository extends JpaRepository<Factura, Integer> {
            "LEFT JOIN PersonaFisica pf ON f.responsablePago.id = pf.id " +
            "LEFT JOIN pf.huesped h " +
            "LEFT JOIN PersonaJuridica pj ON f.responsablePago.id = pj.id " +
-           "WHERE ((h.tipoDocumento = :tipoDocumento AND h.numeroDocumento = :numeroDocumento) OR pj.cuit = :cuit) AND f.estado = :estado")
+           "WHERE ((h.tipoDocumento = :tipoDocumento AND h.numeroDocumento = :numeroDocumento) OR h.cuit = :cuit OR pj.cuit = :cuit) AND f.estado = :estado")
     List<Factura> buscarFacturasPorResponsable( @Param("cuit") String cuit,
                                                 @Param("tipoDocumento") TipoDocumento tipoDocumento,
                                                 @Param("numeroDocumento") String numeroDocumento,
