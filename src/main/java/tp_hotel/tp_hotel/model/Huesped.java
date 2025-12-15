@@ -102,4 +102,12 @@ public class Huesped {
         Period edad = Period.between(this.fechaDeNacimiento, hoy);
         return edad.getYears() >= 18;
     }
+
+    public boolean tieneEstadia(){
+        if(!this.estadiasComoInvitado.isEmpty() || !this.estadiasComoTitular.isEmpty()){
+            return true;
+        }
+
+        return false;
+    }
 }

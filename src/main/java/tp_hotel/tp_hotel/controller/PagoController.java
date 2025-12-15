@@ -17,7 +17,6 @@ import tp_hotel.tp_hotel.exceptions.FacturasNoExistentesException;
 import tp_hotel.tp_hotel.exceptions.PagoInsuficienteException;
 import tp_hotel.tp_hotel.exceptions.TipoPagoIncorrectoException;
 import tp_hotel.tp_hotel.model.Pago;
-import tp_hotel.tp_hotel.model.TipoPago;
 import tp_hotel.tp_hotel.model.TipoPagoDTO;
 import tp_hotel.tp_hotel.service.GestorPago;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,8 +38,8 @@ public class PagoController {
     @PostMapping("/pagar/{facturaId}")
     public ResponseEntity<?> ingresarPago(@Valid @RequestBody List<TipoPagoDTO> tipoPago, @PathVariable Integer facturaId) {
         try{
-            Integer pago = gestorPago.ingresarPago(tipoPago, facturaId);
-            return ResponseEntity.status(HttpStatus.CREATED).body("El pago fue creado correctamente");
+            Pago pago = gestorPago.ingresarPago(tipoPago, facturaId);
+            return ResponseEntity.status(HttpStatus.CREATED).body(pago.getId());
         } catch (FacturasNoExistentesException | TipoPagoIncorrectoException | FacturaPagadaException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch(PagoInsuficienteException e){

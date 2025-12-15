@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -365,5 +364,11 @@ public class GestorFacturacion {
         cellValue.setHorizontalAlignment(Element.ALIGN_RIGHT);
         cellValue.setBorder(Rectangle.NO_BORDER);
         table.addCell(cellValue);
+    }
+
+    public boolean existeFacturaDeResponsable(Integer id) {
+        List<Factura> facturas = facturaRepository.findByResponsableId(id);
+
+        return facturas.isEmpty();
     }
 }

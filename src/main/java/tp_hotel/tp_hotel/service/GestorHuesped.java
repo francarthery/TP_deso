@@ -75,7 +75,7 @@ public class GestorHuesped {
         }
        
         Huesped huesped = huespedOptional.get();
-        if(huesped.getEstadiasComoTitular().size() > 0 || huesped.getEstadiasComoInvitado().size() > 0){
+        if(huesped.tieneEstadia()){
             throw new HuespedConEstadiaException("El huesped " + huesped.getApellido() + " " + huesped.getNombres() + ", ya se ha alojado anteriormente.");
         }
         

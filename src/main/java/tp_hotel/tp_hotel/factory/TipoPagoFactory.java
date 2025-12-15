@@ -3,8 +3,6 @@ package tp_hotel.tp_hotel.factory;
 import tp_hotel.tp_hotel.model.TipoPago;
 import tp_hotel.tp_hotel.model.TipoPagoDTO;
 
-import java.time.LocalDate;
-
 import tp_hotel.tp_hotel.model.MetodoPago;
 import tp_hotel.tp_hotel.model.PagoCheque;
 import tp_hotel.tp_hotel.model.PagoMoneda;

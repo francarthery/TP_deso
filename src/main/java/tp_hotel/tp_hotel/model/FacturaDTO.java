@@ -1,7 +1,6 @@
 package tp_hotel.tp_hotel.model;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

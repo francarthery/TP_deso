@@ -7,8 +7,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import jakarta.validation.Valid;
 import tp_hotel.tp_hotel.exceptions.CuitYaExistenteException;
+import tp_hotel.tp_hotel.exceptions.FacturaAsociadaException;
 import tp_hotel.tp_hotel.exceptions.HuespedNoEncontradoException;
 import tp_hotel.tp_hotel.exceptions.PersonaJuridicaNoExistenteException;
 import tp_hotel.tp_hotel.exceptions.ResponsablePagoNoExistenteException;
@@ -28,12 +28,17 @@ public class GestorResponsablePago {
     private final HuespedRepository huespedRepository;
     private final PersonaJuridicaRepository personaJuridicaRepository;
     private final PersonaFisicaRepository personaFisicaRepository;
+    private final ResponsablePagoRepository responsablePagoRepository;
+    private final GestorFacturacion gestorFacturacion;
 
     @Autowired
-    public GestorResponsablePago(PersonaJuridicaRepository personaJuridicaRepository, PersonaFisicaRepository personaFisicaRepository, HuespedRepository huespedRepository) {
+    public GestorResponsablePago(PersonaJuridicaRepository personaJuridicaRepository, PersonaFisicaRepository personaFisicaRepository, 
+            HuespedRepository huespedRepository, ResponsablePagoRepository responsablePagoRepository, GestorFacturacion gestorFacturacion) {
         this.personaJuridicaRepository = personaJuridicaRepository;
         this.personaFisicaRepository = personaFisicaRepository;
         this.huespedRepository = huespedRepository;
+        this.responsablePagoRepository = responsablePagoRepository;
+        this.gestorFacturacion = gestorFacturacion;
     }
 
     public boolean cuitUnico(String cuit) {
@@ -74,10 +79,6 @@ public class GestorResponsablePago {
     public void modificarResponsable(PersonaJuridica r) {
     }
 
-    // public void darBajaResponsable(Integer id) {
-    //     Optional<ResponsablePago> responsableOptional = responsablePagoRepository.findById(id);
-    // }
-
     public ResponsablePago darAltaPersonaJuridica(PersonaJuridica personaJuridica) {
         if(!cuitUnico(personaJuridica.getCUIT())){
             throw new CuitYaExistenteException("El cuit ingresado ya existe en el sistema.");
@@ -95,6 +96,22 @@ public class GestorResponsablePago {
         }
         
         return responsables;
+    }
+
+    public void darBajaResponsable(Integer id) {
+        Optional<ResponsablePago> responsableOptional = responsablePagoRepository.findById(id);
+
+        if(responsableOptional.isEmpty()){
+            throw new ResponsablePagoNoExistenteException("El id ingresado " + id + " no corresponde a ningún responsable de pago.");
+        }
+
+        ResponsablePago responsablePago = responsableOptional.get();
+        boolean tieneFactura = gestorFacturacion.existeFacturaDeResponsable(id);
+        
+        if(tieneFactura){
+            throw new FacturaAsociadaException("El responsable " + responsablePago.getRazonSocial() + " tiene factura/s asociada/s.");
+        }
+        responsablePagoRepository.delete(responsablePago);
     }
 
 }

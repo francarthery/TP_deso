@@ -27,4 +27,7 @@ public interface FacturaRepository extends JpaRepository<Factura, Integer> {
     List<Factura> findByNumeroHabitacionYEstado(@Param("numeroHabitacion") String numeroHabitacion, @Param("estado") EstadoFactura estado);
     
     void deleteByNumero(String numero);
+
+    @Query("SELECT f FROM Factura f WHERE f.responsableDePago.id = :id")
+    List<Factura> findByResponsableId(@Param("id") Integer id);
 }

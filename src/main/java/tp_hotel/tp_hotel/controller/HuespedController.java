@@ -11,7 +11,6 @@ import tp_hotel.tp_hotel.exceptions.HuespedNoEncontradoException;
 import tp_hotel.tp_hotel.model.BusquedaHuespedDTO;
 import tp_hotel.tp_hotel.model.Huesped;
 import tp_hotel.tp_hotel.model.HuespedDTO;
-import tp_hotel.tp_hotel.service.GestorEstadia;
 import tp_hotel.tp_hotel.service.GestorHuesped;
 
 import java.util.List;
@@ -23,12 +22,10 @@ import java.util.List;
 public class HuespedController {
 
     private final GestorHuesped gestorHuesped;
-    private final GestorEstadia gestorEstadia;
 
     @Autowired
-    public HuespedController(GestorHuesped gestorHuesped, GestorEstadia gestorEstadia) {
+    public HuespedController(GestorHuesped gestorHuesped) {
         this.gestorHuesped = gestorHuesped;
-        this.gestorEstadia = gestorEstadia;
     }
 
     @GetMapping

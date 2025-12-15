@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import tp_hotel.tp_hotel.exceptions.CuitYaExistenteException;
+import tp_hotel.tp_hotel.exceptions.FacturaAsociadaException;
 import tp_hotel.tp_hotel.exceptions.HuespedNoEncontradoException;
 import tp_hotel.tp_hotel.exceptions.PersonaJuridicaNoExistenteException;
 import tp_hotel.tp_hotel.exceptions.ResponsablePagoNoExistenteException;
@@ -94,14 +95,16 @@ public class ResponsablePagoController {
 
 
     
-    // @DeleteMapping("/{id}")
-    // public ResponseEntity<?> darBajaResponsablePago(@PathVariable Integer id){
-    //     try{
-    //         gestorResponsablePago.darBajaResponsable(id);
-    //         return ResponseEntity.status(HttpStatus.OK).body("El responsable de pago ha sido eliminado exitosamente.");
-    //     }catch(ResponsablePagoNoExistenteException e){
-    //         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-    //     }
-    // }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> darBajaResponsablePago(@PathVariable Integer id){
+        try{
+            gestorResponsablePago.darBajaResponsable(id);
+            return ResponseEntity.status(HttpStatus.OK).body("El responsable de pago ha sido eliminado exitosamente.");
+        }catch(ResponsablePagoNoExistenteException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }catch(FacturaAsociadaException e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
+    }
     
 }
