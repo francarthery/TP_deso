@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Data
@@ -24,7 +25,17 @@ public class NotaCredito {
     @Column(length = 12, nullable = false)
     private Float monto;
 
-    @ManyToOne
+    @OneToMany
     @JoinColumn(name = "factura_id")
-    private Factura factura;
+    private List<Factura> facturas;
+
+    public void calcularMonto(){
+        Float total = 0f;
+
+        for(Factura f : facturas){
+            total+= f.getTotal();
+        }
+
+        this.monto = total;
+    }
 }

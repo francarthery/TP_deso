@@ -150,7 +150,6 @@ public class GestorFacturacion {
     public byte[] generarPDFFactura(Integer idFactura) {
         Factura factura = obtenerFacturaPorId(idFactura);
         
-        
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         Document document = new Document(PageSize.A4, 30, 30, 30, 30);
 
