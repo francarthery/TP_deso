@@ -30,4 +30,15 @@ public class Pago {
     @JoinColumn(name = "pago_id")
     private List<TipoPago> formasDePago;
     
+    public void calcularMontoTotal(){
+        Float totalIngresos = 0f;
+
+        for(TipoPago tp : formasDePago){
+            totalIngresos += tp.getImporte();
+        }
+
+        montoTotal = totalIngresos;
+    }
+
+    
 }

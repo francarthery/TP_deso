@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import tp_hotel.tp_hotel.exceptions.FacturasNoExistentesException;
+import tp_hotel.tp_hotel.exceptions.PagoInsuficienteException;
+import tp_hotel.tp_hotel.exceptions.TipoPagoIncorrectoException;
 import tp_hotel.tp_hotel.model.Pago;
 import tp_hotel.tp_hotel.model.TipoPago;
 import tp_hotel.tp_hotel.model.TipoPagoDTO;
@@ -33,16 +35,17 @@ public class PagoController {
         this.gestorPago = gestorPago;
     }
 
-    @PostMapping("/pagar{facturaId}")
+    @PostMapping("/pagar/{facturaId}")
     public ResponseEntity<?> IngresarPago(@Valid @RequestBody List<TipoPagoDTO> tipoPago, @PathVariable Integer facturaId) {
         try{
             Integer pago = gestorPago.ingresarPago(tipoPago, facturaId);
             return ResponseEntity.status(HttpStatus.CREATED).body("El pago fue creado correctamente");
-        } catch (FacturasNoExistentesException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: " + e.getMessage());
-        } catch (Exception e) { //VERIFICARRR
+        } catch (FacturasNoExistentesException | TipoPagoIncorrectoException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch(PagoInsuficienteException e){
+            return ResponseEntity.status(HttpStatus.PAYMENT_REQUIRED).body(e.getMessage());
+        } catch (Exception e) {
             return ResponseEntity.status(500).body("Error interno del servidor: " + e.getMessage());
-        }    
+        }
     }
-    
 }

@@ -20,6 +20,7 @@ public class TipoPagoFactory {
                 PagoMoneda moneda = new PagoMoneda();
                 moneda.setCotizacion(tipoPagoDto.getCotizacion());
                 moneda.setMoneda(tipoPagoDto.getTipoMoneda());
+                moneda.setMetodoPago(MetodoPago.MONEDA);
                 tipoPago = moneda;
                 break;
             case TARJETA_CREDITO:
@@ -28,6 +29,7 @@ public class TipoPagoFactory {
                 tarjetaCredito.setNombreTitular(tipoPagoDto.getTitular());
                 tarjetaCredito.setCodigoSeguridad(tipoPagoDto.getCodigoSeguridad());
                 tarjetaCredito.setFechaVencimiento(tipoPagoDto.getFechaVencimiento());
+                tarjetaCredito.setMetodoPago(MetodoPago.TARJETA_CREDITO);
                 tipoPago = tarjetaCredito;
                 break;
             case TARJETA_DEBITO:
@@ -36,6 +38,7 @@ public class TipoPagoFactory {
                 tarjetaDebito.setNombreTitular(tipoPagoDto.getTitular());
                 tarjetaDebito.setCodigoSeguridad(tipoPagoDto.getCodigoSeguridad());
                 tarjetaDebito.setFechaVencimiento(tipoPagoDto.getFechaVencimiento());
+                tarjetaDebito.setMetodoPago(MetodoPago.TARJETA_DEBITO);
                 tipoPago = tarjetaDebito;
                 break;
             case CHEQUE:
@@ -44,6 +47,7 @@ public class TipoPagoFactory {
                 cheque.setBanco(tipoPagoDto.getBancoEmisor());
                 cheque.setPlaza(tipoPagoDto.getPlaza());
                 cheque.setFechaCobro(tipoPagoDto.getFechaCobro());
+                cheque.setMetodoPago(MetodoPago.CHEQUE);
                 tipoPago = cheque;
                 break;
         }

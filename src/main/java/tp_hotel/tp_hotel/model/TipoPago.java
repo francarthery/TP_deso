@@ -12,4 +12,5 @@ public abstract class TipoPago {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Float importe;
+    private MetodoPago metodoPago;
 }

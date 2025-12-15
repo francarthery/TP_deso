@@ -10,11 +10,13 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class TipoPagoDTO {
+    @NotNull
     MetodoPago metodoPago;
 
     @Positive
@@ -31,7 +33,7 @@ public class TipoPagoDTO {
     LocalDate fechaVencimiento;
     @Size(max = 4)
     String codigoSeguridad;
-    @Size(max = 20)
+    @Size(max = 20) @Pattern(regexp = "^[0-9]+$")
     String numeroCheque;
     @Size(max = 50)
     String bancoEmisor;
