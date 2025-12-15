@@ -36,7 +36,7 @@ public class PagoController {
     }
 
     @PostMapping("/pagar/{facturaId}")
-    public ResponseEntity<?> IngresarPago(@Valid @RequestBody List<TipoPagoDTO> tipoPago, @PathVariable Integer facturaId) {
+    public ResponseEntity<?> ingresarPago(@Valid @RequestBody List<TipoPagoDTO> tipoPago, @PathVariable Integer facturaId) {
         try{
             Integer pago = gestorPago.ingresarPago(tipoPago, facturaId);
             return ResponseEntity.status(HttpStatus.CREATED).body("El pago fue creado correctamente");
