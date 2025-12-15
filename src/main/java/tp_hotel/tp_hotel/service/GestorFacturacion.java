@@ -23,6 +23,7 @@ import com.lowagie.text.pdf.PdfWriter;
 import tp_hotel.tp_hotel.exceptions.EstadiaNoExistenteException;
 import tp_hotel.tp_hotel.exceptions.FacturasNoExistentesException;
 import tp_hotel.tp_hotel.exceptions.ResponsablePagoNoExistenteException;
+import tp_hotel.tp_hotel.model.BusquedaFacturaResponsableDTO;
 import tp_hotel.tp_hotel.model.Consumo;
 import tp_hotel.tp_hotel.model.DatosFacturaDTO;
 import tp_hotel.tp_hotel.model.DetalleFactura;
@@ -33,6 +34,7 @@ import tp_hotel.tp_hotel.model.PersonaFisica;
 import tp_hotel.tp_hotel.model.PersonaJuridica;
 import tp_hotel.tp_hotel.model.ResponsablePago;
 import tp_hotel.tp_hotel.model.TipoFactura;
+import tp_hotel.tp_hotel.model.TipoDocumento;
 import tp_hotel.tp_hotel.repository.ConsumoRepository;
 import tp_hotel.tp_hotel.repository.EstadiaRepository;
 import tp_hotel.tp_hotel.repository.FacturaRepository;
@@ -47,7 +49,8 @@ public class GestorFacturacion {
     private final EstadiaRepository estadiaRepository;
 
     @Autowired
-    public GestorFacturacion(FacturaRepository facturaRepository, ConsumoRepository consumoRepository, ResponsablePagoRepository responsablePagoRepository, EstadiaRepository estadiaRepository) {
+    public GestorFacturacion(FacturaRepository facturaRepository, ConsumoRepository consumoRepository, ResponsablePagoRepository responsablePagoRepository, 
+        EstadiaRepository estadiaRepository) {
         this.facturaRepository = facturaRepository;
         this.consumoRepository = consumoRepository;
         this.responsablePagoRepository = responsablePagoRepository;
@@ -64,6 +67,33 @@ public class GestorFacturacion {
         if(facturas.isEmpty()) {
             throw new FacturasNoExistentesException("No se encontraron facturas pendientes de pago para la habitación: " + numeroHabitacion);
         } else return facturas;
+    }
+
+    public List<Factura> obtenerFacturasNoPagasPorResponsable(BusquedaFacturaResponsableDTO criteriosBusqueda){
+        String cuit = criteriosBusqueda.getCuit();
+        TipoDocumento tipoDocumento = criteriosBusqueda.getTipoDocumento();
+        String numeroDocumento = criteriosBusqueda.getNumeroDocumento();
+        
+        if(tipoDocumento == null && numeroDocumento != null || tipoDocumento != null && numeroDocumento == null) {
+            throw new IllegalArgumentException("Debe ingresar ambos campos: tipo documento y número documento.");
+        } 
+        if(cuit == null && tipoDocumento == null) {
+            throw new IllegalArgumentException("Debe ingresar al menos un criterio de búsqueda.");
+        }
+
+        List<Factura> facturas = facturaRepository.buscarFacturasPorResponsable(cuit, tipoDocumento, numeroDocumento, EstadoFactura.PENDIENTE);
+
+        if(facturas.isEmpty()){
+            throw new FacturasNoExistentesException("No existen facturas pendientes de pago para el responsable solicitado.");
+        }
+        
+        return facturas;
+    }
+
+    public boolean existeFacturaDeResponsable(Integer id) {
+        List<Factura> facturas = facturaRepository.findByResponsableId(id);
+
+        return !facturas.isEmpty();
     }
 
     public Integer generarFactura(DatosFacturaDTO d) {
@@ -105,12 +135,14 @@ public class GestorFacturacion {
         }
         
         factura.setNumero(nuevoNumero);
-        factura.setResponsableDePago(responsable);
+        factura.setResponsablePago(responsable);
         factura.setEstado(EstadoFactura.PENDIENTE);
         factura.setFecha(d.getFecha());
         factura.setEstadia(estadia);
         
         facturaRepository.save(factura);
+
+        responsable.asociarFactura(factura);
 
         return factura.getId();
     }
@@ -195,7 +227,7 @@ public class GestorFacturacion {
             clientTable.setWidths(new float[]{1, 3});
             clientTable.setSpacingBefore(5);
 
-            ResponsablePago resp = factura.getResponsableDePago();
+            ResponsablePago resp = factura.getResponsablePago();
             String nombreCliente = "";
             String cuitCliente = "";
             String direccionCliente = "";
@@ -366,9 +398,4 @@ public class GestorFacturacion {
         table.addCell(cellValue);
     }
 
-    public boolean existeFacturaDeResponsable(Integer id) {
-        List<Factura> facturas = facturaRepository.findByResponsableId(id);
-
-        return !facturas.isEmpty();
-    }
 }

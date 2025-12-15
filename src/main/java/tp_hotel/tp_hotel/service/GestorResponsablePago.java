@@ -13,10 +13,12 @@ import tp_hotel.tp_hotel.exceptions.HuespedNoEncontradoException;
 import tp_hotel.tp_hotel.exceptions.PersonaJuridicaNoExistenteException;
 import tp_hotel.tp_hotel.exceptions.ResponsablePagoNoExistenteException;
 import tp_hotel.tp_hotel.model.BusquedaResponsablePagoDTO;
+import tp_hotel.tp_hotel.model.Factura;
 import tp_hotel.tp_hotel.model.Huesped;
 import tp_hotel.tp_hotel.model.PersonaFisica;
 import tp_hotel.tp_hotel.model.PersonaJuridica;
 import tp_hotel.tp_hotel.model.ResponsablePago;
+import tp_hotel.tp_hotel.model.TipoDocumento;
 import tp_hotel.tp_hotel.repository.HuespedRepository;
 import tp_hotel.tp_hotel.repository.PersonaFisicaRepository;
 import tp_hotel.tp_hotel.repository.PersonaJuridicaRepository;
@@ -29,16 +31,14 @@ public class GestorResponsablePago {
     private final PersonaJuridicaRepository personaJuridicaRepository;
     private final PersonaFisicaRepository personaFisicaRepository;
     private final ResponsablePagoRepository responsablePagoRepository;
-    private final GestorFacturacion gestorFacturacion;
 
     @Autowired
     public GestorResponsablePago(PersonaJuridicaRepository personaJuridicaRepository, PersonaFisicaRepository personaFisicaRepository, 
-            HuespedRepository huespedRepository, ResponsablePagoRepository responsablePagoRepository, GestorFacturacion gestorFacturacion) {
+            HuespedRepository huespedRepository, ResponsablePagoRepository responsablePagoRepository) {
         this.personaJuridicaRepository = personaJuridicaRepository;
         this.personaFisicaRepository = personaFisicaRepository;
         this.huespedRepository = huespedRepository;
         this.responsablePagoRepository = responsablePagoRepository;
-        this.gestorFacturacion = gestorFacturacion;
     }
 
     public boolean cuitUnico(String cuit) {
@@ -106,11 +106,11 @@ public class GestorResponsablePago {
         }
 
         ResponsablePago responsablePago = responsableOptional.get();
-        boolean tieneFactura = gestorFacturacion.existeFacturaDeResponsable(id);
         
-        if(tieneFactura){
+        if(responsablePago.tieneFacturas()){
             throw new FacturaAsociadaException("El responsable " + responsablePago.getRazonSocial() + " tiene factura/s asociada/s.");
         }
+        
         responsablePagoRepository.delete(responsablePago);
     }
 

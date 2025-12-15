@@ -13,6 +13,6 @@ public class BusquedaHuespedDTO {
     
     private TipoDocumento tipoDocumento;
     
-    @Size(min = 1, max = 10)
+    @Pattern(regexp = "^[0-9A-Z]+$") @Size(min = 1, max = 10)
     private String numeroDocumento;
 }

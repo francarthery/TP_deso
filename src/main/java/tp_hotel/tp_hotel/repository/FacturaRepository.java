@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import tp_hotel.tp_hotel.model.Estadia;
 import tp_hotel.tp_hotel.model.EstadoFactura;
 import tp_hotel.tp_hotel.model.Factura;
+import tp_hotel.tp_hotel.model.TipoDocumento;
 import tp_hotel.tp_hotel.model.TipoFactura;
 
 @Repository
@@ -28,6 +29,16 @@ public interface FacturaRepository extends JpaRepository<Factura, Integer> {
     
     void deleteByNumero(String numero);
 
-    @Query("SELECT f FROM Factura f WHERE f.responsableDePago.id = :id")
+    @Query("SELECT f FROM Factura f WHERE f.responsablePago.id = :id")
     List<Factura> findByResponsableId(@Param("id") Integer id);
+
+    @Query("SELECT f FROM Factura f " +
+           "LEFT JOIN PersonaFisica pf ON f.responsablePago.id = pf.id " +
+           "LEFT JOIN pf.huesped h " +
+           "LEFT JOIN PersonaJuridica pj ON f.responsablePago.id = pj.id " +
+           "WHERE ((h.tipoDocumento = :tipoDocumento AND h.numeroDocumento = :numeroDocumento) OR pj.cuit = :cuit) AND f.estado = :estado")
+    List<Factura> buscarFacturasPorResponsable( @Param("cuit") String cuit,
+                                                @Param("tipoDocumento") TipoDocumento tipoDocumento,
+                                                @Param("numeroDocumento") String numeroDocumento,
+                                                @Param("estado") EstadoFactura estado);
 }

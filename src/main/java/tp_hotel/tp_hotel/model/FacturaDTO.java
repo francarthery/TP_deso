@@ -23,6 +23,6 @@ public class FacturaDTO {
         this.fecha = factura.getFecha();
         this.tipo = factura.getTipo();
         this.total = factura.getTotal();
-        this.razonSocial = factura.getResponsableDePago().getRazonSocial();
+        this.razonSocial = factura.getResponsablePago().getRazonSocial();
     }
 }

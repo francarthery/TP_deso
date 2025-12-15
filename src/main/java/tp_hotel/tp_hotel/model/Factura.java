@@ -35,7 +35,7 @@ public class Factura {
 
     @ManyToOne
     @JoinColumn(name = "responsable_id", nullable = false)
-    private ResponsablePago responsableDePago;
+    private ResponsablePago responsablePago;
 
     @ManyToOne
     @JoinColumn(name = "estadia_id")

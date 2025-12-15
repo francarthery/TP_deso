@@ -26,7 +26,8 @@ public class HuespedDTO {
     @NotNull
     private TipoDocumento tipoDocumento;
 
-    @Size(min = 1, max = 10) @NotNull
+    @Size(min = 1, max = 10) @NotNull 
+    @Pattern(regexp = "^[0-9A-Z]+$")
     private String numeroDocumento;
 
     @Past @NotNull
