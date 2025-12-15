@@ -10,8 +10,8 @@ public class MonedaEstrategia implements EstrategiaPago {
     public boolean validar(TipoPago tipoPago) {
         PagoMoneda pagoMoneda = (PagoMoneda) tipoPago;
         
-        if(pagoMoneda.getCotizacion() == null || pagoMoneda.getMoneda() == null || 
-        pagoMoneda.getCotizacion() == null || pagoMoneda.getImporte() == null){
+        if(pagoMoneda.getMoneda() == null || 
+       /*  pagoMoneda.getCotizacion() == null || */ pagoMoneda.getImporte() == null){
             return false;
         }
 
