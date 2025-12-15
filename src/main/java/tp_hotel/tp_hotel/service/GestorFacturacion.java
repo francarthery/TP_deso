@@ -21,7 +21,9 @@ import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 
+import tp_hotel.tp_hotel.exceptions.EstadiaNoExistenteException;
 import tp_hotel.tp_hotel.exceptions.FacturasNoExistentesException;
+import tp_hotel.tp_hotel.exceptions.ResponsablePagoNoExistenteException;
 import tp_hotel.tp_hotel.model.Consumo;
 import tp_hotel.tp_hotel.model.DatosFacturaDTO;
 import tp_hotel.tp_hotel.model.DetalleFactura;
@@ -65,16 +67,16 @@ public class GestorFacturacion {
         } else return facturas;
     }
 
-    public byte[] generarFactura(DatosFacturaDTO d) {
+    public Integer generarFactura(DatosFacturaDTO d) {
         Factura factura = new Factura();
 
         List<Consumo> consumos = consumoRepository.findAllById(d.getIdConsumos());
 
         Estadia estadia = estadiaRepository.findById(d.getIdEstadia())
-            .orElseThrow(() -> new IllegalArgumentException("Estadía no encontrada: " + d.getIdEstadia()));
+            .orElseThrow(() -> new EstadiaNoExistenteException("Estadía no encontrada: " + d.getIdEstadia()));
         
         ResponsablePago responsable = responsablePagoRepository.findById(d.getIdResponsablePago())
-            .orElseThrow(() -> new IllegalArgumentException("Responsable de pago no encontrado: " + d.getIdResponsablePago()));
+            .orElseThrow(() -> new ResponsablePagoNoExistenteException("Responsable de pago no encontrado: " + d.getIdResponsablePago()));
         
         if(responsable instanceof PersonaJuridica || 
             responsable instanceof PersonaFisica && ((PersonaFisica) responsable).esResponsableInscripto()) {
@@ -87,11 +89,7 @@ public class GestorFacturacion {
         String ultimoNumeroStr = facturaRepository.findUltimoNumeroPorTipo(factura.getTipo());
         long ultimoNumero = 0;
         if (ultimoNumeroStr != null) {
-            try {
-                ultimoNumero = Long.parseLong(ultimoNumeroStr);
-            } catch (NumberFormatException e) {
-                System.err.println("Error al parsear el último número de factura: " + ultimoNumeroStr);
-            }
+            ultimoNumero = Long.parseLong(ultimoNumeroStr);
         }
         String nuevoNumero = String.format("%010d", ultimoNumero + 1);
 
@@ -115,10 +113,13 @@ public class GestorFacturacion {
         
         facturaRepository.save(factura);
 
-        return generarPDFFactura(factura);
+        return factura.getId();
     }
 
-    public byte[] generarPDFFactura(Factura factura) {
+    public byte[] generarPDFFactura(Integer idFactura) {
+        Factura factura = obtenerFacturaPorId(idFactura);
+        
+        
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         Document document = new Document(PageSize.A4, 30, 30, 30, 30);
 

@@ -2,6 +2,7 @@ package tp_hotel.tp_hotel.controller;
 
 import java.util.List;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,13 +13,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import tp_hotel.tp_hotel.service.GestorFacturacion;
+import tp_hotel.tp_hotel.exceptions.EstadiaNoExistenteException;
 import tp_hotel.tp_hotel.exceptions.FacturasNoExistentesException;
+import tp_hotel.tp_hotel.exceptions.ResponsablePagoNoExistenteException;
 import tp_hotel.tp_hotel.model.DatosFacturaDTO;
 import tp_hotel.tp_hotel.model.Factura;
 import tp_hotel.tp_hotel.model.FacturaDTO;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @RestController
@@ -36,14 +41,26 @@ public class FacturaController {
     @PostMapping()
     public ResponseEntity<?> generarFactura(@RequestBody DatosFacturaDTO datosFacturaDTO){
         try{
-            byte[] pdfFactura = gestorFacturacion.generarFactura(datosFacturaDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body(pdfFactura);
-        } 
-        catch(Exception e){
+            Integer idFactura = gestorFacturacion.generarFactura(datosFacturaDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(idFactura);
+        } catch(EstadiaNoExistenteException | ResponsablePagoNoExistenteException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }catch(Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }   
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getMethodName(@PathVariable Integer id) {
+        try{
+            byte[] pdfFactura = gestorFacturacion.generarPDFFactura(id);
+            return ResponseEntity.status(HttpStatus.OK).body(pdfFactura);
+        }catch(FacturasNoExistentesException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+    
+    
     @GetMapping("/{numeroHabitacion}")
     public ResponseEntity<?> obtenerFacturas(@PathVariable String numeroHabitacion) {
         try{
