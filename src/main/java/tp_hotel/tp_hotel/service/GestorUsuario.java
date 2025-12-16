@@ -1,5 +1,7 @@
 package tp_hotel.tp_hotel.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tp_hotel.tp_hotel.model.Rol; 
@@ -17,15 +19,14 @@ public class GestorUsuario {
         this.usuarioRepository = usuarioRepository;
     }
 
-    public boolean validarLogin(String nombreUsuario, String contrasena) throws UsuarioNoValidoException {
+    public void validarLogin(String nombreUsuario, String contrasena) throws UsuarioNoValidoException {
         
-        Usuario usuario = usuarioRepository.findByUsername(nombreUsuario).orElse(null);
+        Optional<Usuario> usuario = usuarioRepository.findByUsername(nombreUsuario);
 
-        if (usuario == null || !usuario.getPassword().equals(contrasena)) {
+        if (usuario.isEmpty() || !usuario.get().getPassword().equals(contrasena)) {
             throw new UsuarioNoValidoException("Usuario o contraseña incorrectos.");
         }
 
-        return true;
     }
 
     public void logout() {

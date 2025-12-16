@@ -27,12 +27,8 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody UsuarioDTO loginRequest) {
         try {
-            boolean isValid = gestorUsuario.validarLogin(loginRequest.getUsername(), loginRequest.getPassword());
-            if (isValid) {
-                return ResponseEntity.ok().body("Login exitoso");
-            } else {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
-            }
+            gestorUsuario.validarLogin(loginRequest.getUsername(), loginRequest.getPassword());
+            return ResponseEntity.status(HttpStatus.OK).body("Login exitoso");
         } catch (UsuarioNoValidoException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }

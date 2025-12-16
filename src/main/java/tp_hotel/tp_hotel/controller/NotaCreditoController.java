@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 import tp_hotel.tp_hotel.exceptions.FacturasNoExistentesException;
@@ -30,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class NotaCreditoController {
     private final GestorNotaCredito gestorNotaCredito;
 
+    @Autowired
     public NotaCreditoController(GestorNotaCredito gestorNotaCredito){
         this.gestorNotaCredito = gestorNotaCredito;
     }
