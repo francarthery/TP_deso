@@ -1,8 +1,11 @@
 "# TP_deso" 
 
-##Como ejecutar
-1) Tener instalado docker y abierto. Correr(en la raiz del proyecto): docker-compose up -d
-2) Correr Spring Boot con .\mvnw spring-boot:run
+##Como ejecutar backend
+1) Tener instalado docker y abierto. Correr(en ./backend): docker-compose up -d
+2) Correr Spring Boot(en ./backend) con .\mvnw spring-boot:run
+
+##Como ejecutar frontend
+1) Posicionado en ./frontend ejecutar(en cmd): npm run dev
 
 ##Ver tablas BD por consola.
 Abrir consola MySQL: docker exec -it tp_hotel_mysql mysql -u root -proot
@@ -26,7 +29,7 @@ docker-compose down [-v]
 
 -------------Aclaraciones entrega TP--------------------
 Aclaracion frontend
-Con nuestro grupo mantuvimos el frontend y backend separados en dos repositorios desde un inicio. Para cumplir con la entrega, la cual pide un repositorio, juntamos todo en el repositorio del backend. Por eso aparecera como que el frontend se hizo en un solo commit. El repositorio real es (rama deso-final):
+Con nuestro grupo mantuvimos el frontend y backend separados en dos repositorios desde un inicio. Para cumplir con la entrega, la cual pide un solo repositorio, juntamos todo en el repositorio del backend. Por eso aparecera como que el frontend se hizo en un solo commit. El repositorio real es (rama deso-final):
 https://github.com/francarthery/front_tp_deso
 
 
