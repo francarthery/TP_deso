@@ -16,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import tp_hotel.tp_hotel.exceptions.HuespedConEstadiaException;
 import tp_hotel.tp_hotel.exceptions.HuespedNoEncontradoException;
 import tp_hotel.tp_hotel.model.BusquedaHuespedDTO;
 import tp_hotel.tp_hotel.model.Huesped;
@@ -169,48 +170,53 @@ public class GestorHuespedTest {
 
     // --- Tests para darBajaHuesped ---
 
-    /*
     @Test
-    void darBajaHuesped_HuespedNulo_RetornaFalse() {
-        assertFalse(gestorHuesped.darBajaHuesped(null));
+    void darBajaHuesped_IdNoExistente_LanzaExcepcion() {
+        // Arrange
+        Integer idInexistente = 99;
+        when(huespedRepository.findById(idInexistente)).thenReturn(Optional.empty());
+
+        // Act & Assert
+        assertThrows(HuespedNoEncontradoException.class, () -> {
+            gestorHuesped.darBajaHuesped(idInexistente);
+        });
+        
+        // Verifica que NUNCA se llame al delete si no se encuentra
+        verify(huespedRepository, never()).delete(any());
+    }
+
+    @Test
+    void darBajaHuesped_ConEstadia_LanzaExcepcion() {
+        // Arrange
+        // Creamos un Mock del objeto Huesped para forzar que tieneEstadia devuelva true
+        Huesped huespedConEstadia = mock(Huesped.class);
+        when(huespedConEstadia.tieneEstadia()).thenReturn(true);
+        // Opcional: Mockear nombres para que el mensaje de error no sea "null null"
+        when(huespedConEstadia.getNombres()).thenReturn("Juan"); 
+        when(huespedConEstadia.getApellido()).thenReturn("Perez");
+
+        when(huespedRepository.findById(1)).thenReturn(Optional.of(huespedConEstadia));
+
+        // Act & Assert
+        assertThrows(HuespedConEstadiaException.class, () -> {
+            gestorHuesped.darBajaHuesped(1);
+        });
+
+        // Verifica que no se borre si tiene estadía
+        verify(huespedRepository, never()).delete(any());
     }
 
     @Test
     void darBajaHuesped_Exito_RetornaTrue() {
-        doNothing().when(huespedRepository).delete(huespedEjemplo);
+        when(huespedRepository.findById(1)).thenReturn(Optional.of(huespedEjemplo));
+        
+        // Act
+        boolean resultado = gestorHuesped.darBajaHuesped(1);
 
-        assertTrue(gestorHuesped.darBajaHuesped(huespedEjemplo));
+        // Assert
+        assertTrue(resultado);
         verify(huespedRepository).delete(huespedEjemplo);
     }
-
-    @Test
-    void darBajaHuesped_FalloBorrado_RetornaFalse() {
-        doThrow(new RuntimeException("Error DB")).when(huespedRepository).delete(huespedEjemplo);
-
-        assertFalse(gestorHuesped.darBajaHuesped(huespedEjemplo));
-    }
-
-    // --- Tests para buscarHuespedPorId ---
-
-    @Test
-    void buscarHuespedPorId_Existe_RetornaHuesped() {
-        when(huespedRepository.findById(1)).thenReturn(Optional.of(huespedEjemplo));
-
-        Huesped resultado = gestorHuesped.buscarHuespedPorId(1);
-
-        assertNotNull(resultado);
-        assertEquals(1, resultado.getId());
-    }
-
-    @Test
-    void buscarHuespedPorId_NoExiste_RetornaNull() {
-        when(huespedRepository.findById(99)).thenReturn(Optional.empty());
-
-        Huesped resultado = gestorHuesped.buscarHuespedPorId(99);
-
-        assertNull(resultado);
-    }
-    */
     // --- Tests para buscarHuespedesPorId ---
 
     @Test
@@ -229,8 +235,35 @@ public class GestorHuespedTest {
         // Solo encuentra uno
         when(huespedRepository.findAllById(ids)).thenReturn(Arrays.asList(huespedEjemplo));
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(HuespedNoEncontradoException.class, () -> {
             gestorHuesped.buscarHuespedesPorId(ids);
+        });
+    }
+
+    // --- Tests para buscarHuespedPorId ---
+
+    @Test
+    void buscarHuespedPorId_Encontrado_RetornaHuesped() {
+        // Arrange: El repo encuentra un huésped con ID 1
+        when(huespedRepository.findById(1)).thenReturn(Optional.of(huespedEjemplo));
+
+        // Act
+        Huesped resultado = gestorHuesped.buscarHuespedPorId(1);
+
+        // Assert
+        assertNotNull(resultado);
+        assertEquals(1, resultado.getId());
+        assertEquals("Juan", resultado.getNombres());
+    }
+
+    @Test
+    void buscarHuespedPorId_NoEncontrado_LanzaExcepcion() { // Sugiero cambiar el nombre del test también
+        // Arrange
+        when(huespedRepository.findById(99)).thenReturn(Optional.empty());
+
+        // Act & Assert
+        assertThrows(HuespedNoEncontradoException.class, () -> {
+            gestorHuesped.buscarHuespedPorId(99);
         });
     }
 

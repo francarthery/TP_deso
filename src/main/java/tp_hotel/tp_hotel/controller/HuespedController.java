@@ -29,27 +29,26 @@ public class HuespedController {
     }
 
     @GetMapping
-    public ResponseEntity<List<HuespedDTO>> buscarHuesped(@Valid BusquedaHuespedDTO busquedaHuespedDTO) {
+    public ResponseEntity<?> buscarHuesped(@Valid BusquedaHuespedDTO busquedaHuespedDTO) {
         
         try{
             List<Huesped> huespedes = gestorHuesped.buscarHuesped(busquedaHuespedDTO);
             List<HuespedDTO> huespedesDTO = huespedes.stream()
                 .map(HuespedDTO::new)
                 .toList();
-
-            return ResponseEntity.ok(huespedesDTO);
+            return ResponseEntity.status(HttpStatus.OK).body(huespedesDTO);
         } catch (HuespedNoEncontradoException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<HuespedDTO> getHuespedById(@PathVariable int id) {
-        Huesped huesped = gestorHuesped.buscarHuespedPorId(id);
-        if (huesped != null) {
-            return ResponseEntity.ok(new HuespedDTO(huesped));
-        } else {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<?> getHuespedById(@PathVariable int id) {
+        try{
+            Huesped huesped = gestorHuesped.buscarHuespedPorId(id);
+            return ResponseEntity.status(HttpStatus.OK).body(huesped);
+        }catch(HuespedNoEncontradoException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
@@ -62,8 +61,8 @@ public class HuespedController {
             .map(HuespedDTO::new)
             .toList();
             
-            return ResponseEntity.ok(huespedesDTO);
-        } catch(IllegalArgumentException e){
+            return ResponseEntity.status(HttpStatus.OK).body(huespedesDTO);
+        } catch(HuespedNoEncontradoException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }

@@ -5,7 +5,9 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import tp_hotel.tp_hotel.exceptions.DocumentoExistenteException;
 import tp_hotel.tp_hotel.exceptions.HuespedConEstadiaException;
 import tp_hotel.tp_hotel.exceptions.HuespedNoEncontradoException;
 import tp_hotel.tp_hotel.model.BusquedaHuespedDTO;
@@ -85,20 +87,21 @@ public class GestorHuesped {
     }
 
     public Huesped buscarHuespedPorId(Integer id) {
-        return huespedRepository.findById(id).orElse(null);
+        return huespedRepository.findById(id).orElseThrow(() -> new HuespedNoEncontradoException("El id " + id + " no corresponde a ningún huésped."));
     }
 
     public List<Huesped> buscarHuespedesPorId(List<Integer> ids) {
         List<Huesped> huespedes = huespedRepository.findAllById(ids);
         if(huespedes.size() != ids.size()) {
-            throw new IllegalArgumentException("¡CUIDADO! Algunos huéspedes no fueron encontrados.");
+            throw new HuespedNoEncontradoException("¡CUIDADO! Algunos huéspedes no fueron encontrados.");
         }
         return huespedes; 
     }
 
+    @Transactional
     public Huesped registrarHuesped(Huesped huesped, Boolean dniUnico) {
         if (dniUnico && documentoExistente(huesped.getTipoDocumento(), huesped.getNumeroDocumento())) {
-            throw new IllegalArgumentException("¡CUIDADO! El tipo y número de documento ya existen en el sistema.");
+            throw new DocumentoExistenteException("¡CUIDADO! El tipo y número de documento ya existen en el sistema.");
         }
         if(!dniUnico){
             Huesped existente = huespedRepository.findByTipoDocumentoAndNumeroDocumento(
