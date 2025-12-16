@@ -1,3 +1,29 @@
 {
-    "java.configuration.upLocalDateBuildConfiguration": "interactive"
+    "java.configuration.upLocalDateBuildConfiguration": "interactive",
+    "java.compile.nullAnalysis.mode": "automatic",
+    "sqltools.connections": [
+        {
+            "name": "tp_hotel (local docker)",
+            "driver": "MySQL",
+            "server": "127.0.0.1",
+            "port": 3306,
+            "database": "tp_hotel_db",
+            "username": "root",
+            "password": "root"
+        },
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "127.0.0.1",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "tp_hotel(docker)",
+            "database": "tp_hotel_db",
+            "username": "root"
+        }
+    ]
 }

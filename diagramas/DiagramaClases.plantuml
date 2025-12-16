@@ -1,0 +1,498 @@
+@startuml DiagramaClaseHotel
+
+'-------- Enumeraciones --------
+enum CategoriaHabitacion {
+  INDIVIDUAL_ESTANDAR
+  DOBLE_ESTANDAR
+  DOBLE_SUPERIOR
+  SUPERIOR_FAMILY_PLAN
+  SUITE_DOBLE
+}
+
+enum EstadoHabitacion {
+  DISPONIBLE
+  RESERVADA
+  OCUPADA
+  FUERASERVICIO
+}
+
+enum EstadoReserva {
+  PENDIENTE
+  CONFIRMADA
+  CANCELADA
+}
+
+enum TipoFactura {
+  A
+  B
+  C
+}
+
+enum EstadoFactura {
+  PENDIENTE
+  PAGADA
+  ANULADA
+}
+
+enum TipoDocumento {
+  DNI
+  LE
+  LC
+  PASAPORTE
+  OTRO
+}
+
+enum IVA {
+  CONSUMIDOR_FINAL
+  RESPONSABLE_INSCRIPTO
+  MONOTRIBUTISTA
+  EXENTO
+}
+
+enum Rol {
+  CONSERJE
+  ADMINISTRADOR
+}
+
+enum TipoMoneda {
+  USD
+  EUR
+  UYU
+  BRL
+  ARS
+}
+
+'-------- Clases principales --------
+
+class Habitacion {
+  -numero: String
+  -categoria: CategoriaHabitacion
+  -costoNoche: Float
+  -estadoActual: EstadoHabitacion
+}
+
+class Reserva {
+  -id: Integer
+  -fechaInicio: LocalDate
+  -fechaFin: LocalDate
+  -estado: EstadoReserva
+  -fechaCreacion: LocalDate
+  -nombreHuesped: String
+  -apellidoHuesped: String
+  -telefonoHuesped: String
+}
+
+class Estadia {
+  -id: Long
+  -checkIn: LocalDate
+  -checkOut: LocalDate
+  +Facturar(): Factura
+}
+
+class Huesped {
+  -id: Integer
+  -apellido: String
+  -nombres: String
+  -tipoDocumento: TipoDocumento
+  -numeroDocumento: String
+  -fechaDeNacimiento: LocalDate
+  -cuit: String
+  -posicionFrenteAlIVA: IVA
+  -nacionalidad: String
+  -telefono: String
+  -email: String
+  -ocupacion: String
+  +agregarEstadia(e: Estadia)
+  +esMayorDeEdad(): boolean
+}
+
+class Usuario {
+  -id: Integer
+  -username: String
+  -password: String
+  -rol: Rol
+}
+
+class Direccion {
+  -pais: String
+  -provincia: String
+  -localidad: String
+  -calle: String
+  -numero: Integer
+  -departamento: String
+  -codigoPostal: String
+}
+
+'-------- Facturacion --------
+class ResponsablePago {
+}
+
+class PersonaFisica {
+}
+
+class PersonaJuridica {
+  -razonSocial: String
+  -cuit: String
+}
+
+class Factura {
+  -id: Integer
+  -numero: String
+  -fecha: LocalDate
+  -tipo: TipoFactura
+  -estado: EstadoFactura
+  -total: Float
+  -responsableDePago: ResponsablePago
+  +agregarDetalle(d: DetalleFactura)
+  +registrarPago(p: Pago)
+}
+
+class DetalleFactura {
+  -id: Integer
+  -descripcion: String
+  -cantidad: Integer
+  -precioUnitario: Float
+  -subtotal: Float
+  +calcularSubtotal()
+}
+
+abstract class TipoPago {
+    -monto: Float
+    -fecha: LocalDate
+}
+
+
+class PagoMoneda {
+  -moneda: TipoMoneda
+  -cotizacion: Float
+}
+
+class PagoCheque {
+  -numero: String
+  -banco: String
+  -plaza: String
+  -fechaCobro: LocalDate
+}
+
+class PagoTarjetaCredito {
+  -numeroTarjeta: String
+  -nroAutorizacion: String
+}
+
+class PagoTarjetaDebito {
+  -tarjeta: String
+  -nroAutorizacion: String
+}
+
+class NotaCredito {
+  -numero: String
+  -fecha: LocalDate
+  -monto: Float
+}
+
+class Consumo {
+  -id: Integer
+  -descripcion: String
+  -monto: Float
+  -cantidad: Integer
+  -fecha: LocalDate
+}
+
+class Pago {
+  -fechaInicio: Date
+  -fechaFin: Date
+  -monto: Float
+  +calcularTotalIngresos(): Float
+}
+
+'-------- Gestores --------
+
+class GestorReserva {
+  +crearReservas(r: List<ReservaDTO>): List<Reserva>
+  +confirmarReserva(r: Reserva)
+  +cancelarReserva(id: Integer)
+  +mostrarReservasPorHuesped(apellido: String, nombre: String): List<Reserva>
+  +obtenerDisponibilidad(desde: LocalDate, hasta: LocalDate): List<Habitacion>
+  +buscarReservasSolapadas(e: EstadiaDTO): List<Reserva>
+}
+
+class GestorEstadia {
+  +crearEstadias(e: List<EstadiaDTO>): List<Estadia>
+  +iniciarEstadia(e: Estadia)
+  +finalizarEstadia(id: Integer)
+  +asociarHuespedesAEstadia(estadiaId: Integer, titular: Huesped, acompanantes: List<Huesped>)
+  +tieneEstadia(id: Integer): boolean
+}
+
+class GestorFacturacion {
+  +generarFactura(e: Estadia)
+  +anularFactura(n: NotaCredito)
+  +facturarConsumosSeparados(estadiaId: Integer, consumos: List<Consumo>, responsable: PersonaJuridica)
+  +emitirNotaCredito(facturas: List<Factura>): NotaCredito
+}
+
+class GestorPago {
+  +registrarPago(f: Factura, p: TipoPago)
+  +obtenerFacturasPendientes(habitacion: Integer): List<Factura>
+  +calcularVuelto(total: Float, pagos: List<TipoPago>): Float
+}
+
+class GestorHabitacion {
+  +obtenerEstadoHabitaciones(desde: Date, hasta: Date): List<HabitacionEstadoDTO>
+  +cambiarEstadoHabitacion(num: Integer, estado: EstadoHabitacion, desde: Date, hasta: Date)
+  +buscarHabitacionesDisponibles(categoria: CategoriaHabitacion, desde: Date, hasta: Date): List<Habitacion>
+  +getHabitacionPorNumero(num: Integer): Habitacion
+}
+
+class GestorHuespedes {
+  +buscarHuesped(apellido: String, nombres: String, tipoDoc: TipoDocumento, nroDoc: String): List<Huesped>
+  +documentoExistente(tp: TipoDocumento, n: String): boolean
+  +darAltaHuesped(h: Huesped): Huesped
+  +modificarHuesped(h: Huesped): boolean
+  +darBajaHuesped(h: Huesped): boolean
+  +buscarHuespedPorId(id: Integer): Huesped
+  +registrarHuesped(h: Huesped): Huesped
+}
+
+class GestorUsuario {
+  +validarLogin(username: String, password: String): boolean
+  +logout(): void
+  +crearUsuario(u: Usuario): void
+  +modificarUsuario(u: Usuario): void
+  +eliminarUsuario(id: Integer): void
+  +obtenerUsuarioPorUsername(username: String): Usuario
+  +asignarRol(u: Usuario, rol: Rol): void
+}
+
+class GestorResponsablePago {
+  +buscarResponsable(razonSocial: String, cuit: String): List<PersonaJuridica)
+  +darAltaResponsable(r: PersonaJuridica): void
+  +modificarResponsable(r: PersonaJuridica): void
+  +darBajaResponsable(r: PersonaJuridica): void
+}
+
+'-------- DAO --------
+
+interface HabitacionRepository <<repository>> {
+  +List<Habitacion> buscarDisponibles(CategoriaHabitacion categoria, LocalDate desde, LocalDate hasta)
+}
+
+interface ReservaRepository <<repository>> {
+  +List<Reserva> findReservasSolapadas(String numeroHabitacion, LocalDate fechaInicio, LocalDate fechaFin)
+}
+
+interface HuespedRepository <<repository>> {
+  +boolean existsByTipoDocumentoAndNumeroDocumento(TipoDocumento tipoDocumento, String numeroDocumento)
+  +List<Huesped> findByApellido(String apellido)
+  +void deleteByNumeroDocumento(String numeroDocumento)
+  +Optional<Huesped> findByTipoDocumentoAndNumeroDocumento(TipoDocumento tipoDocumento, String numeroDocumento)
+}
+
+interface PersonaJuridicaRepository <<repository>> {
+}
+
+interface EstadiaRepository <<repository>> {
+  +List<Estadia> findByHabitacionNumero(String numero)
+}
+
+interface FacturaRepository <<repository>> {
+  +Optional<Factura> findByNumero(String numero)
+  +List<Factura> findByEstado(EstadoFactura estado)
+  +List<Factura> findByEstadia(Estadia estadia)
+  +void deleteByNumero(String numero)
+}
+
+interface ConsumoRepository <<repository>> {
+  +List<Consumo> findByEstadia(Estadia estadia)
+}
+
+interface TipoPagoRepository <<repository>> {
+}
+
+interface UsuarioRepository <<repository>> {
+  +Optional<Usuario> findByUsername(String username)
+}
+
+'-------- DTO --------
+
+class HuespedDTO {
+  -apellido: String
+  -nombres: String
+  -tipoDocumento: TipoDocumento
+  -numeroDocumento: String
+  -fechaNacimiento: Date
+  -cuit: String
+  -posicionIVA: IVA
+  -nacionalidad: String
+  -telefono: String
+  -email: String
+}
+
+class ReservaDTO {
+  -id: Integer
+  -fechaInicio: Date
+  -fechaFin: Date
+  -estado: EstadoReserva
+  -fechaCreacion: LocalDate
+}
+
+class HabitacionDTO {
+  -numero: Integer
+  -categoria: CategoriaHabitacion
+  -costoNoche: Float
+  -estadoActual: EstadoHabitacion
+}
+
+class DireccionDTO {
+  -pais: String
+  -provincia: String
+  -ciudad: String
+  -calle: String
+  -numero: Integer
+  -departamento: String
+  +getDireccionCompleta(): String
+}
+
+class EstadiaDTO{
+  -checkIn: LocalDate
+  -checkOut: LocalDate
+  -idHabitacion: Integer
+  -huespedTitular: String
+  -cantidadAcompanantes: Integer
+}
+
+class FacturaDTO{
+  -numero: String
+  -fecha: Date
+  -tipo: TipoFactura
+  -estado: EstadoFactura
+  -total: Float
+  -responsableCUIT: String
+}
+
+class ConsumoDTO{
+  -id: Integer
+  -descripcion: String
+  -cantidad: Integer
+  -monto: Float
+  -fecha: Date
+  -idEstadia: Integer
+}
+
+class PersonaJuridicaDTO {
+  -razonSocial: String
+  -cuit: String
+  -direccion: DireccionDTO
+}
+
+class PagoChequeDTO{
+  -numero: String
+  -banco: String
+  -plaza: String
+  -fechaCobro: Date
+}
+
+class PagoMonedaDTO {
+  -moneda: TipoMoneda
+  -cotizacion: Float
+}
+
+class PagoTarjetaCreditoDTO {
+  -tarjeta: String
+  -nroAutorizacion: String
+}
+class PagoTarjetaDebitoDTO {
+  -tarjeta: String
+  -nroAutorizacion: String
+}
+
+class UsuarioDTO {
+  -id: Integer
+  -username: String
+  -rol: Rol
+}
+
+class HabitacionEstadoDTO {
+  -numero: String
+  -categoria: CategoriaHabitacion
+  -estadosPorDia: List<EstadoDiaDTO>
+}
+
+class EstadoDiaDTO {
+  -fecha: LocalDate
+  -estado: EstadoHabitacion
+  -idReferencia: Integer
+}
+
+'-------- Relaciones --------
+
+Habitacion "1..1" -- "0..*" Reserva: <<reserva>>
+Habitacion "1..1" -- "0..*" Estadia: <<ocupacion>>
+
+
+Estadia "0..*" o-- "1..*" Huesped
+Estadia "1..1" *-- "0..*" Consumo
+Estadia "1..1" -- "0..*" Factura
+
+PersonaFisica ..|> ResponsablePago
+PersonaJuridica ..|> ResponsablePago
+
+Factura "1..1" *-- "1..*" DetalleFactura
+Factura "1..*" o-- "1..1" ResponsablePago
+Factura "1..*" <-- "1..1" NotaCredito
+
+PagoMoneda --|> TipoPago
+PagoCheque --|> TipoPago
+PagoTarjetaCredito --|> TipoPago
+PagoTarjetaDebito --|> TipoPago
+
+PersonaFisica "0..1" --> "1..1" Huesped
+
+Pago "0..1" -- "1..1" Factura
+Pago "1..1" *-- "1..*" TipoPago
+
+GestorReserva ..> Reserva
+GestorEstadia ..> Estadia
+GestorFacturacion ..> Factura
+GestorPago ..> Pago
+GestorPago ..> Factura
+GestorHuespedes ..> Huesped
+GestorUsuario ..> Usuario
+GestorResponsablePago ..> ResponsablePago
+
+GestorHabitacion ..> Habitacion
+GestorHabitacion ..> HabitacionEstadoDTO
+
+Huesped "0..*" o-- "1..1" Direccion
+PersonaJuridica "1..1" o-- "1..1" Direccion
+
+GestorResponsablePago ..> PersonaJuridicaRepository
+GestorHuespedes ..> HuespedRepository
+GestorReserva ..> ReservaRepository
+GestorHabitacion ..> HabitacionRepository
+GestorEstadia ..> EstadiaRepository
+GestorFacturacion ..> FacturaRepository
+GestorPago ..> TipoPagoRepository
+GestorUsuario ..> UsuarioRepository
+
+UsuarioRepository ..> UsuarioDTO
+HabitacionRepository ..> HabitacionDTO 
+ReservaRepository ..> ReservaDTO
+HuespedRepository ..> DireccionDTO 
+HuespedRepository ..> HuespedDTO
+HuespedDTO --> DireccionDTO
+EstadiaRepository ..> EstadiaDTO
+FacturaRepository ..> FacturaDTO
+ConsumoRepository ..> ConsumoDTO
+ConsumoRepository ..> EstadiaRepository
+PersonaJuridicaRepository ..> DireccionDTO 
+PersonaJuridicaDTO --> DireccionDTO
+PersonaJuridicaRepository ..> PersonaJuridicaDTO
+TipoPagoRepository ..> PagoChequeDTO
+TipoPagoRepository ..> PagoMonedaDTO
+TipoPagoRepository ..> PagoTarjetaCreditoDTO
+TipoPagoRepository ..> PagoTarjetaDebitoDTO
+
+HabitacionEstadoDTO "1..1" *-- "0..*" EstadoDiaDTO
+
+@enduml
