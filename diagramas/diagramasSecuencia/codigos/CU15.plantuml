@@ -1,0 +1,126 @@
+@startuml CU15
+actor Conserje
+participant UI_OcuparHabitacion
+participant GestorHabitaciones
+participant GestorHuespedes
+participant GestorEstadias
+participant HuespedRepository
+participant EstadiaRepository
+
+
+Conserje -> UI_OcuparHabitacion: Solicita ocupar habitacion (Check-In)
+
+loop Mientras se desee cargar habitaciones
+    activate UI_OcuparHabitacion
+    UI_OcuparHabitacion -> GestorHabitaciones: ejecutar CU5 Mostrar Estado de Habitaciones
+    activate GestorHabitaciones
+    GestorHabitaciones -> UI_OcuparHabitacion: Estado de habitaciones
+    deactivate GestorHabitaciones
+
+
+    opt No existen habitaciones disponibles o reservadas con las comodidades deseadas
+        UI_OcuparHabitacion -> Conserje: Muestra por pantalla "No existen habitaciones disponibles o reservadas con las comodidades deseadas para el rango de fechas" \n (El CU termina)
+    end
+    UI_OcuparHabitacion -> Conserje: Muestra disponibilidad de las habitaciones
+    deactivate UI_OcuparHabitacion
+
+    loop Mientras que algun estado de la seleccion sea distinto de "Disponible" o se presione "Volver"
+        Conserje -> UI_OcuparHabitacion: Selecciona habitacion(es) y rango de fechas
+        activate UI_OcuparHabitacion
+
+        UI_OcuparHabitacion -> UI_OcuparHabitacion: validarHabitacionYFecha()
+        
+        opt En la seleccion todos los estados son "Reservada" o "Disponible" pero se engloba algun dia con estado "Reservada"
+            UI_OcuparHabitacion --> Conserje: Muestra por pantalla que dias y quien tiene la reserva con los botonoes "OCUPAR IGUAL"/"VOLVER"
+            
+            alt Presiona "VOLVER"
+                Conserje -> UI_OcuparHabitacion: Presiona VOLVER
+                UI_OcuparHabitacion -> Conserje: Muestra por pantalla "solicitar seleccion"
+            else Presiona "OCUPAR IGUAL"
+                Conserje -> UI_OcuparHabitacion: Presiona OCUPAR IGUAL
+            end
+        end  
+    end
+
+    UI_OcuparHabitacion -> Conserje: El sistema pinta las habitaciones entre el dia inicial y dia final con el color de "OCUPADA"
+    UI_OcuparHabitacion -> Conserje: Muestra por pantalla "presione cualquier tecla para continuar"
+    deactivate UI_OcuparHabitacion
+
+    Conserje -> UI_OcuparHabitacion: Presiona cualquier tecla para confirmar la seleccion.
+    activate UI_OcuparHabitacion 
+
+    UI_OcuparHabitacion --> Conserje: Muestra interfaz para buscar y asignar huesped titular y acompañantes
+    deactivate UI_OcuparHabitacion
+
+
+    loop Mientras se presione SEGUIR CARGANDO  
+        loop mientras el usuario ingrese datos incorrectos
+            Conserje -> UI_OcuparHabitacion: Ingresa cero, uno o mas criterios de busqueda y presiona "Buscar"
+
+            UI_OcuparHabitacion -> UI_OcuparHabitacion: validarCriterios()
+            opt el usuario ingresa datos con formatos incorrectos 
+                UI_OcuparHabitacion -> Conserje: Muestra mensaje marcando aquellos campos que presenten un formato incorreco
+            end
+        end
+        activate UI_OcuparHabitacion
+
+        alt ingreso uno o mas criterios
+            UI_OcuparHabitacion -> GestorHuespedes: buscarHuesped(apellido, nombres, tipoDoc, nroDoc)
+            activate GestorHuespedes
+            GestorHuespedes -> HuespedRepository: buscarHuesped(apellido, nombres, tipoDoc, nroDoc)
+            activate HuespedRepository
+            HuespedRepository --> GestorHuespedes: List<Huesped>
+            deactivate HuespedRepository
+            GestorHuespedes --> UI_OcuparHabitacion: listaHuespedes
+            deactivate GestorHuespedes
+        else 
+            UI_OcuparHabitacion -> HuespedRepository: obtenerTodos()
+            activate HuespedRepository
+            HuespedRepository -> UI_OcuparHabitacion: List<Huesped>
+            deactivate HuespedRepository
+        end
+        
+        loop Mientras no se seleccione un huesped
+            UI_OcuparHabitacion --> Conserje: Muestra resultados de la busqueda
+            deactivate UI_OcuparHabitacion
+            Conserje -> UI_OcuparHabitacion: Selecciona Huesped y presiona "Aceptar"
+            activate UI_OcuparHabitacion
+        end
+
+        UI_OcuparHabitacion -> Conserje: Muestra los botones "SEGUIR CARGANDO" / "OTRA HABITACION" / "SALIR"
+        
+        opt Presiona SEGUIR CARGANDO
+            Conserje -> UI_OcuparHabitacion: Presiona SEGUIR CARGANDO
+        end
+    end 
+
+    UI_OcuparHabitacion -> GestorEstadias: iniciarEstadia(habitacionSeleccionada, Huesped, List<Huesped>)
+    activate GestorEstadias
+
+    create Estadia
+    GestorEstadias -> Estadia: <<create>>
+    GestorEstadias -> Estadia: setCheckIn(Estadia.checkIn)
+    GestorEstadias -> Estadia: setcheckOut(Estadia.checkOut)
+    GestorEstadias -> Estadia: setHabitacion(Estadia.habitacion)
+    GestorEstadias -> Estadia: setHuesped(Estadia.huesped)
+    GestorEstadias -> EstadiaRepository: agregarEstadia(estadia)
+    activate EstadiaRepository
+    EstadiaRepository --> GestorEstadias: confirmacion
+    deactivate EstadiaRepository
+
+    GestorEstadias --> UI_OcuparHabitacion: confirmacion
+    deactivate GestorEstadias
+
+    alt Presiona boton SALIR
+        Conserje -> UI_OcuparHabitacion: Presiona SALIR
+        UI_OcuparHabitacion -> Conserje: Muestra mensaje "Habitacion cargada con exito"
+    else Presiona CARGAR OTRA HABITACION
+        Conserje -> UI_OcuparHabitacion: Presiona CARGAR OTRA HABITACION
+        UI_OcuparHabitacion -> Conserje: Muestra mensaje "Habitacion cargada con exito"
+    end
+end
+UI_OcuparHabitacion --> Conserje: Muestra mensaje "Check-In realizado con exito"
+deactivate UI_OcuparHabitacion
+
+
+@enduml

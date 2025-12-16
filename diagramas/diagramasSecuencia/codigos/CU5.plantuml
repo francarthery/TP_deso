@@ -1,0 +1,59 @@
+@startuml CU5
+actor Conserje
+
+participant  UI_MostrarEstadoHabitaciones
+participant  GestorHabitaciones
+participant  HabitacionRepository
+
+
+Conserje -> UI_MostrarEstadoHabitaciones : Solicita mostrar estado de habitaciones
+activate UI_MostrarEstadoHabitaciones
+
+UI_MostrarEstadoHabitaciones -> Conserje : Muestra campo "Desde fecha" 
+UI_MostrarEstadoHabitaciones -> Conserje: Muestra campo "Hasta fecha"
+deactivate UI_MostrarEstadoHabitaciones
+loop mientras fecha desde y fecha hasta sean invalidas
+    Conserje -> UI_MostrarEstadoHabitaciones : Ingresa fecha desde
+    activate UI_MostrarEstadoHabitaciones
+    Conserje -> UI_MostrarEstadoHabitaciones : Ingresa fecha hasta
+    
+    UI_MostrarEstadoHabitaciones -> UI_MostrarEstadoHabitaciones: validacion
+    opt fecha desde es mayor a fecha hasta o la diferencia es mayor a 40 dias
+        UI_MostrarEstadoHabitaciones -> Conserje : Muestra mensaje de error
+        deactivate UI_MostrarEstadoHabitaciones
+    end
+    
+end
+
+activate UI_MostrarEstadoHabitaciones
+UI_MostrarEstadoHabitaciones -> GestorHabitaciones : obtenerEstadoHabitaciones(desde, hasta)
+
+
+activate GestorHabitaciones
+GestorHabitaciones -> HabitacionRepository : obtenerEstadoHabitaciones(desde, hasta)
+activate HabitacionRepository
+HabitacionRepository --> GestorHabitaciones : ListaDeHabitaciones
+deactivate GestorHabitaciones
+deactivate HabitacionRepository
+
+loop Para cada habitacion de ListaDeHabitaciones
+    create  Habitacion
+    GestorHabitaciones -> Habitacion : <<create>>
+    activate GestorHabitaciones
+ 
+    GestorHabitaciones -> Habitacion : setNumeroHabitacion(habitacion.numero)
+    GestorHabitaciones -> Habitacion: setCategoria(habitacion.categoria)
+    GestorHabitaciones -> Habitacion: setCostoNoche(habitacion.costoNoche)
+    GestorHabitaciones -> GestorHabitaciones : estadoHabitacion = obtenerEstadoHabitacionSegunListaReservas(desde, hasta)
+    GestorHabitaciones -> Habitacion : setEstado(estadoHabitacion)
+    GestorHabitaciones -> HabitacionRepository: persistirHabitacion(Habitacion)
+    HabitacionRepository -> GestorHabitaciones: Habitacion
+end
+
+GestorHabitaciones --> UI_MostrarEstadoHabitaciones : List<HabitacionEstadoDTO>
+deactivate GestorHabitaciones
+
+UI_MostrarEstadoHabitaciones --> Conserje : Muestra grilla (habitaciones horizontal, días vertical, colores por estado)
+deactivate UI_MostrarEstadoHabitaciones
+
+@enduml
