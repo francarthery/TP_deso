@@ -20,7 +20,7 @@ public interface HuespedRepository extends JpaRepository<Huesped, Integer> {
 
     void deleteByNumeroDocumento(String numeroDocumento);
 
-    Huesped findByTipoDocumentoAndNumeroDocumento(TipoDocumento tipoDocumento, String numeroDocumento);
+    Optional<Huesped> findByTipoDocumentoAndNumeroDocumento(TipoDocumento tipoDocumento, String numeroDocumento);
 
     @Query("SELECT h FROM Huesped h WHERE " +
            "(:apellido IS NULL OR h.apellido LIKE CONCAT(:apellido, '%')) AND " +

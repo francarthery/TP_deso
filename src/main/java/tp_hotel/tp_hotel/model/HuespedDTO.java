@@ -15,6 +15,7 @@ import jakarta.validation.constraints.Size;
 @NoArgsConstructor
 @AllArgsConstructor
 public class HuespedDTO {
+    @NotNull
     private Integer id;
     
     @Pattern(regexp = "^[a-zA-Z ]+$") @Size(min = 1, max = 50) @NotNull
@@ -74,6 +75,7 @@ public class HuespedDTO {
 
     public Huesped toEntity() {
         Huesped huesped = new Huesped();
+        huesped.setId(this.id);
         huesped.setApellido(this.apellido);
         huesped.setNombres(this.nombres);
         huesped.setTipoDocumento(this.tipoDocumento);

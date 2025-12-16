@@ -46,27 +46,29 @@ public class GestorHuesped {
         if (huesped == null) {
             throw new IllegalArgumentException("Huésped no puede ser nulo.");
         }
-        if(!documentoExistente(huesped.getTipoDocumento(), huesped.getNumeroDocumento())){
-            throw new HuespedNoEncontradoException("El huesped no existe en el sistema.");
-        }
 
-        Huesped existente = huespedRepository.findByTipoDocumentoAndNumeroDocumento(
+        Optional<Huesped> existente = huespedRepository.findByTipoDocumentoAndNumeroDocumento(
             huesped.getTipoDocumento(), 
             huesped.getNumeroDocumento()
         );
 
-        if (dniUnico && !existente.getId().equals(huesped.getId())) {
-            throw new IllegalArgumentException("¡CUIDADO! El tipo y número de documento ya existen en el sistema.");
-        }
-
-        huesped.setId(existente.getId());
-
-        try {
+        if(existente.isEmpty()){
             huespedRepository.save(huesped);
             return true;
-        } catch (Exception e) {
-            return false;
         }
+
+        Integer idExistente = existente.get().getId();
+        if (huesped.getId() != null && !idExistente.equals(huesped.getId())) {
+            if(dniUnico) {
+                throw new IllegalArgumentException("¡CUIDADO! El tipo y número de documento ya existen en el sistema.");
+            }
+            else {
+                huespedRepository.deleteById(idExistente);
+            }
+        }
+        huespedRepository.save(huesped);
+    
+        return true;
     }
 
     public boolean darBajaHuesped(Integer id) {
@@ -104,11 +106,13 @@ public class GestorHuesped {
             throw new DocumentoExistenteException("¡CUIDADO! El tipo y número de documento ya existen en el sistema.");
         }
         if(!dniUnico){
-            Huesped existente = huespedRepository.findByTipoDocumentoAndNumeroDocumento(
+            Optional<Huesped> existente = huespedRepository.findByTipoDocumentoAndNumeroDocumento(
                 huesped.getTipoDocumento(), 
                 huesped.getNumeroDocumento()
             );
-            huesped.setId(existente.getId());
+            if(existente.isPresent()){
+                huesped.setId(existente.get().getId());
+            }
         }
 
         return huespedRepository.save(huesped);

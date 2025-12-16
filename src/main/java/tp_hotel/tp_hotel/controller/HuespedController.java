@@ -83,28 +83,18 @@ public class HuespedController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> modificarHuesped(@PathVariable Integer id, 
-        @Valid @RequestBody HuespedDTO huespedDetailsDTO,
+        @Valid @RequestBody HuespedDTO huespedDTO,
         @RequestParam (required = false, defaultValue = "true") Boolean dniUnico) {
-        if (gestorHuesped.buscarHuespedPorId(id) == null) {
-            return ResponseEntity.notFound().build();
-        }
 
-        Huesped huespedAActualizar = huespedDetailsDTO.toEntity();
-        huespedAActualizar.setId(id);
-        
         try {
-            boolean success = gestorHuesped.modificarHuesped(huespedAActualizar, dniUnico);
-            if (success) {
-                return ResponseEntity.ok(new HuespedDTO(huespedAActualizar));
-            } else {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al modificar el huésped.");
-            }
+            Huesped huespedAActualizar = huespedDTO.toEntity();
+            gestorHuesped.modificarHuesped(huespedAActualizar, dniUnico);
+            return ResponseEntity.ok(new HuespedDTO(huespedAActualizar));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         } catch (HuespedNoEncontradoException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
-        
     }
 
     @DeleteMapping("/{id}")
