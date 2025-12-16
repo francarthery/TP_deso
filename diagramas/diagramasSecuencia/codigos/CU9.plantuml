@@ -1,0 +1,165 @@
+@startuml CU9
+actor Conserje
+participant UI_DarAltaHuesped
+participant GestorHuesped
+
+Conserje -> UI_DarAltaHuesped: Solicita ingresar nuevo huesped
+activate UI_DarAltaHuesped
+UI_DarAltaHuesped --> Conserje: Muestra los campos del huesped y los botones "Siguiente" / "Cancelar"
+deactivate UI_DarAltaHuesped
+ 
+alt siguiente
+loop mientras los datos obligatorios esten faltantes o haya datos incorrectos o el usuario quiera corregir los datos 
+    Conserje -> UI_DarAltaHuesped: Completa datos y presiona "siguiente"
+    activate UI_DarAltaHuesped
+    UI_DarAltaHuesped -> UI_DarAltaHuesped : validar los datos ingresados
+    alt faltan datos obligatorios/formato de datos incorrectos
+        UI_DarAltaHuesped --> Conserje: Muestra mensaje con todas las omisiones regresando a la pantalla de ingreso de datos
+        
+    end 
+end
+
+    UI_DarAltaHuesped -> GestorHuesped: documentoExistente(huesped.tipoDocumento, huesped.numeroDocumento)
+    activate GestorHuesped
+    GestorHuesped -> HuespedRepository: existsByTipoDocumentoAndNumeroDocumento(huesped.tipoDocumento, huesped.numeroDocumento)
+    activate HuespedRepository
+    HuespedRepository --> GestorHuesped: h: huespedExistente
+    deactivate HuespedRepository
+    GestorHuesped --> UI_DarAltaHuesped: h: huespedExistente
+    deactivate GestorHuesped
+    
+
+    opt h == true
+        UI_DarAltaHuesped --> Conserje:  Muestra "¡CUIDADO! El tipo y numero de documento ya existen en el sistema y boton "Aceptar igualmente" y "corregir"
+        deactivate UI_DarAltaHuesped
+        alt aceptar igualmente
+            Conserje -> UI_DarAltaHuesped: Presiona boton "aceptar igualmente"
+            activate UI_DarAltaHuesped
+    UI_DarAltaHuesped -> GestorHuesped: darAltaHuesped(huesped)
+    activate GestorHuesped
+ 
+    
+    create Huesped
+    GestorHuesped -> Huesped: <<create>>
+    GestorHuesped -> Huesped: setNombre(huesped.nombre)
+    GestorHuesped -> Huesped: setApellido(huesped.apellido)
+    GestorHuesped -> Huesped: setTipoDocument(huesped.tipoDocumento)
+    GestorHuesped -> Huesped: setNumeroDocumento(huesped.numeroDocumento)
+    GestorHuesped -> Huesped: setFechaNacimiento(huesped.fechaNacimiento)
+    GestorHuesped -> Huesped: setCuit(huesped.cuit)
+    GestorHuesped -> Huesped: setPosicionIVA(huesped.posicionIVA)
+    GestorHuesped -> Huesped: setNacionalidad(huesped.nacionalidad)
+    GestorHuesped -> Huesped: setTelefono(huesped.telefono)
+    GestorHuesped -> Huesped: setEmail(huesped.email)
+    
+
+    create Direccion 
+    GestorHuesped -> Direccion: <<create>>
+    GestorHuesped -> Direccion: setProvicia(huesped.direccion.provincia)
+    GestorHuesped -> Direccion: setPais(huesped.direccion.pais)
+    GestorHuesped -> Direccion: setCiudad(huesped.direccion.ciudad)
+    GestorHuesped -> Direccion: setCalle(huesped.direccion.calle)
+    GestorHuesped -> Direccion: setNumero(huesped.direccion.numero)
+    GestorHuesped -> Direccion: setPiso(huesped.direccion.piso)
+    GestorHuesped -> Direccion: setDepartamento(huesped.direccion.departamento)
+    GestorHuesped -> Huesped: setDireccion(direccion)
+    
+
+    GestorHuesped -> HuespedRepository: persistirHuesped(huesped) 
+    activate HuespedRepository
+    HuespedRepository --> GestorHuesped: Huesped
+    deactivate HuespedRepository
+    GestorHuesped --> UI_DarAltaHuesped: Confirmacion de alta
+    
+    deactivate GestorHuesped
+    UI_DarAltaHuesped --> Conserje: Muestra "El huesped nombres y apellido ha sido satisfactoriamente cargado al sistema. ¿Desea cargar otro? y botones "Si" / "No"
+    deactivate UI_DarAltaHuesped
+    
+    alt Si
+        Conserje -> UI_DarAltaHuesped: Presiona boton "Si"
+        activate UI_DarAltaHuesped
+        UI_DarAltaHuesped --> Conserje: Regresa a la pantalla de ingreso de datos
+        deactivate UI_DarAltaHuesped
+    else No
+        Conserje -> UI_DarAltaHuesped: Presiona boton "No"
+        activate UI_DarAltaHuesped
+        UI_DarAltaHuesped --> Conserje: Regresa a la pantalla principal
+        deactivate UI_DarAltaHuesped
+    end
+        else corregir
+            Conserje -> UI_DarAltaHuesped: Presiona boton "corregir"
+            activate UI_DarAltaHuesped
+            UI_DarAltaHuesped --> Conserje: Vuelve a la pantalla de ingreso de datos haciendo foco en "Tipo documento"
+        end
+    end
+
+    
+    UI_DarAltaHuesped -> GestorHuesped: darAltaHuesped(huesped)
+    activate GestorHuesped
+ 
+    
+    create Huesped
+    GestorHuesped -> Huesped: <<create>>
+    GestorHuesped -> Huesped: setNombre(huesped.nombre)
+    GestorHuesped -> Huesped: setApellido(huesped.apellido)
+    GestorHuesped -> Huesped: setTipoDocument(huesped.tipoDocumento)
+    GestorHuesped -> Huesped: setNumeroDocumento(huesped.numeroDocumento)
+    GestorHuesped -> Huesped: setFechaNacimiento(huesped.fechaNacimiento)
+    GestorHuesped -> Huesped: setCuit(huesped.cuit)
+    GestorHuesped -> Huesped: setPosicionIVA(huesped.posicionIVA)
+    GestorHuesped -> Huesped: setNacionalidad(huesped.nacionalidad)
+    GestorHuesped -> Huesped: setTelefono(huesped.telefono)
+    GestorHuesped -> Huesped: setEmail(huesped.email)
+    create Direccion    
+    GestorHuesped -> Direccion: <<create>>
+    GestorHuesped -> Direccion: setProvicia(huesped.direccion.provincia)
+    GestorHuesped -> Direccion: setPais(huesped.direccion.pais)
+    GestorHuesped -> Direccion: setCiudad(huesped.direccion.ciudad)
+    GestorHuesped -> Direccion: setCalle(huesped.direccion.calle)
+    GestorHuesped -> Direccion: setNumero(huesped.direccion.numero)
+    GestorHuesped -> Direccion: setPiso(huesped.direccion.piso)
+    GestorHuesped -> Direccion: setDepartamento(huesped.direccion.departamento)
+    GestorHuesped -> Huesped: setDireccion(direccion)
+    
+    GestorHuesped -> HuespedRepository: persistirHuesped(huesped) 
+    activate HuespedRepository
+    HuespedRepository --> GestorHuesped: Huesped
+    deactivate HuespedRepository
+    GestorHuesped --> UI_DarAltaHuesped: Confirmacion de alta
+    
+    deactivate GestorHuesped
+    UI_DarAltaHuesped --> Conserje: Muestra "El huesped nombres y apellido ha sido satisfactoriamente cargado al sistema. ¿Desea cargar otro? y botones "Si" / "No"
+    deactivate UI_DarAltaHuesped
+
+    
+    alt Si
+        Conserje -> UI_DarAltaHuesped: Presiona boton "Si"
+        activate UI_DarAltaHuesped
+        UI_DarAltaHuesped --> Conserje: Regresa a la pantalla de ingreso de datos
+        deactivate UI_DarAltaHuesped
+    else No
+        Conserje -> UI_DarAltaHuesped: Presiona boton "No"
+        activate UI_DarAltaHuesped
+        UI_DarAltaHuesped --> Conserje: Regresa a la pantalla principal
+        deactivate UI_DarAltaHuesped
+    end
+else cancelar
+    Conserje -> UI_DarAltaHuesped: Presiona boton "cancelar"
+    activate UI_DarAltaHuesped
+    UI_DarAltaHuesped --> Conserje: Muestra "Desea cancelar huesped?" y botones "Si" / "No"
+    deactivate UI_DarAltaHuesped
+    alt Si
+        Conserje -> UI_DarAltaHuesped: Presiona boton "Si"
+        activate UI_DarAltaHuesped
+        UI_DarAltaHuesped --> Conserje: Regresa a la pantalla principal
+        deactivate UI_DarAltaHuesped
+    else No
+        Conserje -> UI_DarAltaHuesped: Presiona boton "No"
+        activate UI_DarAltaHuesped
+        UI_DarAltaHuesped --> Conserje: Regresa a la pantalla de ingreso de datos con los valores previos a pulsar cancelar
+        deactivate UI_DarAltaHuesped
+    end
+end
+ 
+ 
+    @enduml

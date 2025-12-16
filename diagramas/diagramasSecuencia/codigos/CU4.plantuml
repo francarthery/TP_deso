@@ -1,0 +1,93 @@
+@startuml CU4
+actor Conserje
+participant UI_ReservarHabitacion
+participant GestorHabitaciones
+participant GestorReservas
+participant ReservaRepository
+
+Conserje -> UI_ReservarHabitacion: Solicita realizar una reserva
+activate UI_ReservarHabitacion
+UI_ReservarHabitacion -> GestorHabitaciones: ejecutar CU5 Mostrar Estado de Habitaciones
+activate GestorHabitaciones
+GestorHabitaciones -> UI_ReservarHabitacion: Estado de habitaciones
+deactivate GestorHabitaciones
+UI_ReservarHabitacion -> Conserje: Muestra disponibilidad de las habitaciones
+
+opt no existen habitaciones disponibles
+    UI_ReservarHabitacion -> Conserje: Muestra "No hay habitaciones disponibles" y regresa a la pantalla principal
+    deactivate UI_ReservarHabitacion
+end
+
+loop mientras el conserje no presione aceptar
+    
+    Conserje -> UI_ReservarHabitacion: Selecciona habitacion(es) indicando fechas
+    activate UI_ReservarHabitacion
+
+    UI_ReservarHabitacion -> Conserje: Muestra las habitaciones pintadas entre los dias seleccionados con el color "Reserva"
+    deactivate UI_ReservarHabitacion
+    
+end
+
+Conserje -> UI_ReservarHabitacion: presiona aceptar
+activate UI_ReservarHabitacion
+
+UI_ReservarHabitacion -> UI_ReservarHabitacion: generarListaReservaDTO(List<reserva>)
+
+UI_ReservarHabitacion -> Conserje: la lista con la informacion de la eventual reserva con los botones "Aceptar" / "Rechazar"
+deactivate UI_ReservarHabitacion
+
+opt rechazar
+    
+    Conserje -> UI_ReservarHabitacion: Presiona boton "rechazar"
+    activate UI_ReservarHabitacion
+    UI_ReservarHabitacion -> Conserje: Deshace las operaciones sobre la grilla de disponibilidad y regresa a la pantalla principal
+    deactivate UI_ReservarHabitacion
+end
+
+
+Conserje -> UI_ReservarHabitacion: Presiona el boton "Aceptar"
+activate UI_ReservarHabitacion
+UI_ReservarHabitacion -> Conserje: Muestra los campos (apellido, nombre, telefono) para completar
+deactivate UI_ReservarHabitacion
+
+loop mientras los datos esten incompletos o  erroneos
+
+    Conserje -> UI_ReservarHabitacion: Completa los datos
+    activate UI_ReservarHabitacion
+    UI_ReservarHabitacion -> UI_ReservarHabitacion: validaLosDatos
+
+    opt datos incompletos / formato erroneo
+        UI_ReservarHabitacion --> Conserje: Muestra los campos incompletos y regresa a la pantalla de completar datos de huesped
+    end
+end
+
+UI_ReservarHabitacion -> GestorReservas: crearReserva(listaReservaDTO)
+
+
+activate GestorReservas
+loop Para cada habitacion de ListaDeHabitacionesSeleccionadas
+  create Reserva
+  GestorReservas -> Reserva: <<create>>
+  GestorReservas -> Reserva: setID(reserva.id)
+  GestorReservas -> Reserva: setFechaInicio(reserva.fechaInicio)
+  GestorReservas -> Reserva: setFechaFin(reserva.fechaFin)
+  GestorReservas -> Reserva: setEstado(reserva.estado)
+  GestorReservas -> Reserva: setFechaCreacion(reserva.fechaCreacion)
+  GestorReservas -> Reserva: setHabitacion(reserva.habitacion)
+  GestorReservas -> Reserva: setNombreHuesped(reserva.nombreHuesped)
+  GestorReservas -> Reserva: setApellidoHuesped(reserva.apellidoHuesped)
+  GestorReservas -> Reserva: setTelefonoHuesped(reserva.telefonoHuesped)
+  GestorReservas -> ReservaRepository: agregarReserva(reserva)
+  activate ReservaRepository
+  ReservaRepository --> GestorReservas: Reserva
+  deactivate ReservaRepository
+
+GestorReservas --> UI_ReservarHabitacion: Confirmacion
+deactivate GestorReservas
+end
+
+UI_ReservarHabitacion --> Conserje: Muestra "Reserva/s confirmada/s"
+deactivate UI_ReservarHabitacion
+
+
+@enduml

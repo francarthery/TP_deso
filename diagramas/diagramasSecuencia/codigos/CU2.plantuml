@@ -1,0 +1,82 @@
+@startuml CU2
+actor Conserje
+participant UI_BuscarHuesped
+participant GestorHuesped
+participant HuespedRepository
+
+Conserje -> UI_BuscarHuesped: Solicita ingresar criterios de busqueda (apellido, nombre, doc, tipo_doc.)
+activate UI_BuscarHuesped
+UI_BuscarHuesped -> Conserje: Muestra por pantalla con los campos vacios para ingresar criterios de busqueda (apellido, nombre, doc, tipo_doc.)
+loop mientras el usuario ingrese datos incorrectos
+  Conserje -> UI_BuscarHuesped: Ingresa cero, uno o mas criterios de busqueda y presiona "Buscar"
+
+  UI_BuscarHuesped -> UI_BuscarHuesped: validarCriterios()
+  opt el usuario ingresa datos con formatos incorrectos 
+    UI_BuscarHuesped -> Conserje: Muestra mensaje marcando aquellos campos que presenten un formato incorreco
+  end
+end
+
+alt ingreso uno o mas criterios
+  UI_BuscarHuesped -> GestorHuesped: buscarHuesped(apellido, nombres, tipoDoc, nroDoc)
+  activate GestorHuesped
+  GestorHuesped -> HuespedRepository: buscarConFiltros(apellido, nombres, tipoDoc, nroDoc)
+  activate HuespedRepository
+  HuespedRepository --> GestorHuesped: List<Huesped>
+  deactivate HuespedRepository
+  GestorHuesped --> UI_BuscarHuesped: List<Huesped>
+  deactivate GestorHuesped
+else 
+  UI_BuscarHuesped -> HuespedRepository: obtenerTodos()
+  activate HuespedRepository
+  HuespedRepository -> UI_BuscarHuesped: List<Huesped>
+  deactivate HuespedRepository
+end
+
+opt listaHuespedesDTO == null
+  UI_BuscarHuesped --> Conserje: Navega a CU11 Dar alta huesped
+end
+
+UI_BuscarHuesped --> Conserje: Muestra lista de resultados
+deactivate UI_BuscarHuesped
+
+Conserje -> UI_BuscarHuesped: Selecciona un huesped y presiona "siguiente"
+activate UI_BuscarHuesped
+
+opt no se selecciono ninguna persona de la lista
+  UI_BuscarHuesped --> Conserje: Navega a CU11 Dar alta huesped
+end
+
+UI_BuscarHuesped -> GestorHuesped: crearInstanciaHuesped(Huesped)
+activate GestorHuesped
+create Huesped
+    GestorHuesped -> Huesped: <<create>>
+    GestorHuesped -> Huesped: setNombre(Huesped.nombre)
+    GestorHuesped -> Huesped: setApellido(Huesped.apellido)
+    GestorHuesped -> Huesped: setTipoDocument(Huesped.tipoDocumento)
+    GestorHuesped -> Huesped: setNumeroDocumento(Huesped.numeroDocumento)
+    GestorHuesped -> Huesped: setFechaNacimiento(Huesped.fechaNacimiento)
+    GestorHuesped -> Huesped: setCuit(Huesped.cuit)
+    GestorHuesped -> Huesped: setPosicionIVA(Huesped.posicionIVA)
+    GestorHuesped -> Huesped: setNacionalidad(Huesped.nacionalidad)
+    GestorHuesped -> Huesped: setTelefono(Huesped.telefono)
+    GestorHuesped -> Huesped: setEmail(Huesped.email)
+    
+
+create Direccion 
+  GestorHuesped -> Direccion: <<create>>
+  GestorHuesped -> Direccion: setProvicia(Huesped.direccion.provincia)
+  GestorHuesped -> Direccion: setPais(Huesped.direccion.pais)
+  GestorHuesped -> Direccion: setCiudad(Huesped.direccion.ciudad)
+  GestorHuesped -> Direccion: setCalle(Huesped.direccion.calle)
+  GestorHuesped -> Direccion: setNumero(Huesped.direccion.numero)
+  GestorHuesped -> Direccion: setPiso(Huesped.direccion.piso)
+  GestorHuesped -> Direccion: setDepartamento(Huesped.direccion.departamento)
+  GestorHuesped -> Huesped: setDireccion(direccion)
+
+GestorHuesped -> UI_BuscarHuesped: Huesped
+deactivate GestorHuesped
+
+UI_BuscarHuesped --> Conserje: Navega a CU10 Modificar huesped pasandole Huesped
+deactivate UI_BuscarHuesped
+
+@enduml
