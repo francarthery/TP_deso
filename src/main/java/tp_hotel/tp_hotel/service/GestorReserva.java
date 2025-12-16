@@ -33,21 +33,6 @@ public class GestorReserva {
         List<Reserva> reservasCreadas = new ArrayList<>();
 
         for (ReservaDTO dto : reservasDTO) {
-            if (dto.getNumeroHabitacion() == null) {
-                throw new IllegalArgumentException("Falta el número de habitación");
-            }
-            if(dto.getNombreHuesped() == null){
-                throw new IllegalArgumentException("Falta el nombre del huesped");               
-            }
-            if(dto.getApellidoHuesped() == null){
-                throw new IllegalArgumentException("Falta el apellido del huesped");               
-            }
-            if(dto.getTelefonoHuesped() == null){
-                throw new IllegalArgumentException("Falta el teléfono del huesped");               
-            }
-            if (dto.getFechaInicio() == null || dto.getFechaFin() == null) {
-                throw new IllegalArgumentException("Las fechas de inicio y fin son obligatorias.");
-            }
             if (dto.getFechaInicio().isAfter(dto.getFechaFin())) {
                 throw new IllegalArgumentException("La fecha de inicio no puede ser posterior a la fecha de fin.");
             }

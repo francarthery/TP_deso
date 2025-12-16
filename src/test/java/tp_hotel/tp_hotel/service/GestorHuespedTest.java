@@ -16,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import tp_hotel.tp_hotel.exceptions.DocumentoExistenteException;
 import tp_hotel.tp_hotel.exceptions.HuespedConEstadiaException;
 import tp_hotel.tp_hotel.exceptions.HuespedNoEncontradoException;
 import tp_hotel.tp_hotel.model.BusquedaHuespedDTO;
@@ -47,18 +48,15 @@ public class GestorHuespedTest {
         busquedaDTO = new BusquedaHuespedDTO();
     }
 
-    // --- Tests para buscarHuesped ---
 
     @Test
     void buscarHuesped_SinFiltros_RetornaTodos() {
-        // Arrange
+
         when(huespedRepository.buscarConFiltros(null, null, null, null))
         .thenReturn(Arrays.asList(huespedEjemplo));
 
-        // Act
         List<Huesped> resultado = gestorHuesped.buscarHuesped(busquedaDTO);
 
-        // Assert
         assertNotNull(resultado);
         assertEquals(1, resultado.size());
         verify(huespedRepository).buscarConFiltros(any(), any(), any(), any()); //Esto le pregunta al mock si recibio el llamado
@@ -67,12 +65,10 @@ public class GestorHuespedTest {
 
     @Test
     void buscarHuesped_ConFiltros_RetornaFiltrados() {
-        // Arrange
         busquedaDTO.setApellido("Perez");
         when(huespedRepository.buscarConFiltros("Perez", null, null, null))
             .thenReturn(Arrays.asList(huespedEjemplo));
 
-        // Act
         List<Huesped> resultado = gestorHuesped.buscarHuesped(busquedaDTO);
 
         // Assert
@@ -83,18 +79,15 @@ public class GestorHuespedTest {
 
     @Test
     void buscarHuesped_SinResultados_LanzaExcepcion() {
-        // Arrange
         busquedaDTO.setApellido("Inexistente");
         when(huespedRepository.buscarConFiltros("Inexistente", null, null, null))
             .thenReturn(Collections.emptyList());
 
-        // Act & Assert
         assertThrows(HuespedNoEncontradoException.class, () -> {
             gestorHuesped.buscarHuesped(busquedaDTO);
         });
     }
 
-    // --- Tests para documentoExistente ---
 
     @Test
     void documentoExistente_Existe_RetornaTrue() {
@@ -112,21 +105,18 @@ public class GestorHuespedTest {
         assertFalse(gestorHuesped.documentoExistente(TipoDocumento.DNI, "99999999"));
     }
 
-    // --- Tests para modificarHuesped ---
 
     @Test
     void modificarHuesped_HuespedNulo_LanzaExcepcion() {
         assertThrows(IllegalArgumentException.class, () -> {
-            gestorHuesped.modificarHuesped(null, true);
+            gestorHuesped.modificarHuesped(null);
         });
     }
 
     @Test
     void modificarHuesped_NoExiste_LanzaExcepcion() {
-        when(huespedRepository.existsByTipoDocumentoAndNumeroDocumento(any(), any())).thenReturn(false);
-
         assertThrows(HuespedNoEncontradoException.class, () -> {
-            gestorHuesped.modificarHuesped(huespedEjemplo, true);
+            gestorHuesped.modificarHuesped(huespedEjemplo);
         });
     }
 
@@ -136,39 +126,38 @@ public class GestorHuespedTest {
         Huesped otroHuesped = new Huesped();
         otroHuesped.setId(2);
         
-        when(huespedRepository.existsByTipoDocumentoAndNumeroDocumento(any(), any())).thenReturn(true);
-        when(huespedRepository.findByTipoDocumentoAndNumeroDocumento(any(), any())).thenReturn(otroHuesped);
+        when(huespedRepository.findById(any())).thenReturn(Optional.of(huespedEjemplo));
+        when(huespedRepository.findByTipoDocumentoAndNumeroDocumento(any(), any())).thenReturn(Optional.of(otroHuesped));
 
         // El huespedEjemplo tiene ID 1
-        assertThrows(IllegalArgumentException.class, () -> {
-            gestorHuesped.modificarHuesped(huespedEjemplo, true);
+        assertThrows(DocumentoExistenteException.class, () -> {
+            gestorHuesped.modificarHuesped(huespedEjemplo);
         });
     }
 
     @Test
     void modificarHuesped_Exito_RetornaTrue() {
-        when(huespedRepository.existsByTipoDocumentoAndNumeroDocumento(any(), any())).thenReturn(true);
-        when(huespedRepository.findByTipoDocumentoAndNumeroDocumento(any(), any())).thenReturn(huespedEjemplo);
+        when(huespedRepository.findById(any())).thenReturn(Optional.of(huespedEjemplo));
+        when(huespedRepository.findByTipoDocumentoAndNumeroDocumento(any(), any())).thenReturn(Optional.of(huespedEjemplo));
         when(huespedRepository.save(any(Huesped.class))).thenReturn(huespedEjemplo);
 
-        boolean resultado = gestorHuesped.modificarHuesped(huespedEjemplo, true);
+        boolean resultado = gestorHuesped.modificarHuesped(huespedEjemplo);
 
         assertTrue(resultado);
         verify(huespedRepository).save(huespedEjemplo);
     }
 
     @Test
-    void modificarHuesped_FalloGuardado_RetornaFalse() {
-        when(huespedRepository.existsByTipoDocumentoAndNumeroDocumento(any(), any())).thenReturn(true);
-        when(huespedRepository.findByTipoDocumentoAndNumeroDocumento(any(), any())).thenReturn(huespedEjemplo);
+    void modificarHuesped_FalloGuardado_LanzaExcepcion() {
+        when(huespedRepository.findById(any())).thenReturn(Optional.of(huespedEjemplo));
+        when(huespedRepository.findByTipoDocumentoAndNumeroDocumento(any(), any())).thenReturn(Optional.of(huespedEjemplo));
         when(huespedRepository.save(any(Huesped.class))).thenThrow(new RuntimeException("Error DB"));
 
-        boolean resultado = gestorHuesped.modificarHuesped(huespedEjemplo, true);
-
-        assertFalse(resultado);
+        assertThrows(RuntimeException.class, () -> {
+            gestorHuesped.modificarHuesped(huespedEjemplo);
+        });
     }
 
-    // --- Tests para darBajaHuesped ---
 
     @Test
     void darBajaHuesped_IdNoExistente_LanzaExcepcion() {
@@ -217,7 +206,7 @@ public class GestorHuespedTest {
         assertTrue(resultado);
         verify(huespedRepository).delete(huespedEjemplo);
     }
-    // --- Tests para buscarHuespedesPorId ---
+
 
     @Test
     void buscarHuespedesPorId_TodosEncontrados_RetornaLista() {
@@ -240,7 +229,6 @@ public class GestorHuespedTest {
         });
     }
 
-    // --- Tests para buscarHuespedPorId ---
 
     @Test
     void buscarHuespedPorId_Encontrado_RetornaHuesped() {
@@ -267,41 +255,26 @@ public class GestorHuespedTest {
         });
     }
 
-    // --- Tests para registrarHuesped ---
 
     @Test
     void registrarHuesped_DniDuplicado_LanzaExcepcion() {
-        when(huespedRepository.existsByTipoDocumentoAndNumeroDocumento(any(), any())).thenReturn(true);
+        when(huespedRepository.findByTipoDocumentoAndNumeroDocumento(any(), any())).thenReturn(Optional.of(new Huesped()));
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            gestorHuesped.registrarHuesped(huespedEjemplo, true);
+        assertThrows(DocumentoExistenteException.class, () -> {
+            gestorHuesped.registrarHuesped(huespedEjemplo);
         });
     }
 
     @Test
     void registrarHuesped_Exito_RetornaHuesped() {
-        when(huespedRepository.existsByTipoDocumentoAndNumeroDocumento(any(), any())).thenReturn(false);
+        when(huespedRepository.findByTipoDocumentoAndNumeroDocumento(any(), any())).thenReturn(Optional.empty());
         when(huespedRepository.save(any(Huesped.class))).thenReturn(huespedEjemplo);
 
-        Huesped resultado = gestorHuesped.registrarHuesped(huespedEjemplo, true);
+        Huesped resultado = gestorHuesped.registrarHuesped(huespedEjemplo);
 
         assertNotNull(resultado);
         verify(huespedRepository).save(huespedEjemplo);
     }
 
-    @Test
-    void registrarHuesped_SinDniUnico_ActualizaExistente() {
-        // Caso donde dniUnico es false, debe buscar el existente y actualizar su ID
-        Huesped existente = new Huesped();
-        existente.setId(5); // ID diferente al del ejemplo
-        
-        when(huespedRepository.findByTipoDocumentoAndNumeroDocumento(any(), any())).thenReturn(existente);
-        when(huespedRepository.save(any(Huesped.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        Huesped resultado = gestorHuesped.registrarHuesped(huespedEjemplo, false);
-
-        // Verifica que se haya asignado el ID del existente al objeto guardado
-        assertEquals(5, resultado.getId());
-        verify(huespedRepository).save(huespedEjemplo);
-    }
 }

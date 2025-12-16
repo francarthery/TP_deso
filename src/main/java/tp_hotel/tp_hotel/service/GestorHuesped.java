@@ -47,6 +47,11 @@ public class GestorHuesped {
             throw new IllegalArgumentException("Huésped y el id no pueden ser nulos.");
         }
 
+        Optional<Huesped> huespedExistente = huespedRepository.findById(huesped.getId());
+        if (huespedExistente.isEmpty()) {
+            throw new HuespedNoEncontradoException("El huésped con ID " + huesped.getId() + " no existe.");
+        }
+
         Optional<Huesped> existente = huespedRepository.findByTipoDocumentoAndNumeroDocumento(
             huesped.getTipoDocumento(), 
             huesped.getNumeroDocumento()

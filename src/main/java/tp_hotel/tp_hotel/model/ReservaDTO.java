@@ -6,18 +6,26 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import jakarta.validation.constraints.NotNull;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReservaDTO {
     private Integer id;
+    @NotNull
     private LocalDate fechaInicio;
+    @NotNull
     private LocalDate fechaFin;
     private EstadoReserva estado;
     private LocalDateTime fechaCreacion;
+    @NotNull
     private String numeroHabitacion; 
+    @NotNull
     private String nombreHuesped;
+    @NotNull
     private String apellidoHuesped;
+    @NotNull
     private String telefonoHuesped;
     private CategoriaHabitacion categoriaHabitacion;
 

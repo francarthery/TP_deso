@@ -253,7 +253,7 @@ public class GestorFacturacion {
                 condicionIva = "Responsable Inscripto";
             }
 
-            addClientCell(clientTable, "CUIT: " + cuitCliente, fontBold);
+            addClientCell(clientTable, (cuitCliente != null && !cuitCliente.isEmpty()) ? "CUIT: " + cuitCliente : "", fontBold);
             addClientCell(clientTable, "Apellido y Nombre / Razón Social: " + nombreCliente, fontBold);
             addClientCell(clientTable, "Condición frente al IVA: " + condicionIva, fontBold);
             addClientCell(clientTable, "Domicilio: " + direccionCliente, fontNormal);

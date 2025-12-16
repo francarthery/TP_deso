@@ -187,7 +187,7 @@ public class GestorNotaCredito {
             if (resp instanceof PersonaFisica) {
                 PersonaFisica pf = (PersonaFisica) resp;
                 nombreCliente = pf.getHuesped().getApellido() + " " + pf.getHuesped().getNombres();
-                cuitCliente = pf.getHuesped().getNumeroDocumento();
+                cuitCliente = pf.getHuesped().getCuit();
                 direccionCliente = pf.getHuesped().getDireccion().getCalle() + " " + pf.getHuesped().getDireccion().getNumero();
                 if (pf.esResponsableInscripto()) condicionIva = "Responsable Inscripto";
             } else if (resp instanceof PersonaJuridica) {
@@ -198,7 +198,7 @@ public class GestorNotaCredito {
                 condicionIva = "Responsable Inscripto";
             }
 
-            addClientCell(clientTable, "CUIT: " + cuitCliente, fontBold);
+            addClientCell(clientTable, (cuitCliente != null && !cuitCliente.isEmpty()) ? "CUIT: " + cuitCliente : "", fontBold);
             addClientCell(clientTable, "Apellido y Nombre / Razón Social: " + nombreCliente, fontBold);
             addClientCell(clientTable, "Condición frente al IVA: " + condicionIva, fontBold);
             addClientCell(clientTable, "Domicilio: " + direccionCliente, fontNormal);
