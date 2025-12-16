@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import tp_hotel.tp_hotel.service.GestorFacturacion;
+import tp_hotel.tp_hotel.exceptions.ConsumoNoExistenteException;
 import tp_hotel.tp_hotel.exceptions.EstadiaNoExistenteException;
 import tp_hotel.tp_hotel.exceptions.FacturasNoExistentesException;
 import tp_hotel.tp_hotel.exceptions.ResponsablePagoNoExistenteException;
@@ -46,7 +47,7 @@ public class FacturaController {
         try{
             Integer idFactura = gestorFacturacion.generarFactura(datosFacturaDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(idFactura);
-        } catch(EstadiaNoExistenteException | ResponsablePagoNoExistenteException e){
+        } catch(EstadiaNoExistenteException | ResponsablePagoNoExistenteException | ConsumoNoExistenteException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch(Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
@@ -64,7 +65,6 @@ public class FacturaController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
-    
     
     @GetMapping("/{numeroHabitacion}")
     public ResponseEntity<?> obtenerFacturas(@PathVariable String numeroHabitacion) {

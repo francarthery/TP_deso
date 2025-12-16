@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.Element;
@@ -20,6 +21,7 @@ import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 
+import tp_hotel.tp_hotel.exceptions.ConsumoNoExistenteException;
 import tp_hotel.tp_hotel.exceptions.EstadiaNoExistenteException;
 import tp_hotel.tp_hotel.exceptions.FacturasNoExistentesException;
 import tp_hotel.tp_hotel.exceptions.ResponsablePagoNoExistenteException;
@@ -96,10 +98,15 @@ public class GestorFacturacion {
         return !facturas.isEmpty();
     }
 
+    @Transactional
     public Integer generarFactura(DatosFacturaDTO d) {
         Factura factura = new Factura();
 
         List<Consumo> consumos = consumoRepository.findAllById(d.getIdConsumos());
+
+        if(consumos.size() != d.getIdConsumos().size()){
+            throw new ConsumoNoExistenteException("Hay consumo/s no existente/s.");
+        }
 
         Estadia estadia = estadiaRepository.findById(d.getIdEstadia())
             .orElseThrow(() -> new EstadiaNoExistenteException("Estadía no encontrada: " + d.getIdEstadia()));
