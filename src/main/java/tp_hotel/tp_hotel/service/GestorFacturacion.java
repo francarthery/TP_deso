@@ -235,7 +235,7 @@ public class GestorFacturacion {
             if (resp instanceof PersonaFisica) {
                 PersonaFisica pf = (PersonaFisica) resp;
                 nombreCliente = pf.getHuesped().getApellido() + " " + pf.getHuesped().getNombres();
-                cuitCliente = pf.getHuesped().getNumeroDocumento();
+                cuitCliente = pf.getHuesped().getCuit();
                 direccionCliente = pf.getHuesped().getDireccion().getCalle() + " " + pf.getHuesped().getDireccion().getNumero();
                 if (pf.esResponsableInscripto()) condicionIva = "Responsable Inscripto";
             } else if (resp instanceof PersonaJuridica) {

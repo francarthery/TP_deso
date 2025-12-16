@@ -88,7 +88,7 @@ public class FacturaController {
             List<FacturaDTO> facturaDTO = facturas.stream()
                 .map(FacturaDTO::new)
                 .toList();
-            return ResponseEntity.status(HttpStatus.FOUND).body(facturaDTO);
+            return ResponseEntity.status(HttpStatus.OK).body(facturaDTO);
         } catch(FacturasNoExistentesException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch(IllegalArgumentException e){

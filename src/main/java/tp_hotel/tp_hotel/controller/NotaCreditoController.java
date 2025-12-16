@@ -38,7 +38,7 @@ public class NotaCreditoController {
     public ResponseEntity<?> crearNotaCredito(@RequestBody List<Integer> facturasIds) {
         try {
             NotaCredito nuevaNotaCredito = gestorNotaCredito.crearNotaCredito(facturasIds);
-            return ResponseEntity.status(HttpStatus.CREATED).body(nuevaNotaCredito);
+            return ResponseEntity.status(HttpStatus.CREATED).body(nuevaNotaCredito.getId());
         } catch(FacturasNoExistentesException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }catch (Exception e) {
