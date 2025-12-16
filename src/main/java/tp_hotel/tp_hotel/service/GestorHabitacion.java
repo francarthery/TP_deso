@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import tp_hotel.tp_hotel.exceptions.FechaDesdePosteriorHastaException;
 import tp_hotel.tp_hotel.model.CategoriaHabitacion;
 import tp_hotel.tp_hotel.model.Estadia;
 import tp_hotel.tp_hotel.model.EstadoDiaDTO;
@@ -34,6 +35,10 @@ public class GestorHabitacion {
     }
 
     public List<HabitacionEstadoDTO> obtenerEstadoHabitaciones(LocalDate desde, LocalDate hasta) {
+        if(desde.isAfter(hasta)){
+            throw new FechaDesdePosteriorHastaException("La fecha inicial es posterior a la final");
+        }
+
         List<Habitacion> habitaciones = habitacionRepository.findAll();
         List<Reserva> reservas = reservaRepository.findReservasPorFecha(desde, hasta); 
         List<Estadia> estadias = estadiaRepository.findEstadiasPorFecha(desde, hasta); 

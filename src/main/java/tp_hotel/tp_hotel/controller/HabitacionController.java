@@ -3,6 +3,7 @@ import tp_hotel.tp_hotel.service.GestorHabitacion;
 import tp_hotel.tp_hotel.service.GestorEstadia;
 import tp_hotel.tp_hotel.model.EstadiaDTO;
 import tp_hotel.tp_hotel.model.HabitacionEstadoDTO;
+import tp_hotel.tp_hotel.exceptions.FechaDesdePosteriorHastaException;
 import tp_hotel.tp_hotel.model.Estadia;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -39,17 +40,16 @@ public class HabitacionController{
     }
 
     @GetMapping("/estado")
-    public ResponseEntity<List<HabitacionEstadoDTO>> mostrarEstadoHabitaciones(
-        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate desde,
-        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate hasta){
+    public ResponseEntity<?> mostrarEstadoHabitaciones(
+        @RequestParam (required = true) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate desde,
+        @RequestParam (required = true) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate hasta){
         
-        if(desde == null || hasta == null || desde.isAfter(hasta)){
-            return ResponseEntity.badRequest().build();
+        try{
+            List<HabitacionEstadoDTO> estadoHabitaciones = gestorHabitacion.obtenerEstadoHabitaciones(desde, hasta);
+            return ResponseEntity.status(HttpStatus.OK).body(estadoHabitaciones);
+        }catch(FechaDesdePosteriorHastaException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-
-        List<HabitacionEstadoDTO> estadoHabitaciones = gestorHabitacion.obtenerEstadoHabitaciones(desde, hasta);
-
-        return ResponseEntity.ok(estadoHabitaciones);
     }
 
     @PostMapping("/ocupar-habitacion")
