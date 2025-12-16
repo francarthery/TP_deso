@@ -28,12 +28,12 @@ INSERT INTO huesped (
 ('TANAKA', 'HIROSHI', 'PASAPORTE', 'JPN555666', NULL, 'CONSUMIDOR_FINAL', '1975-03-30', '8139999', 'hiroshi.tanaka@jp.net', 'Ejecutivo', 'Japon', 'Shibuya Crossing', '1', NULL, NULL, '15000', 'Tokyo', 'Tokyo', 'Japon'),
 ('SANCHEZ', 'CAMILA', 'PASAPORTE', 'CHL777888', NULL, 'CONSUMIDOR_FINAL', '1993-06-06', '56222222', 'camila.sanchez@email.cl', 'Fotografa', 'Chile', 'Providencia', '1200', NULL, NULL, '75000', 'Santiago', 'Santiago', 'Chile'),
 
--- 3. Viajeros de Negocios (Responsable Inscripto / Factura A)
-('EMPRESAS S.A.', 'REPRESENTANTE', 'DNI', '20999000', '30-70000000-1', 'RESPONSABLE_INSCRIPTO', '1980-01-01', '1140000001', 'admin@empresas.sa', 'Comercial', 'Argentina', 'L.N. Alem', '500', '4', 'A', '1001', 'CABA', 'Buenos Aires', 'Argentina'),
-('TECNOLOGIA SRL', 'GERENTE', 'DNI', '20888999', '30-71111111-2', 'RESPONSABLE_INSCRIPTO', '1985-01-01', '1140000002', 'contacto@tecnologia.srl', 'IT', 'Argentina', 'Paseo Colon', '300', '2', 'B', '1002', 'CABA', 'Buenos Aires', 'Argentina'),
-('AGRO SANTA FE', 'DIRECTOR', 'DNI', '20777888', '30-72222222-3', 'RESPONSABLE_INSCRIPTO', '1970-01-01', '3414000003', 'info@agrosantafe.com', 'Agro', 'Argentina', 'Bv. Oroño', '2000', NULL, NULL, '2000', 'Rosario', 'Santa Fe', 'Argentina'),
-('CONSTRUCTORA VIAL', 'INGENIERO', 'DNI', '20666777', '30-73333333-4', 'RESPONSABLE_INSCRIPTO', '1975-01-01', '3514000004', 'obras@constructora.com', 'Construccion', 'Argentina', 'Rafael Nuñez', '4000', NULL, NULL, '5000', 'Cordoba', 'Cordoba', 'Argentina'),
-('LOGISTICA NORTE', 'CHOFER', 'DNI', '20555666', '30-74444444-5', 'RESPONSABLE_INSCRIPTO', '1982-01-01', '3814000005', 'flota@logistica.com.ar', 'Logistica', 'Argentina', 'Av. Roca', '1000', NULL, NULL, '4000', 'Tucuman', 'Tucuman', 'Argentina'),
+-- 3. Viajeros de Negocios (Responsable Inscripto / Factura A) - MODIFICADO A PERSONAS FISICAS
+('VIDAL', 'MARCOS', 'DNI', '20999000', '20-20999000-1', 'RESPONSABLE_INSCRIPTO', '1980-01-01', '1140000001', 'marcos.vidal@empresas.sa', 'Gerente Comercial', 'Argentina', 'L.N. Alem', '500', '4', 'A', '1001', 'CABA', 'Buenos Aires', 'Argentina'),
+('FERRER', 'SOFIA', 'DNI', '20888999', '27-20888999-2', 'RESPONSABLE_INSCRIPTO', '1985-01-01', '1140000002', 'sofia.ferrer@tecnologia.srl', 'Consultora IT', 'Argentina', 'Paseo Colon', '300', '2', 'B', '1002', 'CABA', 'Buenos Aires', 'Argentina'),
+('PRADO', 'LUIS', 'DNI', '20777888', '20-20777888-3', 'RESPONSABLE_INSCRIPTO', '1970-01-01', '3414000003', 'luis.prado@agrosantafe.com', 'Ingeniero Agronomo', 'Argentina', 'Bv. Oroño', '2000', NULL, NULL, '2000', 'Rosario', 'Santa Fe', 'Argentina'),
+('CASTRO', 'HERNAN', 'DNI', '20666777', '20-20666777-4', 'RESPONSABLE_INSCRIPTO', '1975-01-01', '3514000004', 'hernan.castro@constructora.com', 'Arquitecto', 'Argentina', 'Rafael Nuñez', '4000', NULL, NULL, '5000', 'Cordoba', 'Cordoba', 'Argentina'),
+('MENDEZ', 'ROBERTO', 'DNI', '20555666', '20-20555666-5', 'RESPONSABLE_INSCRIPTO', '1982-01-01', '3814000005', 'roberto.mendez@logistica.com.ar', 'Despachante Aduana', 'Argentina', 'Av. Roca', '1000', NULL, NULL, '4000', 'Tucuman', 'Tucuman', 'Argentina'),
 
 -- 4. Generación Masiva (Relleno variado)
 ('ACOSTA', 'MARTIN', 'DNI', '31000001', NULL, 'CONSUMIDOR_FINAL', '1984-01-01', '111500001', 'martin.acosta@mail.com', 'Vendedor', 'Argentina', 'Calle 1', '101', NULL, NULL, '1900', 'La Plata', 'Buenos Aires', 'Argentina'),

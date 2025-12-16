@@ -13,13 +13,13 @@ import lombok.NoArgsConstructor;
 public class PersonaJuridicaDTO {
     private Integer id;
 
-    @NotNull @Size(min = 1, max = 100) @Pattern(regexp = "^[a-zA-Z0-9ñÑÁÉÍÓÚÜáéíóúü.,&\\- ]+$")
+    @NotNull @Size(min = 1, max = 50) @Pattern(regexp = "^[a-zA-Z0-9ñÑÁÉÍÓÚÜáéíóúü.,&\\- ]+$")
     private String razonSocial;
 
     @NotNull @Size(min = 1, max = 13) @Pattern(regexp = "^[0-9]{2}-?[0-9]{8}-?[0-9]$")
     private String cuit;
     
-    @NotNull @Size(min = 1, max = 20)
+    @Pattern(regexp = "^[0-9]+$") @NotNull @Size(min = 1, max = 20)
     private String telefono;
 
     private DireccionDTO direccion;

@@ -14,7 +14,7 @@ public abstract class ResponsablePago {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(length = 150, nullable = false)
+    @Column(length = 50, nullable = false)
     private String razonSocial;
 
     @OneToMany(mappedBy = "responsablePago", cascade = CascadeType.ALL)

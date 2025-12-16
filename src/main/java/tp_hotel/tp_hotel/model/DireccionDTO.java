@@ -14,10 +14,10 @@ public class DireccionDTO {
     @Pattern(regexp = "^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$") @Size(min = 1, max = 30)
     private String pais; 
     
-    @Pattern(regexp = "^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$") @Size(min = 1, max = 50)
+    @Size(min = 1, max = 50)
     private String provincia;
     
-    @Pattern(regexp = "^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$") @Size(min = 1, max = 50)
+    @Size(min = 1, max = 50)
     private String localidad;
 
     @NotNull @Size(min = 1, max = 100)
