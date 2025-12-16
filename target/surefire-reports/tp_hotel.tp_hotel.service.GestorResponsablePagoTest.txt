@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: tp_hotel.tp_hotel.service.GestorResponsablePagoTest
+-------------------------------------------------------------------------------
+Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.192 s -- in tp_hotel.tp_hotel.service.GestorResponsablePagoTest
