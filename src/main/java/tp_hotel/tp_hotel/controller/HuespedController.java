@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
+import tp_hotel.tp_hotel.exceptions.DocumentoExistenteException;
 import tp_hotel.tp_hotel.exceptions.HuespedConEstadiaException;
 import tp_hotel.tp_hotel.exceptions.HuespedNoEncontradoException;
 import tp_hotel.tp_hotel.model.BusquedaHuespedDTO;
@@ -69,31 +70,32 @@ public class HuespedController {
     
     
     @PostMapping
-    public ResponseEntity<?> crearHuesped(
-        @Valid @RequestBody HuespedDTO huespedDTO,
-        @RequestParam (required = false, defaultValue = "true") Boolean dniUnico) {
+    public ResponseEntity<?> crearHuesped(@Valid @RequestBody HuespedDTO huespedDTO) {
         try {
             Huesped huesped = huespedDTO.toEntity();
-            Huesped nuevoHuesped = gestorHuesped.registrarHuesped(huesped, dniUnico);
+            Huesped nuevoHuesped = gestorHuesped.registrarHuesped(huesped);
             return ResponseEntity.status(HttpStatus.CREATED).body(new HuespedDTO(nuevoHuesped));
-        } catch (IllegalArgumentException e) {
+        } catch (DocumentoExistenteException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno del servidor: " + e.getMessage());
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> modificarHuesped(@PathVariable Integer id, 
-        @Valid @RequestBody HuespedDTO huespedDTO,
-        @RequestParam (required = false, defaultValue = "true") Boolean dniUnico) {
+    public ResponseEntity<?> modificarHuesped(@PathVariable Integer id,
+        @Valid @RequestBody HuespedDTO huespedDTO) {
 
         try {
             Huesped huespedAActualizar = huespedDTO.toEntity();
-            gestorHuesped.modificarHuesped(huespedAActualizar, dniUnico);
+            gestorHuesped.modificarHuesped(huespedAActualizar);
             return ResponseEntity.ok(new HuespedDTO(huespedAActualizar));
         } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (DocumentoExistenteException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        } catch (HuespedNoEncontradoException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno del servidor: " + e.getMessage());
         }
     }
 

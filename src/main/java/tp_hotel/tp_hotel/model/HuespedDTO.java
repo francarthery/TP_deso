@@ -15,13 +15,12 @@ import jakarta.validation.constraints.Size;
 @NoArgsConstructor
 @AllArgsConstructor
 public class HuespedDTO {
-    @NotNull
     private Integer id;
     
-    @Pattern(regexp = "^[a-zA-Z ]+$") @Size(min = 1, max = 50) @NotNull
+    @Pattern(regexp = "^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$") @Size(min = 1, max = 50) @NotNull
     private String apellido;
     
-    @Pattern(regexp = "^[a-zA-Z ]+$") @Size(min = 1, max = 50) @NotNull
+    @Pattern(regexp = "^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$") @Size(min = 1, max = 50) @NotNull
     private String nombres;
 
     @NotNull
