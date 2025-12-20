@@ -26,7 +26,7 @@ public class NotaCredito {
     private Float monto;
 
     @OneToMany
-    @JoinColumn(name = "factura_id")
+    @JoinColumn(name = "nota_credito_id")
     private List<Factura> facturas;
 
     public void calcularMonto(){

@@ -41,8 +41,7 @@ public class Factura {
     @JoinColumn(name = "estadia_id")
     private Estadia estadia;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "factura_id")
+    @OneToMany(mappedBy = "factura", cascade = CascadeType.ALL, orphanRemoval = true) 
     private List<DetalleFactura> detalles = new ArrayList<>();
 
     @OneToOne(mappedBy = "factura", cascade = CascadeType.ALL)
